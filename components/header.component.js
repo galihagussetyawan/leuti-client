@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
     return (
@@ -22,7 +23,9 @@ export default function Header() {
 
                     {/* menu */}
                     <ul className=" flex md:justify-between md:gap-5">
-                        <li>SHOP</li>
+                        <li>
+                            <Link href={{ pathname: '/shop' }}>SHOP</Link>
+                        </li>
                         <li>REWARD</li>
                         <li>NEWS</li>
                         <li>STORY</li>
