@@ -31,7 +31,7 @@ export default function LoginModal({ closeAction }) {
                 <button className="md:bg-black md:text-white md:px-20 md:py-4 md:rounded-full">LOGIN</button>
 
                 <div className=" md:flex md:flex-col gap-3">
-                    <span className=" md:text-xl">Don't have an account yet ?</span>
+                    <span className=" md:text-xl md:font-semibold">Don't have an account yet ?</span>
                     <button className="md:hover:underline">Create an account</button>
                 </div>
 

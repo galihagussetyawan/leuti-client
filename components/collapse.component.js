@@ -1,15 +1,31 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Collapse({ title, children }) {
 
     const [open, setOpen] = useState(false);
+    const ref = useRef();
 
     const toggleHandle = () => {
         setOpen(!open);
     };
 
+    useEffect(() => {
+        const checkIfClickedOutside = e => {
+
+            if (open && ref.current && !ref.current.contains(e.target)) {
+                setOpen(false)
+            }
+        }
+
+        document.addEventListener("mousedown", checkIfClickedOutside)
+
+        return () => document.removeEventListener("mousedown", checkIfClickedOutside)
+
+    }, [open])
+
+
     return (
-        <div className=" md:overflow-hidden md:hover:text-gray-500">
+        <div ref={ref} className=" md:overflow-hidden md:hover:text-gray-500">
             <div className=" md:flex md:justify-between md:items-center" onClick={toggleHandle}>
                 <h5>{title}</h5>
 
