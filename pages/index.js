@@ -1,10 +1,14 @@
 import Head from 'next/head'
+import dynamic from 'next/dynamic';
 import styles from '../styles/Home.module.css'
 
 //import components
 import Header from '../components/header.component';
 import Footer from '../components/footer.component';
 import Caroussell from '../components/carousell.component';
+// import ProductDiscover from '../components/home/product-discover.component';
+
+const ProductDiscover = dynamic(() => import('../components/home/product-discover.component'));
 
 export default function Home() {
 
@@ -27,6 +31,7 @@ export default function Home() {
         </div>
         {/* end carousell */}
 
+        <ProductDiscover />
       </main>
 
       <Footer />

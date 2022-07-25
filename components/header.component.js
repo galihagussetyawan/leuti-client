@@ -1,7 +1,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import LoginModal from "./login-model.component";
+import dynamic from "next/dynamic";
+
+const LoginModal = dynamic(() => import('./login-model.component'));
 
 export default function Header() {
     const [modalLogin, setModalLogin] = useState(false);
@@ -13,15 +15,20 @@ export default function Header() {
     return (
         <div className=" md:w-full">
 
-            {modalLogin && <LoginModal closeAction={handleToggleModalLogin} />}
+            {modalLogin && <LoginModal isOpen={modalLogin} closeAction={handleToggleModalLogin} />}
 
             {/* logo */}
             <div className="text-center md:py-1 border-b border-gray-300">
-                <Image
-                    width={130}
-                    height={50}
-                    src={'/wordmark-logo.png'}
-                />
+                <Link href={{ pathname: '/' }}>
+                    <a>
+                        <Image
+                            className="md:cursor-pointer"
+                            width={130}
+                            height={50}
+                            src={'/wordmark-logo.png'}
+                        />
+                    </a>
+                </Link>
             </div>
             {/* end logo section */}
 

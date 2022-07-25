@@ -1,4 +1,5 @@
-import Modal from "./modal.component"
+import Link from "next/link";
+import Modal from "./modal.component";
 
 export default function LoginModal({ closeAction }) {
     return (
@@ -32,7 +33,9 @@ export default function LoginModal({ closeAction }) {
 
                 <div className=" md:flex md:flex-col gap-3">
                     <span className=" md:text-xl md:font-semibold">Don't have an account yet ?</span>
-                    <button className="md:hover:underline">Create an account</button>
+                    <Link href={{ pathname: '/register' }}>
+                        <button className="md:hover:underline">Create an account</button>
+                    </Link>
                 </div>
 
             </div>
