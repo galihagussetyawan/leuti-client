@@ -3,7 +3,7 @@ import Collapse from "./collapse.component";
 
 export default function Footer() {
     return (
-        <footer className=" md:w-full md:my-24 md:cursor-pointer">
+        <footer className=" md:w-full md:py-24 md:border-y border-gray-300 md:cursor-pointer">
             <div className="md:px-10 md:grid md:grid-cols-4 gap-5">
 
                 {/* column one */}

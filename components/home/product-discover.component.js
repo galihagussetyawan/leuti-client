@@ -3,10 +3,10 @@ import Link from "next/link";
 
 export default function ProductDiscover() {
     return (
-        <div className="md:flex md:flex-col md:gap-5 md:py-20">
+        <div className="md:flex md:flex-col md:gap-5 md:my-20">
 
-            <div className=" grid md:grid-cols-3 gap-5">
-                <div className=" md:w-full bg-black overflow-hidden">
+            <div className=" grid md:grid-cols-3 md:gap-5 grid-cols-1">
+                <div className=" md:w-full overflow-hidden">
                     <Image
                         width={200}
                         height={300}
@@ -16,7 +16,7 @@ export default function ProductDiscover() {
                     />
                 </div>
 
-                <div className="md:h-32 bg-black">
+                <div className="md:h-32 hidden md:block">
                     <Image
                         width={200}
                         height={300}
@@ -26,7 +26,7 @@ export default function ProductDiscover() {
                     />
                 </div>
 
-                <div className="md:h-32 bg-black">
+                <div className="md:h-32 hidden md:block">
                     <Image
                         width={200}
                         height={300}
