@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ProductDiscover() {
     return (
@@ -37,7 +38,9 @@ export default function ProductDiscover() {
             </div>
 
             <div>
-                <button className=" md:w-64 md:h-12 rounded-full border border-gray-400">DISCOVER</button>
+                <Link href={{ pathname: '/shop' }}>
+                    <button className=" md:w-64 md:h-12 rounded-full border border-gray-400">DISCOVER</button>
+                </Link>
             </div>
         </div>
     );

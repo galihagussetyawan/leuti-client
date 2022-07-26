@@ -1,19 +1,39 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import Dropdown from "./dropdown.component";
 
 const LoginModal = dynamic(() => import('./login-model.component'));
 
 export default function Header() {
     const [modalLogin, setModalLogin] = useState(false);
+    const [stateMenu, setStateMenu] = useState({});
+    const [height, setHeight] = useState(0);
+
+    const ref = useRef();
 
     const handleToggleModalLogin = () => {
         setModalLogin(!modalLogin);
     };
 
+    const handleMouseOver = (event) => {
+        event.preventDefault();
+
+        setStateMenu({ [event.currentTarget.id]: true })
+    };
+
+    const handleMouseLeave = (event) => {
+        setStateMenu({ [event.currentTarget.id]: false })
+    };
+
+    useEffect(() => {
+        setHeight(ref.current.clientHeight);
+    }, [height])
+
+
     return (
-        <div className=" md:w-full">
+        <div ref={ref} className=" md:w-full md:sticky md:top-0 md:z-50 md:bg-white">
 
             {modalLogin && <LoginModal isOpen={modalLogin} closeAction={handleToggleModalLogin} />}
 
@@ -39,11 +59,20 @@ export default function Header() {
                 <div className=" md:px-10 md:py-6 md:flex md:justify-between">
 
                     {/* menu */}
-                    <ul className=" flex md:justify-between md:gap-5">
-                        <li>
+                    <ul className="flex md:justify-between md:gap-5">
+                        <li className="md:hover:font-semibold">
                             <Link href={{ pathname: '/shop' }}>SHOP</Link>
                         </li>
-                        <li>REWARD</li>
+                        <li>
+                            <span id="reward-menu" className="md:cursor-pointer md:hover:font-semibold" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>REWARD</span>
+                            {
+                                stateMenu['reward-menu'] &&
+                                <Dropdown>
+                                    asdasdfasdsafasdasfa
+                                </Dropdown>
+
+                            }
+                        </li>
                         <li>NEWS</li>
                         <li>STORY</li>
                         <li>RANK</li>
