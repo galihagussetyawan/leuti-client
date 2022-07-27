@@ -8,21 +8,25 @@ export default function Footer() {
 
                 {/* column one */}
                 <div className="border-b border-gray-300 md:border-0 py-5">
-                    <div className="flex md:flex-row md:gap-28 px-5">
+                    <div className="flex md:flex-row md:gap-28 gap-10 px-5">
                         <div>
                             <h6 className="font-semibold">BRAND</h6>
-                            <Image
-                                width={102}
-                                height={60}
-                                src={'/wordmark-logo.png'} />
+                            <div className="w-28 h-20 relative">
+                                <Image
+                                    layout='fill'
+                                    objectFit='cover'
+                                    src={'/full-logo.jpeg'} />
+                            </div>
                         </div>
 
                         <div>
                             <h6 className=" font-semibold">BPOM</h6>
-                            <Image
-                                width={102}
-                                height={60}
-                                src={'/BPOM-Logo.jpg'} />
+                            <div className="w-28 h-20 relative">
+                                <Image
+                                    layout='fill'
+                                    objectFit='cover'
+                                    src={'/BPOM-Logo.jpg'} />
+                            </div>
                         </div>
                     </div>
                 </div>

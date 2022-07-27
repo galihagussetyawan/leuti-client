@@ -7,6 +7,7 @@ const LoginModal = dynamic(() => import('./login-model.component'));
 //import component
 import MobileMenu from '../components/header/mobile-menu.component';
 import DekstopMenu from "./header/dekstop-menu.component";
+import Image from "next/image";
 
 export default function Header() {
     const [modalLogin, setModalLogin] = useState(false);
@@ -29,15 +30,21 @@ export default function Header() {
     };
 
     return (
-        <div ref={ref} className=" md:w-full md:sticky md:top-0 sticky top-0 z-10 bg-white">
+        <div ref={ref} className="md:w-full md:sticky md:top-0 sticky top-0 z-10 bg-white">
 
             {modalLogin && <LoginModal isOpen={modalLogin} closeAction={handleToggleModalLogin} />}
 
             {/* logo */}
             <div className="text-center md:py-5 py-5 px-5 flex justify-between items-center border-b border-gray-300">
                 <Link href={{ pathname: '/' }}>
-                    <div className="md:w-36 md:m-auto w-24 h-10 flex items-center md:cursor-pointer">
-                        <img src="/wordmark-logo.png" />
+                    <div className="md:w-36 md:m-auto w-24 h-10 flex items-center relative md:cursor-pointer">
+                        <Image
+                            priority
+                            quality={100}
+                            src={'/wordmark-logo.png'}
+                            layout='fill'
+                            objectFit='cover'
+                        />
                     </div>
                 </Link>
 

@@ -52,13 +52,12 @@ export default function ProductDisplay() {
                 product.map((data, index) => {
                     return (
                         <div key={index} className="flex flex-col md:gap-5 gap-3 md:mb-10 mb-10">
-                            <div className="md:w-full md:aspect-square relative bg-gray-100">
+                            <div className="md:w-full aspect-square relative bg-gray-100">
                                 <Image
-                                    width={200}
-                                    height={200}
                                     src={data.image}
                                     loading='lazy'
                                     layout='fill'
+                                    objectFit='cover'
                                     quality={75}
                                 />
                             </div>

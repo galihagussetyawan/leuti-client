@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import styles from '../styles/Home.module.css'
 import Link from 'next/link';
@@ -7,11 +8,9 @@ import Link from 'next/link';
 import Header from '../components/header.component';
 import Footer from '../components/footer.component';
 import Caroussell from '../components/carousell.component';
-import ProductDisplay from '../components/home/product-display.component';
-import Image from 'next/image';
-// import ProductDiscover from '../components/home/product-discover.component';
 
 const ProductDiscover = dynamic(() => import('../components/home/product-discover.component'));
+const ProductDisplay = dynamic(() => import('../components/home/product-display.component'));
 
 export default function Home() {
 
@@ -29,7 +28,7 @@ export default function Home() {
       <main className=' md:w-4/5 flex flex-col space-y-9 m-auto'>
 
         {/* carousell */}
-        <div className='md:w-full md:h-[650px] md:flex md:justify-center md:my-10 bg-gray-100'>
+        <div className='md:w-full md:h-[650px] w-full h-screen flex justify-center md:my-10 bg-white md:bg-gray-100'>
           <Caroussell />
         </div>
         {/* end carousell */}
@@ -37,13 +36,14 @@ export default function Home() {
         <ProductDiscover />
         <ProductDisplay />
 
+        {/* horizontal discover */}
         <div className='flex flex-col md:gap-5 gap-7 md:my-20'>
           <div className='md:w-full md:h-[650px] w-full h-[300px] relative md:flex md:justify-center bg-gray-100'>
             <Image
-              quality={75}
-              loading='lazy'
               src={'/carousell2.jpg'}
+              quality={75}
               layout='fill'
+              loading='lazy'
               objectFit='cover'
             />
           </div>
@@ -53,6 +53,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
+        {/* end horizontal discover */}
 
       </main>
 
