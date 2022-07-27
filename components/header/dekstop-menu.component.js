@@ -2,23 +2,29 @@ import { useState } from "react";
 import Link from "next/link";
 import Dropdown from '../dropdown.component';
 
-export default function DekstopMenu({ toggleLogin }) {
+export default function DekstopMenu({ toggleLogin, height }) {
 
     const [stateMenu, setStateMenu] = useState({});
-    const [modalLogin, setModalLogin] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleMouseOver = (event) => {
         event.preventDefault();
 
         setStateMenu({ [event.currentTarget.id]: true })
+        setIsOpen(true);
     };
 
     const handleMouseLeave = (event) => {
         setStateMenu({ [event.currentTarget.id]: false })
+        setIsOpen(false);
     };
 
     const handleToggleModalLogin = () => {
         return toggleLogin();
+    };
+
+    const handleToggleDropdown = () => {
+        setIsOpen(false);
     };
 
     return (
@@ -29,12 +35,15 @@ export default function DekstopMenu({ toggleLogin }) {
                 <li className="md:hover:font-semibold">
                     <Link href={{ pathname: '/shop' }}>SHOP</Link>
                 </li>
-                <li>
-                    <span id="reward-menu" className="md:cursor-pointer md:hover:font-semibold" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>REWARD</span>
+                <li id="reward-menu" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
+                    <span className="md:cursor-pointer md:py-7 md:hover:font-semibold">REWARD</span>
                     {
-                        stateMenu['reward-menu'] &&
-                        <Dropdown>
-                            asdasdfasdsafasdasfa
+                        isOpen && stateMenu['reward-menu'] &&
+                        <Dropdown
+                            closeAction={handleToggleDropdown}
+                            top={height}
+                        >
+                            Reward Coming Soon
                         </Dropdown>
 
                     }

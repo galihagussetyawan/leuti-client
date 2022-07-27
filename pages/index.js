@@ -8,9 +8,9 @@ import Header from '../components/header.component';
 import Footer from '../components/footer.component';
 import Caroussell from '../components/carousell.component';
 import ProductDisplay from '../components/home/product-display.component';
-import ProductDiscover from '../components/home/product-discover.component';
+// import ProductDiscover from '../components/home/product-discover.component';
 
-// const ProductDiscover = dynamic(() => import('../components/home/product-discover.component'));
+const ProductDiscover = dynamic(() => import('../components/home/product-discover.component'));
 
 export default function Home() {
 
@@ -28,7 +28,7 @@ export default function Home() {
       <main className=' md:w-4/5 flex flex-col space-y-9 m-auto'>
 
         {/* carousell */}
-        <div className='md:w-full md:h-[650px] md:flex md:justify-center md:my-10'>
+        <div className='md:w-full md:h-[650px] md:flex md:justify-center md:my-10 bg-gray-100'>
           <Caroussell />
         </div>
         {/* end carousell */}
@@ -36,13 +36,13 @@ export default function Home() {
         <ProductDiscover />
         <ProductDisplay />
 
-        <div className='flex flex-col md:gap-5 md:my-20'>
+        <div className='flex flex-col md:gap-5 gap-7 md:my-20'>
           <div className='md:w-full md:h-[650px] md:flex md:justify-center'>
             <img src={'/carousell2.jpg'} className="md:w-full md:h-full md:object-cover" />
           </div>
-          <div>
+          <div className="text-center">
             <Link href={{ pathname: '/shop' }}>
-              <button className=" md:w-64 md:h-12 rounded-full border border-gray-400">DISCOVER</button>
+              <button className=" md:w-64 md:h-12 w-40 h-12 m-auto rounded-full border border-black">DISCOVER</button>
             </Link>
           </div>
         </div>

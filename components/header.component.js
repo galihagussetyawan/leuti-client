@@ -11,7 +11,6 @@ import DekstopMenu from "./header/dekstop-menu.component";
 export default function Header() {
     const [modalLogin, setModalLogin] = useState(false);
     const [isBurgerMenu, setIsBurgetMenu] = useState(false);
-    const [stateMenu, setStateMenu] = useState({});
     const [height, setHeight] = useState(0);
 
     const ref = useRef();
@@ -36,9 +35,9 @@ export default function Header() {
             {modalLogin && <LoginModal isOpen={modalLogin} closeAction={handleToggleModalLogin} />}
 
             {/* logo */}
-            <div className="text-center md:py-1 py-5 px-5 flex justify-between items-center border-b border-gray-300">
+            <div className="text-center md:py-5 py-5 px-5 flex justify-between items-center border-b border-gray-300">
                 <Link href={{ pathname: '/' }}>
-                    <div className="md:h-14 md:m-auto w-24 h-10 flex items-center md:cursor-pointer">
+                    <div className="md:w-36 md:m-auto w-24 h-10 flex items-center md:cursor-pointer">
                         <img src="/wordmark-logo.png" />
                     </div>
                 </Link>
@@ -60,6 +59,7 @@ export default function Header() {
             <div className="md:w-full border-b border-gray-300">
 
                 <DekstopMenu
+                    height={height}
                     toggleLogin={handleToggleModalLogin}
                 />
                 {
