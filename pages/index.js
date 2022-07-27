@@ -8,6 +8,7 @@ import Header from '../components/header.component';
 import Footer from '../components/footer.component';
 import Caroussell from '../components/carousell.component';
 import ProductDisplay from '../components/home/product-display.component';
+import Image from 'next/image';
 // import ProductDiscover from '../components/home/product-discover.component';
 
 const ProductDiscover = dynamic(() => import('../components/home/product-discover.component'));
@@ -37,10 +38,16 @@ export default function Home() {
         <ProductDisplay />
 
         <div className='flex flex-col md:gap-5 gap-7 md:my-20'>
-          <div className='md:w-full md:h-[650px] md:flex md:justify-center'>
-            <img src={'/carousell2.jpg'} className="md:w-full md:h-full md:object-cover" />
+          <div className='md:w-full md:h-[650px] w-full h-[300px] relative md:flex md:justify-center bg-gray-100'>
+            <Image
+              quality={75}
+              loading='lazy'
+              src={'/carousell2.jpg'}
+              layout='fill'
+              objectFit='cover'
+            />
           </div>
-          <div className="text-center">
+          <div className="text-center md:text-left">
             <Link href={{ pathname: '/shop' }}>
               <button className=" md:w-64 md:h-12 w-40 h-12 m-auto rounded-full border border-black">DISCOVER</button>
             </Link>

@@ -21,22 +21,24 @@ export default function Caroussell() {
             <SwiperSlide className='md:h-full md:w-full'>
                 <Image
                     priority
+                    quality={70}
                     src={imageCarousell1}
                 />
                 <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center flex flex-col gap-2'>
                     <h1 className='md:text-3xl md:font-semibold text-2xl font-semibold'>Leuti Perfect Sublimate Serum</h1>
-                    <span>5 RANGKAIAN SKINCARE DALAM 1 PRODUK SEMPURNA</span>
+                    <p>5 RANGKAIAN SKINCARE DALAM 1 PRODUK SEMPURNA</p>
                 </div>
             </SwiperSlide>
 
             <SwiperSlide className='md:h-full md:w-full'>
                 <Image
-                    priority
+                    loading='lazy'
+                    quality={70}
                     src={imageCarousell2}
                 />
                 <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center flex flex-col gap-2'>
                     <h1 className='md:text-3xl md:font-semibold text-2xl font-semibold'>Raih Reward Dengan Cara Mudah</h1>
-                    <span>{'TOUR DESTINATION BALI, SINGAPORE & TURKI'}</span>
+                    <p>{'TOUR DESTINATION BALI, SINGAPORE & TURKI'}</p>
                 </div>
             </SwiperSlide>
 

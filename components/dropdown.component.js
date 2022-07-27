@@ -21,7 +21,7 @@ export default function Dropdown({ children, top, closeAction }) {
 
 
     return (
-        <div className={`md:w-full md:h-full md:fixed md:left-0 md:top-[${parseInt(top)}px] md:bg-black md:bg-opacity-40`}>
+        <div className={`md:w-full md:h-full md:fixed md:left-0 md:top-[126px] md:bg-black md:bg-opacity-40`}>
             <div ref={ref} className="md:h-52 md:px-10 md:bg-white">
                 {children}
             </div>

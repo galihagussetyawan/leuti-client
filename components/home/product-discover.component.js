@@ -36,7 +36,7 @@ export default function ProductDiscover() {
 
             </div>
 
-            <div className=" text-center">
+            <div className="text-center md:text-left">
                 <Link href={{ pathname: '/shop' }}>
                     <button className=" md:w-64 md:h-12 w-40 h-12 m-auto rounded-full border border-black">DISCOVER</button>
                 </Link>

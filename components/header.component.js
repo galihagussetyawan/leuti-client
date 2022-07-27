@@ -21,13 +21,12 @@ export default function Header() {
 
     useEffect(() => {
         setHeight(ref.current.clientHeight);
-    }, [height])
+    }, [height, ref])
 
     //mobile function
     const handleToggleBurgerMenu = () => {
         setIsBurgetMenu(!isBurgerMenu);
     };
-
 
     return (
         <div ref={ref} className=" md:w-full md:sticky md:top-0 sticky top-0 z-10 bg-white">
