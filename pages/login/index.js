@@ -9,40 +9,39 @@ export default function Login() {
             <Header />
 
             <main className="flex md:px-10 md:py-14">
-                <div className="md:w-2/5 bg-gray-200">
+
+                <div className="md:w-2/5 md:h-[600px] hidden md:block md:relative bg-gray-200">
                     <Image
-                        width={300}
-                        height={300}
                         src={'/images2.jpg'}
-                        layout='responsive'
+                        layout='fill'
                         loading='lazy'
                         objectFit='cover'
                     />
                 </div>
 
-                <div className="md:w-3/5 md:flex md:flex-col md:px-36 md:gap-14 md:justify-center">
-                    <h1 className=" md:text-3xl">WELCOME BACK</h1>
+                <div className="md:w-3/5 w-full flex flex-col justify-center md:px-36 px-5 md:gap-10 mt-5 gap-14 md:justify-center">
+                    <h1 className="text-2xl md:text-3xl">LOGIN</h1>
 
-                    <div className=" md:flex md:flex-col md:gap-5">
+                    <div className="flex flex-col md:gap-5 gap-3">
 
-                        <div className="md:w-3/5 md:flex md:flex-col">
+                        <div className="md:w-3/5 flex flex-col">
                             <span>Username atau Email</span>
-                            <input className=" md:h-12 outline-none md:px-3 border border-gray-400" />
+                            <input className="md:h-12 h-9 outline-none px-3 border border-gray-500" />
                         </div>
-                        <div className="md:w-3/5 md:flex md:flex-col">
+                        <div className="md:w-3/5 flex flex-col">
                             <span>Password</span>
-                            <input type={'password'} className=" md:h-12 outline-none md:px-3 border border-gray-400" />
+                            <input type={'password'} className="md:h-12 h-9 outline-none px-3 border border-gray-500" />
                         </div>
                     </div>
 
                     <div>
-                        <button className=" md:h-12 px-10 rounded-full text-white bg-black">CREATE ACCOUNT</button>
+                        <button className="md:h-12 h-12 w-52 rounded-full text-white bg-black">LOGIN</button>
                     </div>
 
                     <div className="flex flex-col gap-2">
-                        <span className="md:text-xl md:font-semibold">Don’t have an account yet ?</span>
+                        <span className="text-xl md:text-xl font-semibold">Don’t have an account yet ?</span>
                         <Link href={{ pathname: '/register' }}>
-                            <span className=" md:cursor-pointer md:hover:underline">Create An Account</span>
+                            <span className="md:cursor-pointer md:hover:underline underline font-medium">Create An Account</span>
                         </Link>
                     </div>
                 </div>

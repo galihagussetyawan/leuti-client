@@ -1,25 +1,21 @@
 import { useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-// import Dropdown from '../dropdown.component';
 
 const Dropdown = dynamic(() => import('../dropdown.component'));
 
 export default function DekstopMenu({ toggleLogin, height }) {
 
     const [stateMenu, setStateMenu] = useState({});
-    const [isOpen, setIsOpen] = useState(false);
 
     const handleMouseOver = (event) => {
         event.preventDefault();
 
         setStateMenu({ [event.currentTarget.id]: true })
-        setIsOpen(true);
     };
 
     const handleMouseLeave = (event) => {
         setStateMenu({ [event.currentTarget.id]: false })
-        setIsOpen(false);
     };
 
     const handleToggleModalLogin = () => {
@@ -27,7 +23,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
     };
 
     const handleToggleDropdown = () => {
-        setIsOpen(false);
+        setStateMenu(false);
     };
 
     return (
@@ -38,20 +34,33 @@ export default function DekstopMenu({ toggleLogin, height }) {
                 <li className="md:hover:font-semibold">
                     <Link href={{ pathname: '/shop' }}>SHOP</Link>
                 </li>
+
+                {/* reward menu */}
                 <li id="reward-menu" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
                     <span className="md:cursor-pointer md:py-7 md:hover:font-semibold">REWARD</span>
+                    <Dropdown
+                        stateMenu={stateMenu['reward-menu']}
+                        closeAction={handleToggleDropdown}
+                        top={height}
+                    >
+                        Reward Coming Soon
+                    </Dropdown>
+                </li>
+                {/* end of reward menu */}
+
+                <li id="news-menu" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
+                    <span className="md:cursor-pointer md:py-7 md:hover:font-semibold">NEWS</span>
                     {
-                        isOpen && stateMenu['reward-menu'] &&
+                        stateMenu['news-menu'] &&
                         <Dropdown
                             closeAction={handleToggleDropdown}
                             top={height}
                         >
-                            Reward Coming Soon
+                            News Coming Soon
                         </Dropdown>
 
                     }
                 </li>
-                <li>NEWS</li>
                 <li>STORY</li>
                 <li>RANK</li>
                 <li>GALLERY</li>

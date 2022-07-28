@@ -31,7 +31,7 @@ export default function Header() {
     return (
         <div ref={ref} className="md:w-full md:sticky md:top-0 sticky top-0 z-10 bg-white">
 
-            {modalLogin && <LoginModal isOpen={modalLogin} closeAction={handleToggleModalLogin} />}
+            <LoginModal isOpen={modalLogin} closeAction={handleToggleModalLogin} />
 
             {/* logo */}
             <div className="text-center md:py-5 py-5 mx-5 md:m-0 flex justify-between items-center border-b border-gray-300">
@@ -65,7 +65,10 @@ export default function Header() {
                 toggleLogin={handleToggleModalLogin}
             />
 
-            {isBurgerMenu && <MobileMenu closeAction={handleToggleBurgerMenu} />}
+            <MobileMenu
+                isOpen={isBurgerMenu}
+                closeAction={handleToggleBurgerMenu}
+            />
             {/* end menu navbar */}
 
             <div className="w-full h-4 md:hidden flex bg-white"></div>
