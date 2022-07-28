@@ -3,16 +3,15 @@ import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 
-const LoginModal = dynamic(() => import('./login-model.component'));
-
 //import component
 import DekstopMenu from "./header/dekstop-menu.component";
 const MobileMenu = dynamic(() => import('../components/header/mobile-menu.component'));
+const LoginModal = dynamic(() => import('./login-model.component'));
 
 export default function Header() {
     const [modalLogin, setModalLogin] = useState(false);
     const [isBurgerMenu, setIsBurgetMenu] = useState(false);
-    const [height, setHeight] = useState(0);
+    const [height, setHeight] = useState(129);
 
     const ref = useRef();
 
@@ -22,7 +21,7 @@ export default function Header() {
 
     useEffect(() => {
         setHeight(ref.current.clientHeight);
-    }, [height, ref])
+    }, [height])
 
     //mobile function
     const handleToggleBurgerMenu = () => {
