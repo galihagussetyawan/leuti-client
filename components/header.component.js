@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 
 const LoginModal = dynamic(() => import('./login-model.component'));
 
 //import component
-import MobileMenu from '../components/header/mobile-menu.component';
 import DekstopMenu from "./header/dekstop-menu.component";
-import Image from "next/image";
+const MobileMenu = dynamic(() => import('../components/header/mobile-menu.component'));
 
 export default function Header() {
     const [modalLogin, setModalLogin] = useState(false);
@@ -35,9 +35,9 @@ export default function Header() {
             {modalLogin && <LoginModal isOpen={modalLogin} closeAction={handleToggleModalLogin} />}
 
             {/* logo */}
-            <div className="text-center md:py-5 py-5 px-5 flex justify-between items-center border-b border-gray-300">
+            <div className="text-center md:py-5 py-5 mx-5 md:m-0 flex justify-between items-center border-b border-gray-300">
                 <Link href={{ pathname: '/' }}>
-                    <div className="md:w-36 md:m-auto w-24 h-10 flex items-center relative md:cursor-pointer">
+                    <div className="md:w-36 md:m-auto w-24 h-11 flex items-center relative md:cursor-pointer">
                         <Image
                             priority
                             quality={100}
@@ -61,20 +61,15 @@ export default function Header() {
 
 
             {/* menu navbar */}
+            <DekstopMenu
+                height={height}
+                toggleLogin={handleToggleModalLogin}
+            />
 
-            <div className="md:w-full border-b border-gray-300">
-
-                <DekstopMenu
-                    height={height}
-                    toggleLogin={handleToggleModalLogin}
-                />
-                {
-                    isBurgerMenu && <MobileMenu closeAction={handleToggleBurgerMenu} />
-                }
-            </div>
-
+            {isBurgerMenu && <MobileMenu closeAction={handleToggleBurgerMenu} />}
             {/* end menu navbar */}
 
+            <div className="w-full h-4 md:hidden flex bg-white"></div>
         </div>
     );
 }

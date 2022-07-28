@@ -11,9 +11,10 @@ export default function Footer() {
                     <div className="flex md:flex-row md:gap-28 gap-10 px-5">
                         <div>
                             <h6 className="font-semibold">BRAND</h6>
-                            <div className="w-28 h-20 relative">
+                            <div className="w-28 h-20 relative bg-gray-100">
                                 <Image
                                     layout='fill'
+                                    loading='lazy'
                                     objectFit='cover'
                                     src={'/full-logo.jpeg'} />
                             </div>
@@ -21,10 +22,11 @@ export default function Footer() {
 
                         <div>
                             <h6 className=" font-semibold">BPOM</h6>
-                            <div className="w-28 h-20 relative">
+                            <div className="w-28 h-20 relative bg-gray-100">
                                 <Image
                                     layout='fill'
                                     objectFit='cover'
+                                    loading='lazy'
                                     src={'/BPOM-Logo.jpg'} />
                             </div>
                         </div>

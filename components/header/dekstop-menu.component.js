@@ -1,6 +1,9 @@
 import { useState } from "react";
 import Link from "next/link";
-import Dropdown from '../dropdown.component';
+import dynamic from "next/dynamic";
+// import Dropdown from '../dropdown.component';
+
+const Dropdown = dynamic(() => import('../dropdown.component'));
 
 export default function DekstopMenu({ toggleLogin, height }) {
 
@@ -28,7 +31,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
     };
 
     return (
-        <div className="md:px-10 hidden md:py-6 md:flex md:justify-between">
+        <div className="md:px-10 hidden md:py-6 md:flex md:justify-between md:border-b md:border-gray-300">
 
             {/* menu */}
             <ul className="md:flex md:justify-between md:gap-5">

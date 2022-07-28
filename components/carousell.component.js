@@ -18,7 +18,7 @@ export default function Caroussell() {
         >
             <SwiperSlide>
                 <div className='w-full h-full flex flex-col'>
-                    <div className='h-1/2 w-full md:w-full md:h-full relative'>
+                    <div className='h-1/2 w-full md:w-full md:h-full relative bg-gray-100'>
                         <Image
                             priority
                             quality={75}
@@ -52,9 +52,9 @@ export default function Caroussell() {
 
             <SwiperSlide>
                 <div className='w-full h-full flex flex-col'>
-                    <div className='h-1/2 w-full md:w-full md:h-full relative'>
+                    <div className='h-1/2 w-full md:w-full md:h-full relative bg-gray-100'>
                         <Image
-                            loading='lazy'
+                            priority
                             quality={75}
                             src={'/carousell2.jpg'}
                             layout='fill'

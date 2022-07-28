@@ -6,11 +6,14 @@ import Link from 'next/link';
 
 //import components
 import Header from '../components/header.component';
-import Footer from '../components/footer.component';
 import Caroussell from '../components/carousell.component';
+// import ProductDiscover from '../components/home/product-discover.component';
+// import ProductDisplay from '../components/home/product-display.component';
+// import Footer from '../components/footer.component';
 
 const ProductDiscover = dynamic(() => import('../components/home/product-discover.component'));
 const ProductDisplay = dynamic(() => import('../components/home/product-display.component'));
+const Footer = dynamic(() => import('../components/footer.component'));
 
 export default function Home() {
 
