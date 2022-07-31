@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && cp -f -r .next/* ../client-build",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build-deploy": "next build && cp -f -r .next/* ../client-build"
   },
   "dependencies": {
     "framer-motion": "^6.5.1",

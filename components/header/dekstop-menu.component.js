@@ -8,23 +8,28 @@ export default function DekstopMenu({ toggleLogin, height }) {
 
     const [stateMenu, setStateMenu] = useState({});
 
-    const handleMouseOver = (event) => {
+
+    const handleMouseOver = event => {
+
         event.preventDefault();
 
         setStateMenu({ [event.currentTarget.id]: true })
-    };
+    }
 
-    const handleMouseLeave = (event) => {
+    const handleMouseLeave = event => {
+        event.preventDefault();
+
         setStateMenu({ [event.currentTarget.id]: false })
-    };
+    }
+
+    const handleCloseOutsideDropdown = () => {
+        setStateMenu({});
+    }
 
     const handleToggleModalLogin = () => {
         return toggleLogin();
     };
 
-    const handleToggleDropdown = () => {
-        setStateMenu(false);
-    };
 
     return (
         <div className="md:px-10 hidden md:py-6 md:flex md:justify-between md:border-b md:border-gray-300">
@@ -37,10 +42,10 @@ export default function DekstopMenu({ toggleLogin, height }) {
 
                 {/* reward menu */}
                 <li id="reward-menu" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
-                    <span className="md:cursor-pointer md:py-7 md:hover:font-semibold">REWARD</span>
+                    <span className={`${stateMenu['reward-menu'] && 'md:font-bold'} md:cursor-pointer md:py-7 md:hover:font-semibold`}>REWARD</span>
                     <Dropdown
                         stateMenu={stateMenu['reward-menu']}
-                        closeAction={handleToggleDropdown}
+                        actionClose={handleCloseOutsideDropdown}
                         top={height}
                     >
                         Reward Coming Soon
@@ -50,16 +55,13 @@ export default function DekstopMenu({ toggleLogin, height }) {
 
                 <li id="news-menu" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
                     <span className="md:cursor-pointer md:py-7 md:hover:font-semibold">NEWS</span>
-                    {
-                        stateMenu['news-menu'] &&
-                        <Dropdown
-                            closeAction={handleToggleDropdown}
-                            top={height}
-                        >
-                            News Coming Soon
-                        </Dropdown>
-
-                    }
+                    <Dropdown
+                        stateMenu={stateMenu['news-menu']}
+                        actionClose={handleCloseOutsideDropdown}
+                        top={height}
+                    >
+                        News Coming Soon
+                    </Dropdown>
                 </li>
                 <li>STORY</li>
                 <li>RANK</li>
@@ -79,6 +81,6 @@ export default function DekstopMenu({ toggleLogin, height }) {
             </div>
             {/* end account */}
 
-        </div>
+        </div >
     );
 }

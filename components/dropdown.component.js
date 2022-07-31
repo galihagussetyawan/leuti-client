@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-export default function Dropdown({ children, top, closeAction, stateMenu }) {
+export default function Dropdown({ children, top, stateMenu, actionClose }) {
 
     const ref = useRef();
 
@@ -10,16 +10,16 @@ export default function Dropdown({ children, top, closeAction, stateMenu }) {
         const checkIfClickedOutside = e => {
 
             if (ref.current && !ref.current.contains(e.target)) {
-                closeAction();
+                actionClose();
             }
+
         }
 
-        document.addEventListener("mouseover", checkIfClickedOutside)
+        document.addEventListener("click", checkIfClickedOutside)
 
-        return () => document.removeEventListener("mouseover", checkIfClickedOutside)
+        return () => document.removeEventListener("click", checkIfClickedOutside)
 
     }, [ref])
-
 
     return (
         <>

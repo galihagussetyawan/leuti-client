@@ -21,10 +21,11 @@ export default function Caroussell() {
                     <div className='h-1/2 w-full md:w-full md:h-full relative bg-gray-100'>
                         <Image
                             priority
-                            quality={75}
+                            quality={10}
                             src={'/carousell1.jpg'}
                             layout='fill'
                             objectFit='cover'
+                            objectPosition='center'
                         />
                     </div>
                     <div className='h-1/2 flex flex-col gap-5 justify-center items-center md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 text-center'>
@@ -34,31 +35,16 @@ export default function Caroussell() {
                 </div>
             </SwiperSlide>
 
-            {/* <SwiperSlide>
-                <div className='h-full w-full relative'>
-                    <Image
-                        quality={100}
-                        loading='lazy'
-                        src={'/carousell2.jpg'}
-                        layout='fill'
-                        objectFit='cover'
-                    />
-                </div>
-                <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center flex flex-col gap-2'>
-                    <h1 className='md:text-4xl md:font-semibold text-2xl font-semibold'>Raih Reward Dengan Cara Mudah</h1>
-                    <p>{'TOUR DESTINATION BALI, SINGAPORE & TURKI'}</p>
-                </div>
-            </SwiperSlide> */}
-
             <SwiperSlide>
                 <div className='w-full h-full flex flex-col'>
                     <div className='h-1/2 w-full md:w-full md:h-full relative bg-gray-100'>
                         <Image
                             priority
-                            quality={75}
+                            quality={10}
                             src={'/carousell2.jpg'}
                             layout='fill'
                             objectFit='cover'
+                            objectPosition='center'
                         />
                     </div>
                     <div className='h-1/2 flex flex-col gap-5 justify-center items-center md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 text-center'>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const product = [
     {
@@ -51,10 +52,11 @@ export default function ProductDisplay() {
             {
                 product.map((data, index) => {
                     return (
-                        <div key={index} className="flex flex-col md:gap-5 gap-3 md:mb-10 mb-10">
+                        <div key={index} className="flex flex-col md:gap-5 gap-3 md:mb-10 mb-10 md:cursor-pointer">
                             <div className="md:w-full aspect-square relative bg-gray-100">
                                 <Image
                                     src={data.image}
+                                    className="md:hover:scale-110 md:ease-in-out md:duration-300"
                                     loading='lazy'
                                     layout='fill'
                                     objectFit='cover'
