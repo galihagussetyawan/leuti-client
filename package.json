@@ -10,6 +10,7 @@
     "build-deploy": "next build && cp -f -r .next/* ../client-build"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "framer-motion": "^6.5.1",
     "next": "12.2.3",
     "react": "18.2.0",
