@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { motion } from "framer-motion";
+import Link from "next/link";
 
 const product = [
     {
@@ -52,19 +52,25 @@ export default function ProductDisplay() {
             {
                 product.map((data, index) => {
                     return (
-                        <div key={index} className="flex flex-col md:gap-5 gap-3 md:mb-10 mb-10 md:cursor-pointer">
-                            <div className="md:w-full aspect-square relative bg-gray-100">
-                                <Image
-                                    src={data.image}
-                                    className="md:hover:scale-110 md:ease-in-out md:duration-300"
-                                    loading='lazy'
-                                    layout='fill'
-                                    objectFit='cover'
-                                    quality={75}
-                                />
+                        <Link
+                            key={index}
+                            href={{
+                                pathname: `/product/${data.title.split(' ').join('-').toLowerCase()}`
+                            }}>
+                            <div className="flex flex-col md:gap-5 gap-3 md:mb-10 mb-10 md:cursor-pointer">
+                                <div className="md:w-full aspect-square relative bg-gray-100">
+                                    <Image
+                                        src={data.image}
+                                        className="md:hover:scale-110 md:ease-in-out md:duration-300"
+                                        loading='lazy'
+                                        layout='fill'
+                                        objectFit='cover'
+                                        quality={75}
+                                    />
+                                </div>
+                                <span>{data.title}</span>
                             </div>
-                            <span>{data.title}</span>
-                        </div>
+                        </Link>
                     );
                 })
             }

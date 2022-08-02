@@ -124,10 +124,9 @@ export default function Story({ contentList }) {
 
 export async function getServerSideProps(context) {
 
-    const { req } = context;
-    const host = req.headers.host;
+    const baseurl = process.env.BASE_URL;
 
-    const { data, error } = await axios.get(`http://${host}/api/story/content`);
+    const { data, error } = await axios.get(`${baseurl}/api/story/content`);
 
     return {
         props: {

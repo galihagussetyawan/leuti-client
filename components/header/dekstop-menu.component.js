@@ -63,7 +63,17 @@ export default function DekstopMenu({ toggleLogin, height }) {
                         News Coming Soon
                     </Dropdown>
                 </li>
-                <li>STORY</li>
+                <li id="story-menu" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
+                    <span className="md:cursor-pointer md:py-7 md:hover:font-semibold">STORY</span>
+                    <Dropdown
+                        stateMenu={stateMenu['story-menu']}
+                        actionClose={handleCloseOutsideDropdown}
+                        top={height}
+                    >
+                        <Link href={{ pathname: '/story' }}>Stories Leuti Perfect Sublimate Serum</Link>
+                    </Dropdown>
+                </li>
+                <li>PROMO</li>
                 <li>RANK</li>
                 <li>GALLERY</li>
             </ul>
@@ -83,4 +93,8 @@ export default function DekstopMenu({ toggleLogin, height }) {
 
         </div >
     );
+}
+
+DekstopMenu.getInitialProps = async context => {
+    console.log('asdasdadasd');
 }

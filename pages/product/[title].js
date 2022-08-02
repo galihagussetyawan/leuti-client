@@ -50,12 +50,11 @@ export default function Product({ title }) {
         }
     }
 
-
     return (
         <>
             <Head></Head>
             <Header />
-            <main className="md:w-4/5 m-auto flex md:flex-row flex-col gap-5 ">
+            <main className="md:w-4/5 m-auto flex md:flex-row flex-col gap-5 md:py-10">
 
                 <div className="md:w-full flex md:flex-row flex-col-reverse gap-5">
 
@@ -81,7 +80,7 @@ export default function Product({ title }) {
 
                     {/* preview image product */}
                     <div className="w-full h-full">
-                        <div className="md:w-full md:h-[700px] w-full h-96 relative bg-blue-400">
+                        <div className="md:w-full md:h-[700px] w-full h-96 relative bg-gray-100">
                             <Image
                                 src={imagePreview}
                                 layout='fill'
@@ -106,7 +105,7 @@ export default function Product({ title }) {
                     </div>
 
                     <div className="flex flex-col gap-1">
-                        <span className="font-semibold">WHY WE OVE IT</span>
+                        <span className="font-semibold">WHY WE LOVE IT</span>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In congue ultrices velit, varius sodales quam faucibus quis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                     </div>
 
@@ -140,19 +139,19 @@ export default function Product({ title }) {
                 </div>
                 {/* end of description section */}
 
-                {/* floating section */}
-                <div className="w-full md:hidden fixed left-0 bottom-0 z-10 flex gap-5 p-5 bg-white">
-                    <div className="flex border border-black">
-                        <button className="w-12" onClick={handleDecreaseQuantity}>-</button>
-                        <input className="w-16 h-12  text-center outline-none" value={quantity} onChange={handleOnChangeQuantity} />
-                        <button className="w-12" onClick={handleInceraseQuantity}>+</button>
-                    </div>
-                    <button className="md:w-52 w-full bg-black rounded-full text-white">ADD TO CART</button>
-                </div>
-                {/* end of floating section */}
-
             </main>
             <Footer />
+
+            {/* floating section */}
+            <div className="w-full md:hidden sticky left-0 bottom-0 z-10 flex gap-5 p-5 bg-white">
+                <div className="flex border border-black">
+                    <button className="w-12" onClick={handleDecreaseQuantity}>-</button>
+                    <input className="w-16 h-12  text-center outline-none" value={quantity} onChange={handleOnChangeQuantity} />
+                    <button className="w-12" onClick={handleInceraseQuantity}>+</button>
+                </div>
+                <button className="md:w-52 w-full bg-black rounded-full text-white">ADD TO CART</button>
+            </div>
+            {/* end of floating section */}
         </>
     );
 }

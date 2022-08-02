@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Collapse from "./collapse.component";
 
 export default function Footer() {
@@ -42,7 +43,9 @@ export default function Footer() {
                         <div className="flex flex-col md:gap-5 gap-4">
 
                             <Collapse title="Contact">
-                                <span>Konsultasi</span>
+                                <Link href={{ pathname: '/consultation' }}>
+                                    <span>Konsultasi</span>
+                                </Link>
                             </Collapse>
 
                             <Collapse title={'FAQ'}>

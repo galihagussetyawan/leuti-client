@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 
 //import component
 import DekstopMenu from "./header/dekstop-menu.component";
-// const MobileMenu = dynamic(() => import('../components/header/mobile-menu.component'));
 import MobileMenu from './header/mobile-menu.component';
 const LoginModal = dynamic(() => import('./login-model.component'));
 

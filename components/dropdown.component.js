@@ -38,7 +38,7 @@ export default function Dropdown({ children, top, stateMenu, actionClose }) {
                                 duration: 0.4
                             }}
                         >
-                            <motion.div className="md:min-h-[200px]"
+                            <motion.div className="md:min-h-[200px] md:py-5"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
@@ -51,7 +51,8 @@ export default function Dropdown({ children, top, stateMenu, actionClose }) {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                        ></motion.div>
+                        >
+                        </motion.div>
                     </div>
                 }
             </AnimatePresence>
