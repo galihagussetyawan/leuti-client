@@ -8,13 +8,15 @@ import Header from '../../components/header.component';
 const Footer = dynamic(() => import('../../components/footer.component'));
 const Collapse = dynamic(() => import('../../components/collapse.component'));
 
+import CookiesService from "../../services/cookies.service";
+
 const imageProduct = [
     '/images4.jpg',
     '/images1.jpg',
     '/images2.jpg',
 ];
 
-export default function Product({ title }) {
+export default function Product({ title, isLogin }) {
 
     const [imagePreview, setImagePreview] = useState(imageProduct[0]);
     const [quantity, setQuantity] = useState(1);
@@ -95,7 +97,10 @@ export default function Product({ title }) {
                 {/* description section */}
                 <div className="md:w-full flex flex-col md:gap-14 md:m-0 mx-5 gap-10">
                     <div className="flex flex-col gap-5">
-                        <h1 className="md:text-3xl text-2xl font-semibold">Leuti Perfect Sublimate Serum</h1>
+                        <div className="md:flex md:justify-between md:items-center">
+                            <h1 className="md:text-3xl text-2xl font-semibold">Leuti Perfect Sublimate Serum</h1>
+                            {isLogin && <span className="md:text-xl text-xl md:font-semibold">Rp30000</span>}
+                        </div>
                         <p>deksripsi singkat produk</p>
                     </div>
 
@@ -110,13 +115,16 @@ export default function Product({ title }) {
                     </div>
 
                     {/* add to cart */}
-                    <div className="hidden md:flex md:gap-10 gap-5 md:border-t p-5 md:py-20 md:border-gray-300">
-                        <div className="flex border border-black">
-                            <button className="w-12" onClick={handleDecreaseQuantity}>-</button>
-                            <input className="w-16 h-12  text-center outline-none" value={quantity} onChange={handleOnChangeQuantity} />
-                            <button className="w-12" onClick={handleInceraseQuantity}>+</button>
+                    <div className="hidden md:flex md:flex-col md:gap-2 md:border-t md:py-20 md:border-gray-300">
+                        <span className="md:font-semibold">Stock 300</span>
+                        <div className="md:flex md:gap-5">
+                            <div className="md:flex md:border md:border-black">
+                                <button className="w-12" onClick={handleDecreaseQuantity}>-</button>
+                                <input className="w-16 h-12  text-center outline-none" value={quantity} onChange={handleOnChangeQuantity} />
+                                <button className="w-12" onClick={handleInceraseQuantity}>+</button>
+                            </div>
+                            <button className="md:w-52 w-full bg-black rounded-full text-white">ADD TO CART</button>
                         </div>
-                        <button className="md:w-52 w-full bg-black rounded-full text-white">ADD TO CART</button>
                     </div>
                     {/* end of add to cart */}
 
@@ -143,13 +151,16 @@ export default function Product({ title }) {
             <Footer />
 
             {/* floating section */}
-            <div className="w-full md:hidden sticky left-0 bottom-0 z-10 flex gap-5 p-5 bg-white">
-                <div className="flex border border-black">
-                    <button className="w-12" onClick={handleDecreaseQuantity}>-</button>
-                    <input className="w-16 h-12  text-center outline-none" value={quantity} onChange={handleOnChangeQuantity} />
-                    <button className="w-12" onClick={handleInceraseQuantity}>+</button>
+            <div className="w-full md:hidden sticky left-0 bottom-0 z-10 flex flex-col px-5 py-2 gap-1 bg-white">
+                <span className="font-semibold">Stock 300</span>
+                <div className="flex gap-3">
+                    <div className="flex border border-black">
+                        <button className="w-12" onClick={handleDecreaseQuantity}>-</button>
+                        <input className="w-12 h-12 text-center outline-none" value={quantity} onChange={handleOnChangeQuantity} />
+                        <button className="w-12" onClick={handleInceraseQuantity}>+</button>
+                    </div>
+                    <button className="md:w-52 w-full bg-black rounded-full text-white">ADD TO CART</button>
                 </div>
-                <button className="md:w-52 w-full bg-black rounded-full text-white">ADD TO CART</button>
             </div>
             {/* end of floating section */}
         </>
@@ -157,13 +168,36 @@ export default function Product({ title }) {
 }
 
 export async function getServerSideProps(context) {
-    const { params } = context;
 
-    const { title } = params;
+    const { req, res } = context;
+    let isLogin = false;
+    let user = {};
+
+    try {
+
+        const cookies = await CookiesService.getCookies('user', req, res);
+
+        if (cookies) {
+
+            const cookiesParsed = JSON.parse(cookies);
+
+            if (cookiesParsed.accessToken) {
+                user = cookiesParsed;
+                isLogin = true;
+            }
+        }
+
+    } catch (error) {
+
+        if (error) {
+            isLogin = false;
+        }
+    }
 
     return {
         props: {
-            title
+            isLogin,
+            user,
         }
     }
 }

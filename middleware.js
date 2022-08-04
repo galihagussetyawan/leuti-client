@@ -7,13 +7,19 @@ export function middleware(req, res) {
 
         const cookies = req.cookies.get('user');
 
-        if (cookies) {
+        try {
 
-            const accessToken = JSON.parse(cookies).accessToken;
+            if (cookies) {
 
-            if (accessToken) {
-                return NextResponse.redirect(new URL('/', req.url));
+                const accessToken = JSON.parse(cookies).accessToken;
+
+                if (accessToken) {
+                    return NextResponse.redirect(new URL('/', req.url));
+                }
             }
+
+        } catch (error) {
+
         }
     }
 
@@ -22,30 +28,43 @@ export function middleware(req, res) {
 
         const cookies = req.cookies.get('user');
 
-        if (cookies) {
+        try {
 
-            const accessToken = JSON.parse(cookies).accessToken;
+            if (cookies) {
 
-            if (accessToken) {
-                return NextResponse.redirect(new URL('/', req.url));
+                const accessToken = JSON.parse(cookies).accessToken;
+
+                if (accessToken) {
+                    return NextResponse.redirect(new URL('/', req.url));
+                }
             }
+
+        } catch (error) {
+
         }
     }
 
+    // dashboard page
     if (req.nextUrl.pathname.startsWith('/dashboard')) {
 
         let cookies = req.cookies.get('user');
 
-        if (!cookies) {
+        try {
 
-            return NextResponse.redirect(new URL('/', req.url));
-        } else {
+            if (!cookies) {
 
-            const accessToken = JSON.parse(cookies).accessToken;
-
-            if (!accessToken) {
                 return NextResponse.redirect(new URL('/', req.url));
+            } else {
+
+                const accessToken = JSON.parse(cookies).accessToken;
+
+                if (!accessToken) {
+                    return NextResponse.redirect(new URL('/', req.url));
+                }
             }
+        } catch (error) {
+
         }
+
     }
 }

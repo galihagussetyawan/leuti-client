@@ -1,15 +1,31 @@
 import axios from 'axios';
-import ApiClient from '../api-client';
-import CookiesService from '../cookies/cookies.service';
+import ApiClient from './api-client';
+import CookiesService from './cookies.service';
 
 class AuthService {
 
     async signin(username, password) {
 
+        CookiesService.delete('user');
+
         return await ApiClient().post('/api/auth/signin', {
             username,
             password
         })
+            .then(res => {
+
+                CookiesService.setCookies('user', res.data.data);
+
+                if (res.status > 200) {
+                    CookiesService.delete('user');
+                }
+
+                return res;
+            })
+    }
+
+    logout() {
+        CookiesService.delete('user');
     }
 
     async isLogin() {

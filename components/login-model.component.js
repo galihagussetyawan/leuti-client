@@ -1,12 +1,18 @@
-import { AnimatePresence, motion } from "framer-motion";
-import Link from "next/link";
 import { useState } from "react";
-import Modal from "./modal.component";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { AnimatePresence, motion } from "framer-motion";
 
-import AuthService from '../services/auth/auth.service';
+const Modal = dynamic(() => import('./modal.component'))
+
+import AuthService from '../services/auth.service';
 
 export default function LoginModal({ closeAction, isOpen }) {
 
+    const router = useRouter();
+
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -21,16 +27,23 @@ export default function LoginModal({ closeAction, isOpen }) {
 
     const handleLogin = () => {
         setError();
+        setIsLoading(true);
 
-        AuthService.signin(username, password)
-            .then(res => {
-                console.log(res.data);
-            })
-            .catch(error => {
-                console.log(error.response);
+        setTimeout(() => {
 
-                setError(error.response.data.error_message)
-            })
+            AuthService.signin(username, password)
+                .then(res => {
+
+                    setIsLoading(false);
+                    router.reload();
+                })
+                .catch(error => {
+
+                    setIsLoading(false);
+                    setError(error.response.data.error_message)
+                })
+
+        }, 1000);
     }
 
     const handleClose = () => {
@@ -80,7 +93,14 @@ export default function LoginModal({ closeAction, isOpen }) {
                                     </div>
                                 </div>
 
-                                <button className="md:bg-black md:text-white md:px-20 md:py-4 md:rounded-full" onClick={handleLogin}>LOGIN</button>
+                                <button className="md:w-52 md:bg-black md:text-white md:py-4 md:rounded-full" onClick={handleLogin}>
+                                    {
+                                        isLoading ?
+                                            <span>LOADING ...</span>
+                                            :
+                                            <span>LOGIN</span>
+                                    }
+                                </button>
 
                                 <div className=" md:flex md:flex-col gap-3">
                                     <span className=" md:text-xl md:font-semibold">Dont have an account yet ?</span>

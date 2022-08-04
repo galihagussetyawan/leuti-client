@@ -1,18 +1,8 @@
-import axios from "axios";
 import { getCookie } from "cookies-next";
-import { useEffect } from "react";
-import AuthService from "../../services/auth/auth.service";
+import AuthService from "../../services/auth.service";
+import CookiesService from "../../services/cookies.service";
 
 export default function Dashboard() {
-
-
-    // useEffect(() => {
-
-    //     AuthService.isAdmin()
-    //         .then(res => console.log(res.data.data))
-    //         .catch(error => console.log(error.response.data));
-    // }, [])
-
     return (
         <>
             <main>dashboard</main>
@@ -26,9 +16,20 @@ export async function getServerSideProps(context) {
 
     const cookies = getCookie('user', { req, res });
 
-    const isAdmin = await AuthService.isAdmin(JSON.parse(cookies).accessToken);
+    try {
 
-    if (!isAdmin) {
+        const isAdmin = await AuthService.isAdmin(JSON.parse(cookies).accessToken);
+
+        if (!isAdmin) {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false,
+                }
+            }
+        }
+
+    } catch (error) {
         return {
             redirect: {
                 destination: '/',

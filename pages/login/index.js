@@ -8,8 +8,7 @@ import Footer from '../../components/footer.component';
 import Header from '../../components/header.component';
 
 //import service
-import AuthService from '../../services/auth/auth.service';
-import CookiesService from '../../services/cookies/cookies.service';
+import AuthService from '../../services/auth.service';
 
 export default function Login() {
 
@@ -34,8 +33,10 @@ export default function Login() {
             .then(response => {
 
                 if (response.status === 200) {
-                    CookiesService.setCookies('user', response.data.data);
-                    router.push('/');
+                    router.push({
+                        pathname: '/',
+                        refresh: true,
+                    });
                 }
 
             })

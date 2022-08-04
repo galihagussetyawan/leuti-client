@@ -1,27 +1,26 @@
 import Head from "next/head";
-import Footer from "../../components/footer.component";
-import Header from "../../components/header.component"
+import dynamic from "next/dynamic";
+
+import Header from '../../components/header.component';
+const Footer = dynamic(() => import('../../components/footer.component'));
 
 import CookiesService from "../../services/cookies.service";
 
-export default function Shop() {
+export default function User() {
     return (
-        <div>
+        <>
             <Head></Head>
-
             <Header />
-            <main>
-                <h1 className=" m-auto text-7xl">Shop Comming Soon</h1>
-            </main>
-
+            <main>user</main>
             <Footer />
-        </div>
+        </>
     );
 }
 
 export async function getServerSideProps(context) {
 
     const { req, res } = context;
+
     let isLogin = false;
     let user = {};
 

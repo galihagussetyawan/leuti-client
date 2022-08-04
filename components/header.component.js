@@ -5,10 +5,11 @@ import dynamic from "next/dynamic";
 
 //import component
 import DekstopMenu from "./header/dekstop-menu.component";
-import MobileMenu from './header/mobile-menu.component';
+const MobileMenu = dynamic(() => import('./header/mobile-menu.component'));
 const LoginModal = dynamic(() => import('./login-model.component'));
 
 export default function Header() {
+
     const [modalLogin, setModalLogin] = useState(false);
     const [isBurgerMenu, setIsBurgetMenu] = useState(false);
     const [height, setHeight] = useState(129);
@@ -35,8 +36,8 @@ export default function Header() {
 
             {/* logo */}
             <div className="text-center md:py-5 py-5 mx-5 md:m-0 flex justify-between items-center border-b border-gray-300">
-                <Link href={{ pathname: '/' }}>
-                    <div className="md:w-36 md:m-auto w-24 h-11 flex items-center relative md:cursor-pointer">
+                <Link href={{ pathname: '/', }}>
+                    <a className="md:w-36 md:m-auto w-24 h-11 flex items-center relative md:cursor-pointer">
                         <Image
                             priority
                             quality={100}
@@ -44,7 +45,7 @@ export default function Header() {
                             layout='fill'
                             objectFit='cover'
                         />
-                    </div>
+                    </a>
                 </Link>
 
                 {/* burger icon menu */}

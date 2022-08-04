@@ -9,8 +9,10 @@ export default function ProductDiscover() {
             <div className=" grid md:grid-cols-3 md:gap-5 grid-cols-1">
                 <div className="md:w-full md:h-[700px] w-full h-[450px]  relative overflow-hidden">
                     <Image
-                        src={'/images1.jpg'}
                         loading='lazy'
+                        src={'/images1.jpg'}
+                        quality={50}
+                        objectPosition='center'
                         objectFit='cover'
                         layout='fill'
                     />
@@ -18,8 +20,10 @@ export default function ProductDiscover() {
 
                 <div className="md:w-full md:h-[700px] w-full h-1/4 md:relative overflow-hidden hidden md:block">
                     <Image
-                        src={'/images1.jpg'}
                         loading='lazy'
+                        src={'/images1.jpg'}
+                        quality={50}
+                        objectPosition='center'
                         objectFit='cover'
                         layout='fill'
                     />
@@ -27,8 +31,10 @@ export default function ProductDiscover() {
 
                 <div className="md:w-full md:h-[700px] w-full h-1/4 md:relative overflow-hidden hidden md:block">
                     <Image
-                        src={'/images1.jpg'}
                         loading='lazy'
+                        src={'/images1.jpg'}
+                        quality={50}
+                        objectPosition='center'
                         objectFit='cover'
                         layout='fill'
                     />

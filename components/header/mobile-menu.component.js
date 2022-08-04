@@ -1,7 +1,12 @@
+import { useContext } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 
+import AuthContext from '../../lib/context/auth.context';
+
 export default function MobileMenu({ closeAction, isOpen }) {
+
+    const { isLogin, user } = useContext(AuthContext);
 
     const handleToggleClose = () => {
         return closeAction();
@@ -47,28 +52,41 @@ export default function MobileMenu({ closeAction, isOpen }) {
                                 <div className="w-full flex justify-between items-center px-5">
 
                                     {/* point */}
-                                    <div className="flex gap-1 items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                                        </svg>
-                                        <span>3000</span>
-                                    </div>
+                                    {
+                                        isLogin &&
+                                        <div className="flex gap-1 items-center">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                            </svg>
+                                            <span>3000</span>
+                                        </div>
+                                    }
                                     {/* end of point */}
                                     {/* user cart */}
-                                    <div className="flex justify-end gap-3">
-                                        <button>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                                            </svg>
-                                        </button>
+                                    <div className="flex justify-end gap-5">
+                                        {
+                                            isLogin &&
+                                            <button>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                                </svg>
+                                            </button>
+                                        }
                                         <button className="flex items-center">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                            </svg>
 
-                                            <Link href={{ pathname: '/login' }}>
-                                                <span>login</span>
-                                            </Link>
+                                            {
+                                                isLogin ?
+                                                    <div className="flex">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                        </svg>
+                                                        <span>{user?.username}</span>
+                                                    </div>
+                                                    :
+                                                    <Link href={{ pathname: '/login' }}>
+                                                        <span className=" font-semibold">LOGIN</span>
+                                                    </Link>
+                                            }
                                         </button>
                                     </div>
                                     {/* end of user cart */}

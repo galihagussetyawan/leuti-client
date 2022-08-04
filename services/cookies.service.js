@@ -9,13 +9,13 @@ class CookiesService {
         setCookie(key, data);
     }
 
-    async getCookies(key) {
+    async getCookies(key, req, res) {
 
-        const cookies = await getCookie(key);
+        const cookies = await getCookie(key, { req, res });
 
-        if (cookies) {
-            return JSON.parse(cookies);
-        }
+        if (!cookies) return null;
+
+        return cookies;
     }
 
     delete(key) {
