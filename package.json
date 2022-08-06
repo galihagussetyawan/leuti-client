@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node server",
+    "start": "NODE_ENV=production node server",
     "lint": "next lint",
     "build-deploy": "next build && cp -f -r .next/* ../client-build"
   },
