@@ -39,7 +39,6 @@ export default function Caroussell() {
                 <div className='w-full h-full flex flex-col'>
                     <div className='h-1/2 w-full md:w-full md:h-full relative bg-gray-100'>
                         <Image
-                            priority
                             quality={70}
                             src={'/carousell2.jpg'}
                             layout='fill'

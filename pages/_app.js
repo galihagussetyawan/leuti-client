@@ -14,11 +14,3 @@ export default function MyApp({ Component, pageProps }) {
     </AuthContext.Provider>
   );
 }
-
-// MyApp.getInitialProps = async context => {
-//   const appProps = await App.getInitialProps(context);
-
-//   appProps.pageProps.login = 'desi';
-
-//   return { ...appProps };
-// }

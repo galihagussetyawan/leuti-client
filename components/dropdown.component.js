@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, LazyMotion, motion } from "framer-motion";
 
-export default function Dropdown({ children, top, stateMenu, actionClose }) {
+export default function Dropdown({ children, stateMenu, actionClose }) {
 
     const ref = useRef();
 
@@ -30,12 +30,13 @@ export default function Dropdown({ children, top, stateMenu, actionClose }) {
                     <div className={`md:w-full md:h-full md:fixed md:left-0 md:top-[121px]`}>
 
                         <motion.div ref={ref} className="md:h-52 md:px-10 md:bg-white"
+                            key='modal'
                             initial={{ height: 0 }}
                             animate={{ height: 'auto' }}
                             exit={{ height: 0 }}
                             transition={{
                                 ease: 'linear',
-                                duration: 0.4
+                                duration: 0.4,
                             }}
                         >
                             <motion.div className="md:min-h-[200px] md:py-5"

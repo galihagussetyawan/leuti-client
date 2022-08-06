@@ -67,7 +67,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
                 {/* end of reward menu */}
 
                 <li id="news-menu" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
-                    <span className="md:cursor-pointer md:py-7 md:hover:font-semibold">NEWS</span>
+                    <span className={`${stateMenu['news-menu'] && 'md:font-bold'} md:cursor-pointer md:py-7 md:hover:font-semibold`}>NEWS</span>
                     <Dropdown
                         stateMenu={stateMenu['news-menu']}
                         actionClose={handleCloseOutsideDropdown}
@@ -77,7 +77,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
                     </Dropdown>
                 </li>
                 <li id="story-menu" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
-                    <span className="md:cursor-pointer md:py-7 md:hover:font-semibold">STORY</span>
+                    <span className={`${stateMenu['story-menu'] && 'md:font-bold'} md:cursor-pointer md:py-7 md:hover:font-semibold`}>STORY</span>
                     <Dropdown
                         stateMenu={stateMenu['story-menu']}
                         actionClose={handleCloseOutsideDropdown}

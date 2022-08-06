@@ -40,7 +40,7 @@ export default function LoginModal({ closeAction, isOpen }) {
                 .catch(error => {
 
                     setIsLoading(false);
-                    setError(error.response.data.error_message)
+                    setError(error?.response?.data?.error_message)
                 })
 
         }, 1000);

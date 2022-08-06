@@ -26,7 +26,7 @@ export default function Collapse({ title, children }) {
 
     return (
         <div ref={ref} className={`md:overflow-hidden md:hover:text-gray-500 ${open && 'text-gray-500'}`}>
-            <div className="flex justify-between items-center" onClick={toggleHandle}>
+            <div className="flex justify-between items-center md:cursor-pointer" onClick={toggleHandle}>
                 <h5>{title}</h5>
 
                 {
@@ -41,7 +41,7 @@ export default function Collapse({ title, children }) {
                 }
 
             </div>
-            {open && <p className="flex flex-col md:mt-3 mt-3 md:gap-2 gap-3">{children}</p>}
+            {open && <p className="flex flex-col md:mt-3 mt-3 md:gap-2 gap-3 md:cursor-pointer">{children}</p>}
         </div>
     );
 }

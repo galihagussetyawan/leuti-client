@@ -7,9 +7,8 @@ export default function ProductDiscover() {
         <div className="flex flex-col gap-7">
 
             <div className=" grid md:grid-cols-3 md:gap-5 grid-cols-1">
-                <div className="md:w-full md:h-[700px] w-full h-[450px]  relative overflow-hidden">
+                <div className="md:w-full md:h-[700px] w-full h-[450px]  relative overflow-hidden bg-gray-100">
                     <Image
-                        loading='lazy'
                         src={'/images1.jpg'}
                         quality={50}
                         objectPosition='center'
@@ -18,9 +17,8 @@ export default function ProductDiscover() {
                     />
                 </div>
 
-                <div className="md:w-full md:h-[700px] w-full h-1/4 md:relative overflow-hidden hidden md:block">
+                <div className="md:w-full md:h-[700px] w-full h-1/4 md:relative overflow-hidden hidden md:block bg-gray-100">
                     <Image
-                        loading='lazy'
                         src={'/images1.jpg'}
                         quality={50}
                         objectPosition='center'
@@ -29,9 +27,8 @@ export default function ProductDiscover() {
                     />
                 </div>
 
-                <div className="md:w-full md:h-[700px] w-full h-1/4 md:relative overflow-hidden hidden md:block">
+                <div className="md:w-full md:h-[700px] w-full h-1/4 md:relative overflow-hidden hidden md:block bg-gray-100">
                     <Image
-                        loading='lazy'
                         src={'/images1.jpg'}
                         quality={50}
                         objectPosition='center'

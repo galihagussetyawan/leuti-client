@@ -8,58 +8,68 @@ const product = [
     {
         title: 'Leuti Perfect Sublimate Serum',
         image: '/images3.jpeg',
-        price: 30000,
+        price: 205000,
     },
     {
         title: 'Leuti Perfect Sublimate Serum',
         image: '/images3.jpeg',
-        price: 30000,
+        price: 205000,
     },
     {
         title: 'Leuti Perfect Sublimate Serum',
         image: '/images3.jpeg',
-        price: 30000,
+        price: 205000,
     },
     {
         title: 'Leuti Perfect Sublimate Serum',
         image: '/images3.jpeg',
-        price: 30000,
+        price: 205000,
     },
     {
         title: 'Leuti Perfect Sublimate Serum',
         image: '/images3.jpeg',
-        price: 30000,
+        price: 205000,
     },
     {
         title: 'Leuti Perfect Sublimate Serum',
         image: '/images3.jpeg',
-        price: 30000,
+        price: 205000,
     },
     {
         title: 'Leuti Perfect Sublimate Serum',
         image: '/images3.jpeg',
-        price: 30000,
+        price: 205000,
     },
     {
         title: 'Leuti Perfect Sublimate Serum',
         image: '/images3.jpeg',
-        price: 30000,
+        price: 205000,
     },
     {
         title: 'Leuti Perfect Sublimate Serum',
         image: '/images3.jpeg',
-        price: 30000,
+        price: 205000,
     },
     {
         title: 'Leuti Perfect Sublimate Serum',
         image: '/images3.jpeg',
-        price: 30000,
+        price: 205000,
     },
 ];
 
 export default function ProductDisplay() {
 
     const { isLogin } = useContext(AuthContext);
+
+    const localCurrency = (price) => {
+
+        return new Intl.NumberFormat('id', {
+            style: 'currency',
+            currency: 'IDR',
+        })
+            .format(price)
+            .replace(',00', '');
+    }
 
     return (
         <div className="grid md:grid-cols-5 grid-cols-2 gap-3 md:px-0 px-5 md:gap-6 md:my-20">
@@ -76,14 +86,13 @@ export default function ProductDisplay() {
                                     <Image
                                         src={data.image}
                                         className="md:hover:scale-110 md:ease-in-out md:duration-300"
-                                        loading='lazy'
                                         layout='fill'
                                         objectFit='cover'
                                         quality={75}
                                     />
                                 </div>
                                 <span>{data.title}</span>
-                                {isLogin && <span className="md:font-semibold">{`Rp${data.price}`}</span>}
+                                {isLogin && <span>{`${localCurrency(data.price)}`}</span>}
                             </div>
                         </Link>
                     );

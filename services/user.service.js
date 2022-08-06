@@ -1,3 +1,4 @@
+import axios from "axios";
 import ApiClient from "./api-client";
 
 class UserService {
@@ -7,6 +8,13 @@ class UserService {
         return await ApiClient().post('/api/user', {
             firstname, lastname, username, email, password,
         })
+    }
+
+    async getUserById(id) {
+
+        return await axios.get(`${process.env.API_HOST}/api/user`, {
+            params: { id },
+        });
     }
 }
 

@@ -5,13 +5,27 @@ import Header from '../../components/header.component';
 const Footer = dynamic(() => import('../../components/footer.component'));
 
 import CookiesService from "../../services/cookies.service";
+import UserService from "../../services/user.service";
 
-export default function User() {
+export default function User({ data }) {
+
+    const convertTimes = (date) => {
+
+        const newDate = new Date(parseInt(date));
+
+        return newDate.toLocaleString('id', {
+            dateStyle: 'full',
+        });
+    }
+
     return (
         <>
             <Head></Head>
             <Header />
-            <main>user</main>
+            <main>
+                <h1>{data?.username}</h1>
+                <span>{convertTimes(data?.createdAt)}</span>
+            </main>
             <Footer />
         </>
     );
@@ -23,6 +37,7 @@ export async function getServerSideProps(context) {
 
     let isLogin = false;
     let user = {};
+    let userData;
 
     try {
 
@@ -33,8 +48,9 @@ export async function getServerSideProps(context) {
             const cookiesParsed = JSON.parse(cookies);
 
             if (cookiesParsed.accessToken) {
-                user = cookiesParsed;
                 isLogin = true;
+                user = cookiesParsed;
+                userData = await UserService.getUserById(cookiesParsed.userId);
             }
         }
 
@@ -49,6 +65,7 @@ export async function getServerSideProps(context) {
         props: {
             isLogin,
             user,
+            data: userData?.data?.data,
         }
     }
 }

@@ -14,10 +14,12 @@ export default function Footer() {
                             <h6 className="font-semibold">BRAND</h6>
                             <div className="w-28 h-20 relative bg-gray-100">
                                 <Image
+                                    src={'/full-logo.jpeg'}
+                                    quality={30}
                                     layout='fill'
                                     loading='lazy'
                                     objectFit='cover'
-                                    src={'/full-logo.jpeg'} />
+                                />
                             </div>
                         </div>
 
@@ -25,10 +27,12 @@ export default function Footer() {
                             <h6 className=" font-semibold">BPOM</h6>
                             <div className="w-28 h-20 relative bg-gray-100">
                                 <Image
+                                    src={'/BPOM-Logo.jpg'}
+                                    quality={30}
                                     layout='fill'
                                     objectFit='cover'
                                     loading='lazy'
-                                    src={'/BPOM-Logo.jpg'} />
+                                />
                             </div>
                         </div>
                     </div>
