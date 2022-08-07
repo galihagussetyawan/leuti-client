@@ -27,7 +27,7 @@ export default function Dropdown({ children, stateMenu, actionClose }) {
                 {
                     stateMenu &&
 
-                    <div className={`md:w-full md:h-full md:fixed md:left-0 md:top-[121px]`}>
+                    <div className={`md:w-full md:h-screen md:absolute md:left-0 md:top-[121px]`}>
 
                         <motion.div ref={ref} className="md:h-52 md:px-10 md:bg-white"
                             key='modal'

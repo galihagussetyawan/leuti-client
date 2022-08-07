@@ -42,6 +42,7 @@ export default function LoginModal({ closeAction, isOpen }) {
                     isOpen &&
 
                     <motion.div
+                        layout
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
