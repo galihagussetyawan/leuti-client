@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useContext } from "react";
+// import { useContext } from "react";
 
-import AuthContext from '../../lib/context/auth.context';
+// import AuthContext from '../../lib/context/auth.context';
 
 const product = [
     {
@@ -59,7 +59,8 @@ const product = [
 
 export default function ProductDisplay() {
 
-    const { isLogin } = useContext(AuthContext);
+    // const { isLogin } = useContext(AuthContext);
+    const isLogin = false;
 
     const localCurrency = (price) => {
 

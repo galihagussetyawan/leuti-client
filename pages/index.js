@@ -10,8 +10,6 @@ const ProductDisplay = dynamic(() => import('../components/home/product-display.
 const ProductHorizontalDiscover = dynamic(() => import('../components/home/product-horizontal-discover.component'));
 const Footer = dynamic(() => import('../components/footer.component'));
 
-import CookiesService from '../services/cookies.service';
-
 export default function Home() {
     return (
         <>
@@ -41,39 +39,4 @@ export default function Home() {
             <Footer />
         </>
     )
-}
-
-export async function getServerSideProps(context) {
-
-    const { req, res } = context;
-    let isLogin = false;
-    let user = {};
-
-    try {
-
-        const cookies = await CookiesService.getCookies('user', req, res);
-
-        if (cookies) {
-
-            const cookiesParsed = JSON.parse(cookies);
-
-            if (cookiesParsed.accessToken) {
-                user = cookiesParsed;
-                isLogin = true;
-            }
-        }
-
-    } catch (error) {
-
-        if (error) {
-            isLogin = false;
-        }
-    }
-
-    return {
-        props: {
-            isLogin,
-            user,
-        }
-    }
 }

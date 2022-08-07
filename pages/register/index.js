@@ -6,9 +6,6 @@ import { useRouter } from "next/router";
 import Footer from "../../components/footer.component";
 import Header from "../../components/header.component";
 
-import UserService from '../../services/user.service';
-import CookiesService from "../../services/cookies.service";
-
 export default function Register() {
 
     const router = useRouter();
@@ -42,17 +39,6 @@ export default function Register() {
 
     const handleSignUp = () => {
         setError();
-
-        UserService.createUser(firstname, lastname, username, email, password)
-            .then(res => {
-
-                if (res.status === 201) {
-                    CookiesService.setCookies('user', res.data.data);
-                    router.push('/');
-                }
-
-            })
-            .catch(error => setError(error.response.data.error_message));
     }
 
     return (

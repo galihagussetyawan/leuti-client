@@ -7,9 +7,6 @@ import { useRouter } from 'next/router';
 import Footer from '../../components/footer.component';
 import Header from '../../components/header.component';
 
-//import service
-import AuthService from '../../services/auth.service';
-
 export default function Login() {
 
     const router = useRouter();
@@ -28,19 +25,6 @@ export default function Login() {
 
     const handleSignin = () => {
         setError();
-
-        AuthService.signin(username, password)
-            .then(response => {
-
-                if (response.status === 200) {
-                    router.push({
-                        pathname: '/',
-                        refresh: true,
-                    });
-                }
-
-            })
-            .catch(error => setError(error.response.data.error_message));
     }
 
     return (

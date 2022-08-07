@@ -6,8 +6,6 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const Modal = dynamic(() => import('./modal.component'))
 
-import AuthService from '../services/auth.service';
-
 export default function LoginModal({ closeAction, isOpen }) {
 
     const router = useRouter();
@@ -28,22 +26,6 @@ export default function LoginModal({ closeAction, isOpen }) {
     const handleLogin = () => {
         setError();
         setIsLoading(true);
-
-        setTimeout(() => {
-
-            AuthService.signin(username, password)
-                .then(res => {
-
-                    setIsLoading(false);
-                    router.reload();
-                })
-                .catch(error => {
-
-                    setIsLoading(false);
-                    setError(error?.response?.data?.error_message)
-                })
-
-        }, 1000);
     }
 
     const handleClose = () => {

@@ -6,15 +6,14 @@ import { useRouter } from "next/router";
 const Dropdown = dynamic(() => import('../dropdown.component'));
 const DropdownLite = dynamic(() => import('../dropdown-lite.component'));
 
-import AuthService from '../../services/auth.service';
-
-import AuthContext from "../../lib/context/auth.context";
-
 export default function DekstopMenu({ toggleLogin, height }) {
 
     const router = useRouter();
 
-    const { isLogin, user } = useContext(AuthContext);
+    const isLogin = false;
+    const user = {
+        username: 'asdasdasd',
+    }
     const [stateMenu, setStateMenu] = useState({});
 
     const handleMouseOver = event => {
@@ -39,7 +38,6 @@ export default function DekstopMenu({ toggleLogin, height }) {
     };
 
     const handleLogout = () => {
-        AuthService.logout();
 
         router.reload();
     }
