@@ -3,6 +3,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import AuthService from '../../services/auth.service';
+
 //import components
 import Footer from '../../components/footer.component';
 import Header from '../../components/header.component';
@@ -25,6 +27,19 @@ export default function Login() {
 
     const handleSignin = () => {
         setError();
+
+        AuthService.signin(username, password)
+            .then(response => {
+
+                if (response.status === 200) {
+                    router.push({
+                        pathname: '/',
+                        refresh: true,
+                    });
+                }
+
+            })
+            .catch(error => setError(error.response.data.error_message));
     }
 
     return (

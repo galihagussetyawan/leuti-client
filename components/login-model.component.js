@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 
-const Modal = dynamic(() => import('./modal.component'))
+const Modal = dynamic(() => import('./modal.component'));
+
+import AuthService from '../services/auth.service';
 
 export default function LoginModal({ closeAction, isOpen }) {
 
@@ -26,6 +28,18 @@ export default function LoginModal({ closeAction, isOpen }) {
     const handleLogin = () => {
         setError();
         setIsLoading(true);
+
+        AuthService.signin(username, password)
+            .then(res => {
+
+                setIsLoading(false);
+                router.reload();
+            })
+            .catch(error => {
+
+                setIsLoading(false);
+                setError(error?.response?.data?.error_message)
+            })
     }
 
     const handleClose = () => {

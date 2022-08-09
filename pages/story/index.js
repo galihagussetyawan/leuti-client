@@ -2,6 +2,8 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import axios from "axios";
 
+import CookiesService from "../../services/cookies.service";
+
 // import components
 import Header from '../../components/header.component';
 import Image from "next/image";
@@ -101,14 +103,40 @@ export default function Story({ contentList }) {
 
 export async function getServerSideProps(context) {
 
-    const { req } = context;
+    const { req, res } = context;
+
     const host = req.headers.host;
+    let isLogin = false;
+    let user = {};
 
     const { data, error } = await axios.get(`http://${host}/api/story/content`);
+
+    try {
+
+        const cookies = await CookiesService.getCookies('user', req, res);
+
+        if (cookies) {
+
+            const cookiesParsed = JSON.parse(cookies);
+
+            if (cookiesParsed.accessToken) {
+                user = cookiesParsed;
+                isLogin = true;
+            }
+        }
+
+    } catch (error) {
+
+        if (error) {
+            isLogin = false;
+        }
+    }
 
     return {
         props: {
             contentList: data,
+            isLogin,
+            user,
         }
     }
 }

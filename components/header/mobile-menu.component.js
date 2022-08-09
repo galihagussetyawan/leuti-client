@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import { useContext } from "react";
+import AuthContext from "../../lib/context/auth.context";
 
 export default function MobileMenu({ closeAction, isOpen }) {
 
-  const isLogin = false;
-  const user = {
-    username: 'asdasdasd',
-  }
+  const { isLogin, user } = useContext(AuthContext);
 
   const handleToggleClose = () => {
     return closeAction();

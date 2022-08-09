@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "NODE_ENV=production node server",
+    "build": "rm -rf .next && next build",
+    "start": "NODE_ENV=production node server.js",
     "lint": "next lint",
     "build-deploy": "next build && cp -f -r .next/* ../client-build"
   },
