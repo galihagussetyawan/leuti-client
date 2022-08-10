@@ -1,13 +1,13 @@
 export default function AccountInformationMenu({ data }) {
     return (
-        <div className="md:w-full md:space-y-20">
+        <div className="md:w-full md:space-y-20 space-y-7">
 
-            <span className="md:text-2xl">Address Information</span>
+            <span className="md:text-2xl">Account Information</span>
 
-            <div className="md:flex md:space-x-5">
+            <div className="flex md:flex-row md:space-x-5 gap-5 flex-col-reverse">
 
                 {/* tab contact information */}
-                <div className="md:w-1/2 md:space-y-5">
+                <div className="md:w-1/2 space-y-5">
 
                     <div className="border border-black">
                         <div className="md:flex md:flex-col p-4">
@@ -26,7 +26,7 @@ export default function AccountInformationMenu({ data }) {
                 </div>
                 {/* end of tab contact information */}
 
-                <div className="md:w-1/2 md:space-y-5">
+                <div className="md:w-1/2 space-y-5">
                     <div className="border border-black">
                         <div className="md:flex md:flex-col p-4">
                             <span className=" text-gray-700">Country</span>
@@ -64,9 +64,9 @@ export default function AccountInformationMenu({ data }) {
                 </div>
             </div>
 
-            <div className="md:space-x-5 md:text-center md:py-5 md:border-t md:border-gray-300">
-                <button className="md:w-64 md:py-7 rounded-full text-white bg-black">Edit Account</button>
-                <button className="md:w-64 md:py-7 rounded-full border border-gray-500 text-gray-500">Discard Changes</button>
+            <div className="space-x-5 flex">
+                <button className="md:w-64 w-full md:py-7 py-3 rounded-full text-white bg-black">Edit Account</button>
+                <button className="md:w-64 w-full md:py-7 py-3 rounded-full border border-gray-500 text-gray-500">Discard Changes</button>
             </div>
 
         </div>

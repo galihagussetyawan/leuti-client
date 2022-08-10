@@ -19,20 +19,20 @@ export default function AccountMenu({ data }) {
     }
 
     return (
-        <div className="md:w-full md:space-y-20">
+        <div className="md:w-full md:space-y-20 space-y-7">
 
             <span className="md:text-2xl">Account Information</span>
 
-            <div className="md:space-y-5">
-                <div className="md:w-10/12 md:flex md:space-x-10">
+            <div className="space-y-5">
+                <div className="md:w-10/12 md:flex md:space-x-10 space-y-5 md:space-y-0">
                     <div className="md:w-1/2 border border-black">
-                        <div className="md:flex md:flex-col p-4">
+                        <div className="flex flex-col p-4">
                             <span className=" text-gray-700">Firstname</span>
                             <input className="h-7 outline-none text-lg font-semibold" value={firstname} onChange={handleChangeFirstname} />
                         </div>
                     </div>
                     <div className="md:w-1/2 border border-black">
-                        <div className="md:flex md:flex-col p-4">
+                        <div className="flex flex-col p-4">
                             <span className=" text-gray-700">Lastname</span>
                             <input className="h-7 outline-none text-lg font-semibold" value={lastname} onChange={handleChangeLastname} />
                         </div>
@@ -40,14 +40,14 @@ export default function AccountMenu({ data }) {
                 </div>
 
                 <div className="md:w-10/12 border border-black">
-                    <div className="md:flex md:flex-col p-4">
+                    <div className="flex flex-col p-4">
                         <span className=" text-gray-700">username</span>
                         <input className="h-7 outline-none text-lg font-semibold" value={username} onChange={handleChangeUsername} />
                     </div>
                 </div>
 
                 <div className="md:w-10/12 border border-black">
-                    <div className="md:flex md:flex-col p-4">
+                    <div className="flex flex-col p-4">
                         <span className=" text-gray-700">Email</span>
                         <input className="h-7 outline-none text-lg font-semibold" />
                     </div>
@@ -55,9 +55,9 @@ export default function AccountMenu({ data }) {
 
             </div>
 
-            <div className="md:space-x-5">
-                <button className="md:w-64 md:py-7 rounded-full text-white bg-black">Edit Account</button>
-                <button className="md:w-64 md:py-7 rounded-full border border-gray-500 text-gray-500">Discard Changes</button>
+            <div className="space-x-5 flex">
+                <button className="md:w-64 w-full md:py-7 py-3 rounded-full text-white bg-black">Edit Account</button>
+                <button className="md:w-64 w-full md:py-7 py-3 rounded-full border border-gray-500 text-gray-500">Discard Changes</button>
             </div>
 
         </div>

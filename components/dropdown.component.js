@@ -30,7 +30,6 @@ export default function Dropdown({ children, stateMenu, actionClose }) {
                     <div className={`md:w-full md:h-screen md:absolute md:left-0 md:top-[121px]`}>
 
                         <motion.div ref={ref} className="md:h-52 md:px-10 md:bg-white"
-                            key='modal'
                             initial={{ height: 0 }}
                             animate={{ height: 'auto' }}
                             exit={{ height: 0 }}
@@ -43,6 +42,10 @@ export default function Dropdown({ children, stateMenu, actionClose }) {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
+                                transition={{
+                                    ease: 'linear',
+                                    duration: 0.4,
+                                }}
                             >
                                 {children}
                             </motion.div>
@@ -52,6 +55,10 @@ export default function Dropdown({ children, stateMenu, actionClose }) {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
+                            transition={{
+                                ease: 'linear',
+                                duration: 0.4,
+                            }}
                         >
                         </motion.div>
                     </div>

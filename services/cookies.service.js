@@ -6,7 +6,7 @@ class CookiesService {
 
         const data = JSON.stringify(value);
 
-        setCookie(key, data, { maxAge: 60 * 360 * 24 });
+        setCookie(key, data, { maxAge: 34560000 });
     }
 
     async getCookies(key, req, res) {
