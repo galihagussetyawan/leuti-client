@@ -30,7 +30,7 @@ export default function User({ userData }) {
     }
 
     const handleClassName = (tab, tabId) => {
-        return `md:h-16 h-10 flex justify-between items-center md:border-y md:hover:font-bold md:cursor-pointer md:border-gray-300 ${tab === tabId && 'md:font-semibold'}`;
+        return `md:h-16 h-14 flex justify-between items-center md:border-y md:hover:font-bold md:cursor-pointer md:border-gray-300 ${tab === tabId && 'md:font-semibold'}`;
     }
 
     const handleLogout = () => {
@@ -47,11 +47,19 @@ export default function User({ userData }) {
         return (
             <>
                 <span>{title}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:hidden" viewBox="0 0 20 20" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:hidden text-gray-500" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
                 </svg>
             </>
         );
+    }
+
+    const convertDate = (date) => {
+        const newDate = new Date(parseInt(date));
+
+        return newDate.toLocaleString('id', {
+            dateStyle: 'medium',
+        })
     }
 
     return (
@@ -61,16 +69,16 @@ export default function User({ userData }) {
             <main className="md:w-4/5 md:space-y-9 space-y-0 m-auto md:py-10 px-5">
 
                 {/* back button on mobile view */}
-                <button className={`${isOpen ? 'flex' : 'hidden'} md:hidden flex space-x-3`} onClick={handleBackMenu}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <button className={`${isOpen ? 'flex' : 'hidden'} md:hidden flex space-x-1`} onClick={handleBackMenu}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span>back</span>
+                    <span>Back</span>
                 </button>
                 {/* end back button on mobile view */}
 
                 {/* welcome user section */}
-                <div className={`${!isOpen ? 'visible' : 'hidden'} md:flex md:justify-between md:items-center`}>
+                <div className={`${!isOpen ? 'visible' : 'hidden'} md:flex md:justify-between space-y-10 md:items-center`}>
 
                     {/* dekstop version */}
                     <span className="md:text-4xl md:block hidden">Welcome {Capitalize(userData?.firstname)} {Capitalize(userData?.lastname)}</span>
@@ -84,16 +92,23 @@ export default function User({ userData }) {
                         </div>
 
                         <div className="flex flex-col items-center">
-                            <span>{Capitalize(userData?.firstname)} {Capitalize(userData?.lastname)}</span>
-                            <span>{userData?.username}</span>
+                            <span className=" text-2xl">{Capitalize(userData?.firstname)} {Capitalize(userData?.lastname)}</span>
+                            <span className=" font-light">{userData?.username}</span>
                         </div>
 
-                        <div className="flex">
-                            <div className="w-full flex flex-col text-center bg-red-300">
-                                <span>POINT</span>
+                        <div className="flex border-b border-gray-300 py-5">
+                            <div className="w-full flex flex-col text-center">
+                                <span className="text-sm font-semibold">POINT</span>
                                 <span>213123</span>
                             </div>
-                            <div className="w-full flex flex-col text-center bg-green-400">join</div>
+                            <div className="w-full flex flex-col text-center">
+                                <span className="text-sm font-semibold">RANK</span>
+                                <span>-</span>
+                            </div>
+                            <div className="w-full flex flex-col text-center">
+                                <span className="text-sm font-semibold">JOIN</span>
+                                <p>{convertDate(userData?.createdAt)}</p>
+                            </div>
                         </div>
 
                     </div>
@@ -104,7 +119,7 @@ export default function User({ userData }) {
                 <div className="md:w-full md:flex md:space-x-40">
 
                     {/* menu list */}
-                    <div className={`md:w-2/6 md:block ${isOpen ? 'hidden' : 'block'}`}>
+                    <div className={`md:w-2/6 md:block mt-10 ${isOpen ? 'hidden' : 'block'}`}>
                         <ul>
                             <li id="account-tab" className={handleClassName(tab, 'account-tab')} onClick={handleClickTab}>{menuItem('ACCOUNT')}</li>
                             <li id="address-tab" className={handleClassName(tab, 'address-tab')} onClick={handleClickTab}>{menuItem('ACCOUNT INFORMATION')}</li>
@@ -117,7 +132,7 @@ export default function User({ userData }) {
                     </div>
                     {/* end of menu list */}
 
-                    <div className={`md:w-full w-full md:block md:static ${isOpen ? 'block relative left-0' : 'hidden'}`}>
+                    <div className={`md:w-full w-full md:block md:static mt-7 md:m-0 ${isOpen ? 'block relative left-0' : 'hidden'}`}>
                         <Tab state={tab} data={userData} />
                     </div>
                 </div>

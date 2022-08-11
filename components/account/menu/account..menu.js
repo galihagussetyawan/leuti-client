@@ -26,38 +26,38 @@ export default function AccountMenu({ data }) {
             <div className="space-y-5">
                 <div className="md:w-10/12 md:flex md:space-x-10 space-y-5 md:space-y-0">
                     <div className="md:w-1/2 border border-black">
-                        <div className="flex flex-col p-4">
-                            <span className=" text-gray-700">Firstname</span>
-                            <input className="h-7 outline-none text-lg font-semibold" value={firstname} onChange={handleChangeFirstname} />
+                        <div className="flex flex-col px-4 py-2">
+                            <span className="text-sm text-gray-700">Firstname</span>
+                            <input className="outline-none text-lg font-semibold" value={firstname} onChange={handleChangeFirstname} />
                         </div>
                     </div>
                     <div className="md:w-1/2 border border-black">
-                        <div className="flex flex-col p-4">
-                            <span className=" text-gray-700">Lastname</span>
-                            <input className="h-7 outline-none text-lg font-semibold" value={lastname} onChange={handleChangeLastname} />
+                        <div className="flex flex-col px-4 py-2">
+                            <span className="text-sm text-gray-700">Lastname</span>
+                            <input className="outline-none text-lg font-semibold" value={lastname} onChange={handleChangeLastname} />
                         </div>
                     </div>
                 </div>
 
                 <div className="md:w-10/12 border border-black">
-                    <div className="flex flex-col p-4">
-                        <span className=" text-gray-700">username</span>
-                        <input className="h-7 outline-none text-lg font-semibold" value={username} onChange={handleChangeUsername} />
+                    <div className="flex flex-col px-4 py-2">
+                        <span className="text-sm text-gray-700">Username</span>
+                        <input className="outline-none text-lg font-semibold" value={username} onChange={handleChangeUsername} />
                     </div>
                 </div>
 
                 <div className="md:w-10/12 border border-black">
-                    <div className="flex flex-col p-4">
-                        <span className=" text-gray-700">Email</span>
-                        <input className="h-7 outline-none text-lg font-semibold" />
+                    <div className="flex flex-col px-4 py-2">
+                        <span className="text-sm text-gray-700">Email</span>
+                        <input className="outline-none text-lg font-semibold" />
                     </div>
                 </div>
 
             </div>
 
             <div className="space-x-5 flex">
-                <button className="md:w-64 w-full md:py-7 py-3 rounded-full text-white bg-black">Edit Account</button>
-                <button className="md:w-64 w-full md:py-7 py-3 rounded-full border border-gray-500 text-gray-500">Discard Changes</button>
+                <button className="md:w-64 w-full py-5 rounded-full text-white bg-black">Edit Account</button>
+                <button className="md:w-64 w-full py-5 rounded-full border border-gray-500 text-gray-500">Discard Changes</button>
             </div>
 
         </div>

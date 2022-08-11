@@ -70,32 +70,44 @@ export default function Register() {
                     />
                 </div>
 
-                <div className="md:w-3/5 flex flex-col justify-center md:px-36 px-5 md:gap-10 mt-5 gap-14 md:justify-center">
+                <div className="md:w-3/5 flex flex-col justify-center md:px-36 px-5 md:space-y-5 space-y-10 md:justify-center">
                     <h1 className="text-4xl md:text-3xl">Create account</h1>
 
-                    <div className="flex flex-col md:gap-5 gap-5">
+                    <div className="flex flex-col space-y-3 md:space-y-5">
 
                         <div className="md:w-3/5 grid grid-cols-2 gap-5">
-                            <div className="flex flex-col gap-1">
-                                <label>Firstname</label>
-                                <input className="h-12 outline-none px-3 border border-gray-500" onChange={handleChangeFirstname} />
+                            <div className="border border-black">
+                                <div className="flex flex-col px-4 py-2">
+                                    <span className="text-sm md:text-gray-700 text-black">Firstname</span>
+                                    <input className="h-7 outline-none text-lg font-semibold" onChange={handleChangeFirstname} />
+                                </div>
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <label>Lastname</label>
-                                <input className="h-12 outline-none px-3 border border-gray-500" onChange={handleChangeLastname} />
+
+                            <div className="border border-black">
+                                <div className="flex flex-col px-4 py-2">
+                                    <span className="text-sm md:text-gray-700 text-black">Lastname</span>
+                                    <input className="h-7 outline-none text-lg font-semibold" onChange={handleChangeLastname} />
+                                </div>
                             </div>
                         </div>
-                        <div className="md:w-3/5 flex flex-col gap-1">
-                            <label>Username</label>
-                            <input className="h-12 outline-none px-3 border border-gray-500" onChange={handleChangeUsername} />
+
+                        <div className="md:w-3/5 border border-black">
+                            <div className="flex flex-col px-4 py-2">
+                                <span className="text-sm md:text-gray-700 text-black">Username</span>
+                                <input className="h-7 outline-none text-lg font-semibold" onChange={handleChangeUsername} />
+                            </div>
                         </div>
-                        <div className="md:w-3/5 flex flex-col gap-1">
-                            <label>Email</label>
-                            <input type={'email'} className="h-12 outline-none px-3 border border-gray-500" onChange={handleChangeEmail} />
+                        <div className="md:w-3/5 border border-black">
+                            <div className="flex flex-col px-4 py-2">
+                                <span className="text-sm md:text-gray-700 text-black">Email</span>
+                                <input className="h-7 outline-none text-lg font-semibold" onChange={handleChangeEmail} />
+                            </div>
                         </div>
-                        <div className="md:w-3/5 flex flex-col gap-1">
-                            <label>Password</label>
-                            <input type={'password'} className="h-12 outline-none px-3 border border-gray-500" onChange={handleChangePassword} />
+                        <div className="md:w-3/5 border border-black">
+                            <div className="flex flex-col px-4 py-2">
+                                <span className="text-sm md:text-gray-700 text-black">Password</span>
+                                <input type={'password'} className="h-7 outline-none text-lg font-semibold" onChange={handleChangePassword} />
+                            </div>
                         </div>
                         {/* error exception */}
                         <div className='md:w-3/5 h-10'>

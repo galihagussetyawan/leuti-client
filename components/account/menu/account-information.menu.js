@@ -10,14 +10,14 @@ export default function AccountInformationMenu({ data }) {
                 <div className="md:w-1/2 space-y-5">
 
                     <div className="border border-black">
-                        <div className="md:flex md:flex-col p-4">
+                        <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">Email</span>
                             <input className="h-7 outline-none text-lg font-semibold" />
                         </div>
                     </div>
 
                     <div className="border border-black">
-                        <div className="md:flex md:flex-col p-4">
+                        <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">Phone Number</span>
                             <input className="h-7 outline-none text-lg font-semibold" />
                         </div>
@@ -28,35 +28,35 @@ export default function AccountInformationMenu({ data }) {
 
                 <div className="md:w-1/2 space-y-5">
                     <div className="border border-black">
-                        <div className="md:flex md:flex-col p-4">
+                        <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">Country</span>
                             <input className="h-7 outline-none text-lg font-semibold" />
                         </div>
                     </div>
 
                     <div className="border border-black">
-                        <div className="md:flex md:flex-col p-4">
+                        <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">Province</span>
                             <input className="h-7 outline-none text-lg font-semibold" />
                         </div>
                     </div>
 
                     <div className="border border-black">
-                        <div className="md:flex md:flex-col p-4">
+                        <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">City</span>
                             <input className="h-7 outline-none text-lg font-semibold" />
                         </div>
                     </div>
 
                     <div className="border border-black">
-                        <div className="md:flex md:flex-col p-4">
+                        <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">Address</span>
                             <input className="h-7 outline-none text-lg font-semibold" />
                         </div>
                     </div>
 
                     <div className="border border-black md">
-                        <div className="md:flex md:flex-col p-4">
+                        <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">Zip Code</span>
                             <input className="h-7 outline-none text-lg font-semibold" />
                         </div>

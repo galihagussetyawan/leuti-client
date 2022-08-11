@@ -57,19 +57,28 @@ export default function Login() {
                     />
                 </div>
 
-                <div className="md:w-3/5 w-full flex flex-col justify-center md:px-36 px-5 md:gap-10 mt-5 gap-14 md:justify-center">
-                    <h1 className="text-4xl md:text-3xl">Sign-In</h1>
+                <div className="md:w-3/5 w-full flex flex-col justify-center md:px-36 px-5 space-y-10 md:justify-center">
+                    <div className='flex flex-col text-center md:text-left'>
+                        <span className="text-4xl md:text-3xl">LOGIN</span>
+                        <span>Please enter Username and your Password</span>
+                    </div>
 
-                    <div className="flex flex-col md:gap-5 gap-5">
+                    <div className="flex flex-col md:space-y-5 space-y-3">
 
-                        <div className="md:w-3/5 flex flex-col">
-                            <span>Username atau Email</span>
-                            <input className="md:h-12 h-12 outline-none px-3 border border-gray-500" onChange={handleChangeUsername} />
+                        <div className="md:w-3/5 border border-black">
+                            <div className="flex flex-col px-4 py-2">
+                                <span className="text-sm md:text-gray-700 text-black">Username or Email</span>
+                                <input className="h-7 outline-none text-lg font-semibold" onChange={handleChangeUsername} />
+                            </div>
                         </div>
-                        <div className="md:w-3/5 flex flex-col">
-                            <span>Password</span>
-                            <input type={'password'} className="md:h-12 h-12 outline-none px-3 border border-gray-500" onChange={handleChangePassword} />
+
+                        <div className="md:w-3/5 border border-black">
+                            <div className="flex flex-col px-4 py-2">
+                                <span className="text-sm md:text-gray-700 text-black">Password</span>
+                                <input type={'password'} className="h-7 outline-none text-lg font-semibold" onChange={handleChangePassword} />
+                            </div>
                         </div>
+
 
                         {/* error exception */}
                         <div className='md:w-3/5 h-10'>
@@ -79,10 +88,10 @@ export default function Login() {
                     </div>
 
                     <div>
-                        <button className="md:h-12 h-12 w-52 rounded-full text-white bg-black" onClick={handleSignin}>LOGIN</button>
+                        <button className="md:w-52 py-5 w-full rounded-full text-white bg-black" onClick={handleSignin}>LOGIN</button>
                     </div>
 
-                    <div className="flex flex-col gap-2">
+                    <div className="flex flex-col space-y-2">
                         <span className="text-xl md:text-xl font-semibold">Don’t have an account yet ?</span>
                         <Link href={{ pathname: '/register' }}>
                             <span className="md:cursor-pointer md:hover:underline underline font-medium">Create An Account</span>
