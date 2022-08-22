@@ -15,7 +15,7 @@ export default function ProductHorizontalDiscover() {
             </div>
             <div className="text-center md:text-left">
                 <Link href={{ pathname: '/shop' }}>
-                    <button className=" md:w-64 md:h-12 w-40 h-12 m-auto rounded-full border border-black">DISCOVER</button>
+                    <button className=" md:w-64 w-40 py-5 m-auto rounded-full border border-black">DISCOVER</button>
                 </Link>
             </div>
         </div>

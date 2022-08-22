@@ -1,4 +1,48 @@
+import { useState } from "react";
+
 export default function AccountInformationMenu({ data }) {
+
+    const [country, setCountry] = useState(data?.country);
+    const [province, setProvince] = useState(data?.province);
+    const [city, setCity] = useState(data?.city);
+    const [districts, setDistricts] = useState(data?.districts);
+    const [village, setVillage] = useState(data?.village);
+    const [address, setAddress] = useState(data?.address);
+    const [postalCode, setPostalCode] = useState(data?.postalCode);
+    const [phone, setPhone] = useState(data?.phone);
+
+    const handleChangeCountry = event => {
+        setCountry(event.currentTarget.value);
+    }
+
+    const handleChangeProvince = event => {
+        setProvince(event.currentTarget.value)
+    }
+
+    const handleChangeCity = event => {
+        setCity(event.currentTarget.value);
+    }
+
+    const handleChangeDistricts = event => {
+        setDistricts(event.currentTarget.value);
+    }
+
+    const handleChangeVillage = event => {
+        setVillage(event.currentTarget.value);
+    }
+
+    const handleChangeAddress = event => {
+        setAddress(event.currentTarget.value);
+    }
+
+    const handleChangePostalCode = event => {
+        setPostalCode(event.currentTarget.value);
+    }
+
+    const handleChangePhone = event => {
+        setPhone(event.currentTarget.value);
+    }
+
     return (
         <div className="md:w-full md:space-y-20 space-y-7">
 
@@ -12,14 +56,14 @@ export default function AccountInformationMenu({ data }) {
                     <div className="border border-black">
                         <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">Email</span>
-                            <input className="h-7 outline-none text-lg font-semibold" />
+                            <input className="outline-none text-lg font-semibold" />
                         </div>
                     </div>
 
                     <div className="border border-black">
                         <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">Phone Number</span>
-                            <input className="h-7 outline-none text-lg font-semibold" />
+                            <input className="outline-none text-lg font-semibold" onChange={handleChangePhone} value={phone} />
                         </div>
                     </div>
 
@@ -30,35 +74,35 @@ export default function AccountInformationMenu({ data }) {
                     <div className="border border-black">
                         <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">Country</span>
-                            <input className="h-7 outline-none text-lg font-semibold" />
+                            <input className="outline-none text-lg font-semibold" onChange={handleChangeCountry} value={country} />
                         </div>
                     </div>
 
                     <div className="border border-black">
                         <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">Province</span>
-                            <input className="h-7 outline-none text-lg font-semibold" />
+                            <input className="outline-none text-lg font-semibold" onChange={handleChangeProvince} value={province} />
                         </div>
                     </div>
 
                     <div className="border border-black">
                         <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">City</span>
-                            <input className="h-7 outline-none text-lg font-semibold" />
+                            <input className="outline-none text-lg font-semibold" onChange={handleChangeCity} value={city} />
                         </div>
                     </div>
 
                     <div className="border border-black">
                         <div className="flex flex-col px-4 py-1">
                             <span className=" text-gray-700">Address</span>
-                            <input className="h-7 outline-none text-lg font-semibold" />
+                            <input className="outline-none text-lg font-semibold" onChange={handleChangeAddress} value={address} />
                         </div>
                     </div>
 
                     <div className="border border-black md">
                         <div className="flex flex-col px-4 py-1">
-                            <span className=" text-gray-700">Zip Code</span>
-                            <input className="h-7 outline-none text-lg font-semibold" />
+                            <span className=" text-gray-700">Postal Code</span>
+                            <input className="outline-none text-lg font-semibold" onChange={handleChangePostalCode} value={postalCode} />
                         </div>
                     </div>
                 </div>

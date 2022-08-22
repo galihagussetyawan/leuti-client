@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import axios from "axios";
 
@@ -6,7 +7,6 @@ import CookiesService from "../../services/cookies.service";
 
 // import components
 import Header from '../../components/header.component';
-import Image from "next/image";
 const Footer = dynamic(() => import('../../components/footer.component'));
 
 export default function Story({ contentList }) {

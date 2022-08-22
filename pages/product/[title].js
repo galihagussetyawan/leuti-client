@@ -102,7 +102,7 @@ export default function Product({ title, isLogin }) {
                     <div className="flex flex-col gap-5">
                         <div className="md:flex md:justify-between md:items-center">
                             <h1 className="md:text-3xl text-2xl font-semibold">Leuti Perfect Sublimate Serum</h1>
-                            {isLogin && <span className="md:text-xl text-xl md:font-semibold">Rp30000</span>}
+                            {isLogin && <span className="md:text-xl text-xl md:font-semibold">Rp203.000</span>}
                         </div>
                         <p>deksripsi singkat produk</p>
                     </div>

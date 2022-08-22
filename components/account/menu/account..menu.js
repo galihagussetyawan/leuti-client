@@ -2,9 +2,11 @@ import { useState } from "react";
 
 export default function AccountMenu({ data }) {
 
+    const [isEdit, setIsEdit] = useState(false);
     const [firstname, setFirstname] = useState(data?.firstname);
     const [lastname, setLastname] = useState(data?.lastname);
     const [username, setUsername] = useState(data?.username);
+    const [email, setEmail] = useState(data?.email);
 
     const handleChangeFirstname = event => {
         setFirstname(event.currentTarget.value);
@@ -18,6 +20,18 @@ export default function AccountMenu({ data }) {
         setUsername(event.currentTarget.value);
     }
 
+    const handleChangeEmail = event => {
+        setEmail(event.currentTarget.value);
+    }
+
+    const handleEditButton = () => {
+        setIsEdit(!isEdit);
+    }
+
+    const handleSaveButton = () => {
+        setIsEdit(false);
+    }
+
     return (
         <div className="md:w-full md:space-y-20 space-y-7">
 
@@ -28,13 +42,13 @@ export default function AccountMenu({ data }) {
                     <div className="md:w-1/2 border border-black">
                         <div className="flex flex-col px-4 py-2">
                             <span className="text-sm text-gray-700">Firstname</span>
-                            <input className="outline-none text-lg font-semibold" value={firstname} onChange={handleChangeFirstname} />
+                            <input className="outline-none text-lg font-semibold" disabled={!isEdit} value={firstname} onChange={handleChangeFirstname} />
                         </div>
                     </div>
                     <div className="md:w-1/2 border border-black">
                         <div className="flex flex-col px-4 py-2">
                             <span className="text-sm text-gray-700">Lastname</span>
-                            <input className="outline-none text-lg font-semibold" value={lastname} onChange={handleChangeLastname} />
+                            <input className="outline-none text-lg font-semibold" disabled={!isEdit} value={lastname} onChange={handleChangeLastname} />
                         </div>
                     </div>
                 </div>
@@ -42,21 +56,26 @@ export default function AccountMenu({ data }) {
                 <div className="md:w-10/12 border border-black">
                     <div className="flex flex-col px-4 py-2">
                         <span className="text-sm text-gray-700">Username</span>
-                        <input className="outline-none text-lg font-semibold" value={username} onChange={handleChangeUsername} />
+                        <input className="outline-none text-lg font-semibold" disabled={!isEdit} value={username} onChange={handleChangeUsername} />
                     </div>
                 </div>
 
                 <div className="md:w-10/12 border border-black">
                     <div className="flex flex-col px-4 py-2">
                         <span className="text-sm text-gray-700">Email</span>
-                        <input className="outline-none text-lg font-semibold" />
+                        <input className="outline-none text-lg font-semibold" disabled={!isEdit} onChange={handleChangeEmail} value={email} />
                     </div>
                 </div>
 
             </div>
 
             <div className="space-x-5 flex">
-                <button className="md:w-64 w-full py-5 rounded-full text-white bg-black">Edit Account</button>
+                {
+                    isEdit ?
+                        <button className="md:w-64 w-full py-5 rounded-full text-white bg-black" onClick={handleSaveButton}>Save Changes</button>
+                        :
+                        <button className="md:w-64 w-full py-5 rounded-full text-white bg-black" onClick={handleEditButton}>Edit Account</button>
+                }
                 <button className="md:w-64 w-full py-5 rounded-full border border-gray-500 text-gray-500">Discard Changes</button>
             </div>
 

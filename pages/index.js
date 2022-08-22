@@ -7,12 +7,15 @@ import CookiesService from '../services/cookies.service';
 import Header from '../components/header.component';
 import Caroussell from '../components/carousell.component';
 
+import authService from '../services/auth.service';
+import ProductService from '../services/product.service';
+
 const ProductDiscover = dynamic(() => import('../components/home/product-discover.component'));
-const ProductDisplay = dynamic(() => import('../components/home/product-display.component'));
+// const ProductDisplay = dynamic(() => import('../components/home/product-display.component'));
 const ProductHorizontalDiscover = dynamic(() => import('../components/home/product-horizontal-discover.component'));
 const Footer = dynamic(() => import('../components/footer.component'));
 
-export default function Home() {
+export default function Home({ productList }) {
     return (
         <>
             <Head>
@@ -22,7 +25,7 @@ export default function Home() {
 
             <Header />
 
-            <main className=' md:w-4/5 flex flex-col space-y-9 m-auto'>
+            <main className='md:w-4/5 flex flex-col space-y-20 m-auto'>
 
                 {/* carousell */}
                 <div className='md:w-full md:h-[650px] w-full h-screen flex justify-center md:my-10 bg-white md:bg-gray-100'>
@@ -30,8 +33,12 @@ export default function Home() {
                 </div>
                 {/* end carousell */}
 
-                <ProductDiscover />
-                <ProductDisplay />
+                {
+                    productList.map((data, index) => {
+                        return <ProductDiscover key={index} images={data.images} name={data.name} />
+                    })
+                }
+                {/* <ProductDisplay /> */}
                 <ProductHorizontalDiscover />
 
             </main>
@@ -46,10 +53,14 @@ export async function getServerSideProps(context) {
     const { req, res } = context;
     let isLogin = false;
     let user = {};
+    let isAdmin = false;
+    let productList;
 
     try {
 
         const cookies = await CookiesService.getCookies('user', req, res);
+        isAdmin = await authService.isAdmin(JSON.parse(cookies).accessToken);
+        productList = await ProductService.getProducts();
 
         if (cookies) {
 
@@ -59,6 +70,7 @@ export async function getServerSideProps(context) {
                 user = cookiesParsed;
                 isLogin = true;
             }
+
         }
 
     } catch (error) {
@@ -72,6 +84,8 @@ export async function getServerSideProps(context) {
         props: {
             isLogin,
             user,
+            isAdmin,
+            productList: productList.data.data,
         }
     }
 }

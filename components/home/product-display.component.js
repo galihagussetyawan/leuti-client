@@ -4,6 +4,8 @@ import { useContext } from "react";
 
 import AuthContext from '../../lib/context/auth.context';
 
+import LocalCurrency from "../../lib/helpers/local-currency.help";
+
 const product = [
     {
         title: 'Leuti Perfect Sublimate Serum',
@@ -61,16 +63,6 @@ export default function ProductDisplay() {
 
     const { isLogin } = useContext(AuthContext);
 
-    const localCurrency = (price) => {
-
-        return new Intl.NumberFormat('id', {
-            style: 'currency',
-            currency: 'IDR',
-        })
-            .format(price)
-            .replace(',00', '');
-    }
-
     return (
         <div className="grid md:grid-cols-5 grid-cols-2 gap-3 md:px-0 px-5 md:gap-6 md:my-20">
             {
@@ -92,7 +84,7 @@ export default function ProductDisplay() {
                                     />
                                 </div>
                                 <span>{data.title}</span>
-                                {isLogin && <span>{`${localCurrency(data.price)}`}</span>}
+                                {isLogin && <span>{`${LocalCurrency(data.price)}`}</span>}
                             </div>
                         </Link>
                     );

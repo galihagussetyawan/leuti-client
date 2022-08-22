@@ -1,21 +1,22 @@
 import { useState } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 import CookiesService from "../../services/cookies.service";
 import UserService from "../../services/user.service";
 import AuthService from "../../services/auth.service";
+import UserDetailService from "../../services/user-detail.service";
+import PoinService from "../../services/point.service";
 
 import Header from '../../components/header.component';
 const Footer = dynamic(() => import('../../components/footer.component'));
-
 import Tab from "../../components/account/tab.component";
 
 //import helpers
 import Capitalize from "../../lib/helpers/capitalize.help";
-import { useRouter } from "next/router";
 
-export default function User({ userData }) {
+export default function User({ userData, userDetail, point }) {
 
     const router = useRouter();
 
@@ -82,7 +83,7 @@ export default function User({ userData }) {
 
                     {/* dekstop version */}
                     <span className="md:text-4xl md:block hidden">Welcome {Capitalize(userData?.firstname)} {Capitalize(userData?.lastname)}</span>
-                    <span className="md:text-xl md:block hidden">POINT 3000</span>
+                    <span className="md:text-xl md:block hidden">POINT {point}</span>
                     {/* end of dekstop version */}
 
                     {/* mobile version */}
@@ -99,7 +100,7 @@ export default function User({ userData }) {
                         <div className="flex border-b border-gray-300 py-5">
                             <div className="w-full flex flex-col text-center">
                                 <span className="text-sm font-semibold">POINT</span>
-                                <span>213123</span>
+                                <span>{point}</span>
                             </div>
                             <div className="w-full flex flex-col text-center">
                                 <span className="text-sm font-semibold">RANK</span>
@@ -133,7 +134,7 @@ export default function User({ userData }) {
                     {/* end of menu list */}
 
                     <div className={`md:w-full w-full md:block md:static mt-7 md:m-0 ${isOpen ? 'block relative left-0' : 'hidden'}`}>
-                        <Tab state={tab} data={userData} />
+                        <Tab state={tab} data={userData} userDetail={userDetail} />
                     </div>
                 </div>
 
@@ -150,6 +151,8 @@ export async function getServerSideProps(context) {
     let isLogin = false;
     let user = {};
     let userData;
+    let userDetail;
+    let point;
 
     try {
 
@@ -164,6 +167,8 @@ export async function getServerSideProps(context) {
                 isLogin = true;
 
                 userData = await UserService.getUserById(user.userId);
+                userDetail = await UserDetailService.getUserDetailByUser(cookiesParsed.userId, req, res);
+                point = await PoinService.getPointByUser(cookiesParsed.userId, req, res);
             }
         }
 
@@ -179,6 +184,8 @@ export async function getServerSideProps(context) {
             isLogin,
             user,
             userData: userData.data.data,
+            userDetail: !userDetail?.data?.data[0] ? null : userDetail?.data?.data[0],
+            point: point?.data?.data?.point,
         }
     }
 }

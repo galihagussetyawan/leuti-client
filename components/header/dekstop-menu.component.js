@@ -14,7 +14,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
 
     const router = useRouter();
 
-    const { isLogin, user } = useContext(AuthContext);
+    const { isLogin, user, isAdmin } = useContext(AuthContext);
     const [stateMenu, setStateMenu] = useState({});
 
     const handleMouseOver = event => {
@@ -47,8 +47,10 @@ export default function DekstopMenu({ toggleLogin, height }) {
     return (
         <div className="md:h-16 md:px-10 hidden md:flex md:justify-between md:items-center md:border-b md:border-gray-300">
 
+            {(stateMenu['user-menu'] || stateMenu['cart-menu']) && <div className="md:w-screen md:h-screen md:absolute md:top-[121px] md:left-0 md:bg-opacity-40 md:bg-black"></div>}
+
             {/* menu */}
-            <ul className="md:flex md:justify-between md:gap-5">
+            <ul className="md:flex md:justify-between md:space-x-5">
                 <li className="md:hover:font-semibold">
                     <Link href={{ pathname: '/shop' }}>SHOP</Link>
                 </li>
@@ -88,7 +90,9 @@ export default function DekstopMenu({ toggleLogin, height }) {
                 </li>
                 <li>PROMO</li>
                 <li>RANK</li>
-                <li>GALLERY</li>
+                <li>FAQ</li>
+                <li>PAYMENT</li>
+                <li>SALES</li>
             </ul>
             {/* end menu */}
 
@@ -130,6 +134,18 @@ export default function DekstopMenu({ toggleLogin, height }) {
                     </div>
                 </div>
                 {/* end of cart menu */}
+
+                {
+                    isAdmin &&
+                    <div className="md:h-full md:flex md:items-center">
+                        <Link href={{ pathname: '/dashboard' }}>
+                            <a className=" md:space-x-1">
+                                <span>GO TO</span>
+                                <span className="md:font-semibold md:hover:underline">DASHBOARD</span>
+                            </a>
+                        </Link>
+                    </div>
+                }
             </div>
             {/* end account */}
 

@@ -8,6 +8,10 @@ const nextConfig = {
     API_HOST: process.env.API_HOST,
     API_BASE_URL: process.env.BASE_URL,
   },
+
+  images: {
+    domains: [process.env.API_HOST]
+  }
 }
 
 module.exports = nextConfig
