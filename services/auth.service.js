@@ -24,8 +24,8 @@ class AuthService {
             })
     }
 
-    logout() {
-        CookiesService.delete('user');
+    async logout() {
+        return await CookiesService.delete('user');
     }
 
     async isLogin() {

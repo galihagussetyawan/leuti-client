@@ -52,7 +52,7 @@ export default function ProductListMenu({ productList }) {
                                             </div>
                                             <div className="md:flex md:flex-col md:justify-center">
                                                 <span className="md:font-semibold">{data.name}</span>
-                                                <span>{data.description}</span>
+                                                <p>{data.description}</p>
                                             </div>
                                         </td>
                                         <td scope="col" className="py-3 px-6">12 Jun 2022</td>

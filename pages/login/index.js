@@ -36,10 +36,7 @@ export default function Login() {
 
                 if (response.status === 200) {
                     setIsLoading(false);
-                    router.push({
-                        pathname: '/',
-                        refresh: true,
-                    });
+                    router.reload();
                 }
 
             })
@@ -115,7 +112,7 @@ export default function Login() {
                     </div>
 
                     <div>
-                        <button className="md:w-52 w-full py-5 rounded-full text-white bg-black" disabled={isLoading && true} onClick={handleSignin}>
+                        <button className="md:w-1/3 w-full py-5 rounded-full text-white bg-black" disabled={isLoading && true} onClick={handleSignin}>
                             {
                                 isLoading ?
                                     <span>

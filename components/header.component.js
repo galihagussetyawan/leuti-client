@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
@@ -10,11 +11,13 @@ const LoginModal = dynamic(() => import('./login-model.component'));
 
 export default function Header() {
 
+    const ref = useRef();
+    const router = useRouter();
+
     const [modalLogin, setModalLogin] = useState(false);
     const [isBurgerMenu, setIsBurgetMenu] = useState(false);
     const [height, setHeight] = useState(129);
 
-    const ref = useRef();
 
     const handleToggleModalLogin = () => {
         setModalLogin(!modalLogin);
@@ -29,6 +32,12 @@ export default function Header() {
         setIsBurgetMenu(!isBurgerMenu);
     };
 
+    //navigate pages
+    const handleNavigate = (url) => {
+
+        return () => router.push(url);
+    }
+
     return (
         <div ref={ref} className="md:w-full md:sticky md:top-0 sticky top-0 z-10 bg-white">
 
@@ -36,17 +45,17 @@ export default function Header() {
 
             {/* logo */}
             <div className="text-center md:py-5 py-5 mx-5 md:m-0 flex justify-between items-center border-b border-gray-300">
-                <Link href={{ pathname: '/', }}>
-                    <a className="md:w-36 md:m-auto w-24 h-11 flex items-center relative md:cursor-pointer">
-                        <Image
-                            priority
-                            quality={100}
-                            src={'/wordmark-logo.png'}
-                            layout='fill'
-                            objectFit='cover'
-                        />
-                    </a>
-                </Link>
+                {/* <Link href={{ pathname: '/' }}> */}
+                <a className="md:w-36 md:m-auto w-24 h-11 flex items-center relative md:cursor-pointer" onClick={handleNavigate('/')}>
+                    <Image
+                        priority
+                        quality={100}
+                        src={'/wordmark-logo.png'}
+                        layout='fill'
+                        objectFit='cover'
+                    />
+                </a>
+                {/* </Link> */}
 
                 {/* burger icon menu */}
                 <button className="flex md:hidden" onClick={handleToggleBurgerMenu}>

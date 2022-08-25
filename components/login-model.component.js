@@ -5,12 +5,19 @@ import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 
 const Modal = dynamic(() => import('./modal.component'));
+import Toast from '../components/commons/toast.component';
 
 import AuthService from '../services/auth.service';
 
 export default function LoginModal({ closeAction, isOpen }) {
 
     const router = useRouter();
+
+    const [notification, setNotification] = useState({
+        isOpen: false,
+        status: 'error',
+        message: 'error',
+    })
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState();
@@ -41,7 +48,23 @@ export default function LoginModal({ closeAction, isOpen }) {
                 .then(res => {
 
                     setIsLoading(false);
-                    router.reload();
+                    closeAction();
+                    router.replace(router.asPath)
+                        .then(() => {
+
+                            router.replace(router.asPath)
+                                .then(() => {
+
+                                    router.replace(router.asPath);
+
+                                    setNotification({
+                                        isOpen: true,
+                                        status: 'success',
+                                        message: res?.data?.message,
+                                    })
+                                })
+                        });
+
                 })
                 .catch(error => {
 
@@ -60,6 +83,14 @@ export default function LoginModal({ closeAction, isOpen }) {
 
     const handleToggleShowPassword = () => {
         setIsShowPassword(!isShowPassword);
+    }
+
+    const handleToggleNotification = () => {
+
+        setNotification(prevState => ({
+            ...prevState,
+            isOpen: false,
+        }))
     }
 
     return (
@@ -160,6 +191,8 @@ export default function LoginModal({ closeAction, isOpen }) {
                 }
 
             </AnimatePresence>
+
+            {notification?.isOpen && <Toast isOpen={notification?.isOpen} status={notification?.status} message={notification?.message} closeAction={handleToggleNotification} />}
         </>
     );
 };

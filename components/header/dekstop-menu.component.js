@@ -9,12 +9,22 @@ const Dropdown = dynamic(() => import('../dropdown.component'));
 const DropdownLite = dynamic(() => import('../dropdown-lite.component'));
 
 import AuthContext from "../../lib/context/auth.context";
+import CartContext from "../../lib/context/cart.context";
+
+import LocalCurrency from "../../lib/helpers/local-currency.help";
+import Image from "next/image";
+
+const imageLoader = ({ src }) => {
+    return `${process.env.API_HOST}/api/image?img=${src}`;
+}
 
 export default function DekstopMenu({ toggleLogin, height }) {
 
     const router = useRouter();
 
     const { isLogin, user, isAdmin } = useContext(AuthContext);
+    const { carts } = useContext(CartContext);
+
     const [stateMenu, setStateMenu] = useState({});
 
     const handleMouseOver = event => {
@@ -38,21 +48,31 @@ export default function DekstopMenu({ toggleLogin, height }) {
         return toggleLogin();
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
 
-        AuthService.logout();
-        router.reload();
+        AuthService.logout()
+            .then(() => {
+
+                handleCloseOutsideDropdown();
+                router.replace(router.asPath)
+                    .then(() => router.replace(router.asPath));
+            })
+    }
+
+    const handleNavigate = (url) => {
+
+        return () => router.push(url);
     }
 
     return (
         <div className="md:h-16 md:px-10 hidden md:flex md:justify-between md:items-center md:border-b md:border-gray-300">
 
-            {(stateMenu['user-menu'] || stateMenu['cart-menu']) && <div className="md:w-screen md:h-screen md:absolute md:top-[121px] md:left-0 md:bg-opacity-40 md:bg-black"></div>}
+            {(stateMenu['user-menu'] || stateMenu['cart-menu']) && <div className="md:w-full md:h-screen md:absolute md:top-[121px] md:left-0 md:bg-opacity-40 md:bg-black"></div>}
 
             {/* menu */}
             <ul className="md:flex md:justify-between md:space-x-5">
                 <li className="md:hover:font-semibold">
-                    <Link href={{ pathname: '/shop' }}>SHOP</Link>
+                    <a className="md:hover:cursor-pointer" onClick={handleNavigate('/shop')}>SHOP</a>
                 </li>
 
                 {/* reward menu */}
@@ -85,7 +105,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
                         actionClose={handleCloseOutsideDropdown}
                         top={height}
                     >
-                        <Link href={{ pathname: '/story' }}>Stories Leuti Perfect Sublimate Serum</Link>
+                        <a className="md:hover:cursor-pointer" onClick={handleNavigate('/story')}>Stories Leuti Perfect Sublimate Serum</a>
                     </Dropdown>
                 </li>
                 <li>PROMO</li>
@@ -130,8 +150,52 @@ export default function DekstopMenu({ toggleLogin, height }) {
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                             </svg>
+                            {carts?.length > 0 && <span className="md:w-3 md:h-3 md:absolute md:bottom-9 md:left-4 md:outline md:outline-1 md:outline-white md:rounded-full bg-red-500"></span>}
                         </button>
                     </div>
+                    {
+                        stateMenu['cart-menu'] &&
+                        <DropdownLite>
+                            {
+                                carts?.length > 0 ?
+                                    <div className="md:w-[400px]">
+                                        <div className="md:flex md:justify-between md:border-b">
+                                            <span className="md:font-semibold md:text-lg">Cart ({carts?.length})</span>
+                                            <Link href={{ pathname: '/cart' }}>View All</Link>
+                                        </div>
+                                        <ul className="md:mt-5 md:space-y-5">
+                                            {
+                                                carts?.map((data, index) => {
+                                                    return (
+                                                        <Link key={index} href={{ pathname: '/cart' }}>
+                                                            <li className="md:flex md:space-x-3 md:hover:cursor-pointer">
+                                                                <div className="md:w-14 md:h-14 md:relative md:bg-gray-200">
+                                                                    <Image
+                                                                        loading='lazy'
+                                                                        loader={imageLoader}
+                                                                        src={data?.product?.images[0]?.name}
+                                                                        objectPosition='center'
+                                                                        objectFit='cover'
+                                                                        layout={'fill'}
+                                                                    />
+                                                                </div>
+                                                                <div className="md:w-9/12 md:flex md:flex-col">
+                                                                    <span className="md:font-semibold md:hover:text-gray-500">{data?.product?.name}</span>
+                                                                    <span className="md:text-sm md:text-gray-500">{data?.quantity} Item</span>
+                                                                </div>
+                                                                <div className="md:w-3/12 md:flex md:justify-end md:items-center">{LocalCurrency(data?.amount)}</div>
+                                                            </li>
+                                                        </Link>
+                                                    )
+                                                })
+                                            }
+                                        </ul>
+                                    </div>
+                                    :
+                                    <div>kosong</div>
+                            }
+                        </DropdownLite>
+                    }
                 </div>
                 {/* end of cart menu */}
 

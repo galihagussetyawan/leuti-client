@@ -9,9 +9,9 @@ import Caroussell from '../components/carousell.component';
 
 import authService from '../services/auth.service';
 import ProductService from '../services/product.service';
+import CartService from '../services/cart.service';
 
 const ProductDiscover = dynamic(() => import('../components/home/product-discover.component'));
-// const ProductDisplay = dynamic(() => import('../components/home/product-display.component'));
 const ProductHorizontalDiscover = dynamic(() => import('../components/home/product-horizontal-discover.component'));
 const Footer = dynamic(() => import('../components/footer.component'));
 
@@ -34,8 +34,15 @@ export default function Home({ productList }) {
                 {/* end carousell */}
 
                 {
-                    productList.map((data, index) => {
-                        return <ProductDiscover key={index} images={data.images} name={data.name} />
+                    productList?.map((data, index) => {
+                        return <ProductDiscover
+                            key={index}
+                            id={data?.id}
+                            images={data?.images}
+                            name={data?.name}
+                            category={data?.category}
+                            price={data?.price}
+                        />
                     })
                 }
                 {/* <ProductDisplay /> */}
@@ -55,12 +62,13 @@ export async function getServerSideProps(context) {
     let user = {};
     let isAdmin = false;
     let productList;
+    let carts = [];
 
     try {
 
+        productList = await ProductService.getProducts();
         const cookies = await CookiesService.getCookies('user', req, res);
         isAdmin = await authService.isAdmin(JSON.parse(cookies).accessToken);
-        productList = await ProductService.getProducts();
 
         if (cookies) {
 
@@ -68,6 +76,7 @@ export async function getServerSideProps(context) {
 
             if (cookiesParsed.accessToken) {
                 user = cookiesParsed;
+                carts = await (await CartService.getCartByUser(req, res))?.data?.data;
                 isLogin = true;
             }
 
@@ -85,7 +94,8 @@ export async function getServerSideProps(context) {
             isLogin,
             user,
             isAdmin,
-            productList: productList.data.data,
+            productList: !productList?.data?.data ? null : productList?.data?.data,
+            carts,
         }
     }
 }

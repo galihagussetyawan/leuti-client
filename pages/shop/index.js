@@ -1,19 +1,31 @@
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 import { useContext } from "react";
 
 import CookiesService from "../../services/cookies.service";
+import CartService from "../../services/cart.service";
+import ProductService from "../../services/product.service";
 
 import Footer from "../../components/footer.component";
 import Header from "../../components/header.component"
 
-// import LocalCurrency from '../../lib/helpers/local-currency.help';
 import AuthContext from "../../lib/context/auth.context";
+import LocalCurrency from "../../lib/helpers/local-currency.help";
+import { useRouter } from "next/router";
 
-export default function Shop() {
+const imageLoader = ({ src }) => {
+    return `${process.env.API_HOST}/api/image?img=${src}`;
+}
 
+export default function Shop({ productList }) {
+
+    const router = useRouter();
     const { isLogin } = useContext(AuthContext);
+
+    const handleNavigate = (url) => {
+
+        return () => router.push(url);
+    }
 
     return (
         <div>
@@ -27,52 +39,57 @@ export default function Shop() {
                     <p className="md:w-1/2 md:m-auto mx-5 leading-relaxed text-left md:text-center">LEUTI Perfect Sublimate Serum diciptakan bagi orang-orang yang menuntut kesempurnaan dan kualitas tinggi. Sebelum menyentuh pasar, serum ini telah melewati uji sampling keefektifitasan dimana 98% dari 100 orang dengan kulit normal sebagai sampling menunjukkan hasil yang memuaskan dalam jangka waktu maksimal 2 minggu. 80% dari mereka mengatakan bahwa hasil yang bagus dirasakan sejak pertama kali pemakaian serum LEUTI Perfect Sublimate Serum. Efek pada kulit dimana kulit menjadi lebih putih, flawless, halus, lembab, kenyal seperti sedang menyentuh agar-agar dirasakan secara bersamaan. </p>
                 </div>
 
-                <div className=" space-y-5">
-                    <div className=" grid md:grid-cols-3 md:gap-5 grid-cols-1">
-                        <div className="md:w-full md:h-[700px] w-full h-[450px]  relative overflow-hidden bg-gray-100">
-                            <Image
-                                src={'/images1.jpg'}
-                                quality={50}
-                                objectPosition='center'
-                                objectFit='cover'
-                                layout='fill'
-                            />
-                        </div>
+                {
+                    productList?.map((data, index) => {
+                        return (
 
-                        <div className="md:w-full md:h-[700px] w-full h-1/4 md:relative overflow-hidden hidden md:block bg-gray-100">
-                            <Image
-                                src={'/images1.jpg'}
-                                quality={50}
-                                objectPosition='center'
-                                objectFit='cover'
-                                layout='fill'
-                            />
-                        </div>
+                            <div key={index} className="space-y-5">
+                                <div className=" grid md:grid-cols-3 md:gap-5 grid-cols-1">
 
-                        <div className="md:w-full md:h-[700px] w-full h-1/4 md:relative overflow-hidden hidden md:block bg-gray-100">
-                            <Image
-                                src={'/images1.jpg'}
-                                quality={50}
-                                objectPosition='center'
-                                objectFit='cover'
-                                layout='fill'
-                            />
-                        </div>
+                                    {
+                                        data?.images?.map((image, index) => {
+                                            return (
+                                                <div key={index} className={`md:w-full md:h-[700px] w-full h-[450px] ${index !== 0 && 'hidden md:block'} relative overflow-hidden bg-gray-100`}>
+                                                    <Image
+                                                        className="scale-105"
+                                                        loader={imageLoader}
+                                                        src={image?.name}
+                                                        quality={50}
+                                                        objectPosition='center'
+                                                        objectFit='cover'
+                                                        layout='fill'
+                                                    />
+                                                </div>
+                                            )
+                                        })
+                                    }
 
-                    </div>
+                                </div>
 
-                    <div className="flex flex-col px-5 md:px-0">
-                        <span className=" font-light">SKINCARE</span>
-                        <span className=" md:text-lg">Leuti Perfect Sublimate Serum</span>
-                        {isLogin && <span className="mt-5 text-lg">Rp203.000</span>}
-                    </div>
+                                <div className="flex flex-col px-5 md:px-0">
+                                    <span className=" font-light uppercase">{data?.category}</span>
+                                    <span className=" md:text-lg">{data?.name}</span>
+                                    {isLogin && <span className="mt-5 text-lg">{LocalCurrency(data?.price)}</span>}
+                                </div>
 
-                    <div className="text-center md:text-left">
-                        <Link href={{ pathname: '/product/leuti-perfect-sublimate-serum' }}>
-                            <button className=" md:w-64 w-40 py-5 rounded-full border border-black">PRODUCT DETAIL</button>
-                        </Link>
-                    </div>
-                </div>
+                                <div className="text-center md:text-left">
+                                    <a onClick={
+                                        handleNavigate(
+                                            {
+                                                pathname: `/product/${data?.name?.toLowerCase().replaceAll(' ', '-')}`,
+                                                query: {
+                                                    id: data?.id
+                                                }
+                                            }
+                                        )
+                                    }>
+                                        <button className=" md:w-64 w-40 py-5 rounded-full border border-black">PRODUCT DETAIL</button>
+                                    </a>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
 
             </main>
 
@@ -84,12 +101,15 @@ export default function Shop() {
 
 export async function getServerSideProps(context) {
 
-    const { req, res } = context;
+    const { req, res, } = context;
     let isLogin = false;
     let user = {};
+    let productList = null;
+    let carts = [];
 
     try {
 
+        productList = await (await ProductService.getProducts())?.data?.data;
         const cookies = await CookiesService.getCookies('user', req, res);
 
         if (cookies) {
@@ -98,6 +118,7 @@ export async function getServerSideProps(context) {
 
             if (cookiesParsed.accessToken) {
                 user = cookiesParsed;
+                carts = await (await CartService.getCartByUser(req, res))?.data?.data;
                 isLogin = true;
             }
         }
@@ -113,6 +134,8 @@ export async function getServerSideProps(context) {
         props: {
             isLogin,
             user,
+            productList,
+            carts,
         }
     }
 }

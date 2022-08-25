@@ -1,4 +1,16 @@
-export default function Toast({ status, message, closeAction }) {
+import { useEffect } from "react";
+
+export default function Toast({ status, message, closeAction, isOpen }) {
+
+    useEffect(() => {
+
+        if (isOpen) {
+
+            setTimeout(() => {
+                closeAction();
+            }, 6000);
+        }
+    }, [isOpen])
 
     const icon = () => {
 
@@ -28,7 +40,7 @@ export default function Toast({ status, message, closeAction }) {
     }
 
     return (
-        <div className="md:w-[400px] flex items-center m-auto p-5 fixed left-1/2 bottom-20 -translate-x-1/2 border border-gray-200 shadow-2xl bg-white">
+        <div className="md:w-[400px] w-11/12 flex items-center m-auto p-5 fixed left-1/2 bottom-32 md:bottom-20 -translate-x-1/2 border border-gray-200 shadow-2xl bg-white">
             {icon()}
             <div className="w-full px-3 text-gray-700">{message}</div>
             <button className="w-10 h-10 p-1 text-gray-500 md:hover:text-gray-800 md:hover:bg-gray-200" onClick={handleClose}>

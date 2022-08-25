@@ -1,7 +1,15 @@
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function ProductHorizontalDiscover() {
+
+    const router = useRouter();
+
+    const handleNavigate = (url) => {
+
+        return () => router.push(url);
+    }
+
     return (
         <div className='flex flex-col md:gap-5 gap-7 md:my-20'>
             <div className='md:w-full md:h-[650px] w-full h-[300px] relative md:flex md:justify-center bg-gray-100'>
@@ -14,9 +22,9 @@ export default function ProductHorizontalDiscover() {
                 />
             </div>
             <div className="text-center md:text-left">
-                <Link href={{ pathname: '/shop' }}>
+                <a onClick={handleNavigate('/shop')}>
                     <button className=" md:w-64 w-40 py-5 m-auto rounded-full border border-black">DISCOVER</button>
-                </Link>
+                </a>
             </div>
         </div>
     );
