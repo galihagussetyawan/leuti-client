@@ -36,8 +36,14 @@ export default function Login() {
 
                 if (response.status === 200) {
                     setIsLoading(false);
-                    router.reload();
                 }
+
+                router.replace(router.asPath)
+                    .then(() => {
+
+                        router.replace(router.asPath);
+
+                    });
 
             })
             .catch(error => {
@@ -135,7 +141,6 @@ export default function Login() {
                         </Link>
                     </div>
                 </div>
-
 
             </main>
 

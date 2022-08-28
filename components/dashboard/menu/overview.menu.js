@@ -1,60 +1,33 @@
 import Link from "next/link";
+import { useContext } from "react";
+import DashboardContext from "../../../lib/context/dashboard.context";
 
 export default function OverviewMenu() {
 
-    const orderList = [
-        {
-            date: '17 Jun 2022',
-            id: 18637,
-            agent: 'agentdemo',
-            item: 7,
-            status: 'UNPAID',
-            total: 500000,
-        },
-        {
-            date: '17 Jun 2022',
-            id: 18637,
-            agent: 'agentdemo',
-            item: 7,
-            status: 'UNPAID',
-            total: 500000,
-        },
-        {
-            date: '17 Jun 2022',
-            id: 18637,
-            agent: 'agentdemo',
-            item: 7,
-            status: 'UNPAID',
-            total: 500000,
-        },
-        {
-            date: '17 Jun 2022',
-            id: 18637,
-            agent: 'agentdemo',
-            item: 7,
-            status: 'UNPAID',
-            total: 500000,
-        },
-        {
-            date: '17 Jun 2022',
-            id: 18637,
-            agent: 'agentdemo',
-            item: 7,
-            status: 'UNPAID',
-            total: 500000,
-        },
-        {
-            date: '17 Jun 2022',
-            id: 18637,
-            agent: 'agentdemo',
-            item: 7,
-            status: 'UNPAID',
-            total: 500000,
-        },
-    ];
+    const { pointList, userList, ordersAllList } = useContext(DashboardContext);
+
+    const convertDate = (date) => {
+        const newDate = new Date(parseInt(date));
+
+        return newDate.toLocaleString('id', {
+            dateStyle: 'medium',
+            timeStyle: 'long',
+        })
+    }
+
+    const pointTextStyle = (index) => {
+
+        if (index === 0) return 'md:bg-yellow-500 md:text-white';
+
+        if (index === 1) return 'md:bg-gray-300 md:text-white';
+
+        if (index === 2) return 'md:bg-orange-900 md:text-white'
+
+        return 'md:text-gray-400'
+    }
 
     return (
-        <div className="md:w-full md:flex md:space-x-5">
+        <div className="md:w-full md:min-h-screen md:flex md:space-x-5">
 
             {/* left component/section */}
             <div className="md:w-full md:space-y-40">
@@ -69,7 +42,7 @@ export default function OverviewMenu() {
                         </div>
                         <div className="md:h-52 md:flex md:flex-col md:justify-center md:px-10 md:border md:bg-white">
                             <span className="md:text-gray-500">TOTAL AGENTS</span>
-                            <span className="md:text-4xl">300</span>
+                            <span className="md:text-4xl">{userList?.total}</span>
                         </div>
                         <div className="md:h-52 md:flex md:flex-col md:justify-center md:px-10 md:border md:bg-white">
                             <span className="md:text-gray-500">TOTAL TRANSACTION</span>
@@ -104,19 +77,29 @@ export default function OverviewMenu() {
                                     <th scope="col" className="py-3 px-6">
                                         TOTAL
                                     </th>
+                                    <th scope="col" className="py-3 px-6">
+                                        ACTION
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    orderList.map((data, index) => {
+                                    ordersAllList?.map((data, index) => {
                                         return (
                                             <tr key={index} className="bg-white border-b text-gray-700">
-                                                <td className="py-4 px-6">{data.date}</td>
-                                                <td className="py-4 px-6">{data.id}</td>
-                                                <td className="py-4 px-6">{data.agent}</td>
-                                                <td className="py-4 px-6">{data.item} Items</td>
-                                                <td className="py-4 px-6">{data.status}</td>
-                                                <td className="py-4 px-6">Rp {data.total}</td>
+                                                <td className="py-8 px-6">{convertDate(data?.createdAt)}</td>
+                                                <td className="py-8 px-6">{data?.id}</td>
+                                                <td className="py-8 px-6">{data?.user?.username}</td>
+                                                <td className="py-8 px-6">{data?.carts.map(data => data?.quantity).reduce((prev, next) => prev + next)} Items</td>
+                                                <td className="py-8 px-6 uppercase font-semibold text-green-500">{data?.status}</td>
+                                                <td className="py-8 px-6">Rp {data?.amount}</td>
+                                                <td className="py-8 px-6">
+                                                    <button>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                                            <path fillRule="evenodd" d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" clipRule="evenodd" />
+                                                        </svg>
+                                                    </button>
+                                                </td>
                                             </tr>
                                         );
                                     })
@@ -132,7 +115,7 @@ export default function OverviewMenu() {
 
             {/* ----------------------------------------------------------------------------------------------------------------------- */}
             {/* right component/section */}
-            <div className="md:w-2/5 md:h-96">
+            <div className="md:w-2/5 md:h-96 md:space-y-40">
 
                 {/* quick link section */}
                 <div className="md:space-y-10">
@@ -146,6 +129,37 @@ export default function OverviewMenu() {
                     </div>
                 </div>
                 {/* end of quick link section */}
+
+                {/* leaderboards section */}
+                <div className="md:space-y-10">
+                    <p className="md:border-b md:border-gray-300">LEADERBOARD</p>
+                    <div className="md:space-y-5 md:bg-white p-7">
+                        {
+                            pointList?.map((data, index) => {
+                                return (
+                                    <div key={index} className="md:flex md:justify-between md:items-center">
+                                        <div className="md:flex md:items-center md:space-x-5">
+                                            <div className={`md:w-20 md:h-20 md:flex md:justify-center md:items-center md:font-semibold md:text-4xl ${pointTextStyle(index)}`}>{index + 1}</div>
+                                            <div className="md:flex md:flex-col">
+                                                <span className="md:text-lg">{data?.username}</span>
+                                                <span className="md:text-gray-500">JOIN: {convertDate(data?.join)}</span>
+                                            </div>
+                                        </div>
+                                        <div className="md:flex md:space-x-5">
+                                            <span className="md:text-yellow-500">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                                                    <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clipRule="evenodd" />
+                                                </svg>
+                                            </span>
+                                            <span className="md:text-xl md:font-semibold">{data?.point}</span>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                </div>
+                {/* end of leaderboard section */}
 
             </div>
             {/* end of right component/section */}

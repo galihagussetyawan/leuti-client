@@ -52,17 +52,12 @@ export default function LoginModal({ closeAction, isOpen }) {
                     router.replace(router.asPath)
                         .then(() => {
 
-                            router.replace(router.asPath)
-                                .then(() => {
+                            setNotification({
+                                isOpen: true,
+                                status: 'success',
+                                message: res?.data?.message,
+                            })
 
-                                    router.replace(router.asPath);
-
-                                    setNotification({
-                                        isOpen: true,
-                                        status: 'success',
-                                        message: res?.data?.message,
-                                    })
-                                })
                         });
 
                 })

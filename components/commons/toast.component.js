@@ -35,15 +35,21 @@ export default function Toast({ status, message, closeAction, isOpen }) {
         }
     };
 
+    const backgroundColor = () => {
+
+        if (status === 'success') return 'bg-black';
+        if (status === 'error') return 'bg-red-600';
+    }
+
     const handleClose = () => {
         closeAction();
     }
 
     return (
-        <div className="md:w-[400px] w-11/12 flex items-center m-auto p-5 fixed left-1/2 bottom-32 md:bottom-20 -translate-x-1/2 border border-gray-200 shadow-2xl bg-white">
-            {icon()}
-            <div className="w-full px-3 text-gray-700">{message}</div>
-            <button className="w-10 h-10 p-1 text-gray-500 md:hover:text-gray-800 md:hover:bg-gray-200" onClick={handleClose}>
+        <div className={`md:w-[400px] w-11/12 flex items-center m-auto fixed p-5 left-1/2 z-10 bottom-32 md:bottom-14 -translate-x-1/2 md:border md:border-gray-200 md:shadow-2xl ${backgroundColor()}`}>
+            {/* {icon()} */}
+            <div className="w-full px-3 text-gray-100 capitalize">{message}</div>
+            <button className="w-8 h-8 p-1 text-slate-200" onClick={handleClose}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-full w-full" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>

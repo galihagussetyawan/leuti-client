@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import AuthService from "../../services/auth.service";
 
 const Dropdown = dynamic(() => import('../dropdown.component'));
-const DropdownLite = dynamic(() => import('../dropdown-lite.component'));
+import DropdownLite from '../dropdown-lite.component';
 
 import AuthContext from "../../lib/context/auth.context";
 import CartContext from "../../lib/context/cart.context";
@@ -161,7 +161,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
                                     <div className="md:w-[400px]">
                                         <div className="md:flex md:justify-between md:border-b">
                                             <span className="md:font-semibold md:text-lg">Cart ({carts?.length})</span>
-                                            <Link href={{ pathname: '/cart' }}>View All</Link>
+                                            <button onClick={handleNavigate('/cart')}>View All</button>
                                         </div>
                                         <ul className="md:mt-5 md:space-y-5">
                                             {

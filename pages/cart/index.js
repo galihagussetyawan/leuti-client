@@ -10,6 +10,7 @@ const Toast = dynamic(() => import('../../components/commons/toast.component'));
 
 import CookiesService from '../../services/cookies.service';
 import CartService from '../../services/cart.service';
+import OrderService from '../../services/order.service';
 
 import LocalCurrency from '../../lib/helpers/local-currency.help';
 
@@ -43,6 +44,22 @@ export default function Cart({ carts, totalPrice }) {
                     router.replace(router.asPath);
                 })
         }
+    }
+
+    const handleCheckout = () => {
+
+        OrderService.createOrder()
+            .then(res => {
+
+                router.push({
+                    pathname: '/order/[orderid]',
+                    query: {
+                        orderid: res?.data?.data?.id,
+                    }
+                })
+
+            })
+            .catch(err => console.log(err.response));
     }
 
     const handleIncreaseQuantity = (id, quantity) => {
@@ -158,9 +175,9 @@ export default function Cart({ carts, totalPrice }) {
                                             </div>
                                             <span className='w-1/5 hidden md:flex items-center px-6 py-3'>{LocalCurrency(data?.product?.price)}</span>
                                             <span className='w-1/5 hidden md:flex items-center px-6 py-3'>
-                                                <div className='flex border rounded-full overflow-hidden border-gray-300'>
+                                                <div className='flex border rounded-full overflow-hidden border-gray-500'>
                                                     <button className='p-5' onClick={handleDecreaseQuantity(data?.id, data?.quantity)}>-</button>
-                                                    <input className='w-full outline-none text-center' defaultValue={data?.quantity} />
+                                                    <input className='w-full outline-none text-center' value={data?.quantity} onChange={() => data?.quantity} />
                                                     <button className='p-5' onClick={handleIncreaseQuantity(data?.id, data?.quantity)}>+</button>
                                                 </div>
                                             </span>
@@ -179,15 +196,15 @@ export default function Cart({ carts, totalPrice }) {
 
                                             {/* mobile version */}
                                             <div className='md:hidden flex space-x-7'>
-                                                <button>
+                                                <button onClick={handleRemoveCart(data?.id)}>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                                         <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
                                                     </svg>
                                                 </button>
-                                                <div className='flex w-36 border rounded-full overflow-hidden border-gray-300'>
-                                                    <button className='p-5'>-</button>
-                                                    <input className='w-full outline-none text-center' defaultValue={data?.quantity} />
-                                                    <button className='p-5'>+</button>
+                                                <div className='flex w-36 border rounded-full overflow-hidden text-black border-gray-400'>
+                                                    <button className='p-5' onClick={handleDecreaseQuantity(data?.id, data?.quantity)}>-</button>
+                                                    <input className='w-full outline-none text-center' value={data?.quantity} onChange={() => data?.quantity} />
+                                                    <button className='p-5' onClick={handleIncreaseQuantity(data?.id, data?.quantity)}>+</button>
                                                 </div>
                                             </div>
                                             {/* end of mobile version */}
@@ -221,7 +238,7 @@ export default function Cart({ carts, totalPrice }) {
                                 carts?.length === 0 ?
                                     <button className='w-full py-5 rounded-full text-white bg-black' onClick={handleNavigate('/shop')}>SHOPING</button>
                                     :
-                                    <button className='w-full py-5 rounded-full text-white bg-black'>CHECKOUT</button>
+                                    <button className='w-full py-5 rounded-full text-white bg-black' onClick={handleCheckout}>CHECKOUT</button>
                             }
                         </div>
                     </div>
@@ -229,7 +246,7 @@ export default function Cart({ carts, totalPrice }) {
                 </div>
 
             </main >
-            {notification.isOpen && <Toast isOpen={notification.isOpen} status={notification.status} message={notification.message} closeAction={handleToggleNotification} />}
+            {notification?.isOpen && <Toast isOpen={notification?.isOpen} status={notification?.status} message={notification?.message} closeAction={handleToggleNotification} />}
 
             <Footer />
         </>

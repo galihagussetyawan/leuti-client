@@ -30,9 +30,12 @@ export default function ProductDiscover({ id, name, category, images, price }) {
                             <div key={index} className={`md:w-full md:h-[700px] w-full h-[450px] ${index !== 0 && 'hidden md:block'} relative overflow-hidden bg-gray-100`}>
                                 <Image
                                     className="scale-105"
+                                    loading={'lazy'}
                                     loader={imageLoader}
+                                    alt={name}
+                                    title={name}
                                     src={data.name}
-                                    quality={70}
+                                    quality={10}
                                     objectPosition={'center'}
                                     objectFit='cover'
                                     layout='fill'

@@ -1,15 +1,23 @@
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 
 import AccountMenu from "./menu/account..menu";
+import OrderListMenu from "./menu/order-list.menu";
 const AccountInformationMenu = dynamic(() => import('./menu/account-information.menu'))
 
-export default function Tab({ state, data, userDetail }) {
+export default function Tab({ data, userDetail }) {
 
-    if (state === 'account-tab') {
-        return <AccountMenu data={data} />
-    }
+    const router = useRouter();
 
-    if (state === 'address-tab') {
+    const { menu } = router.query;
+
+    if (menu === 'address-tab') {
         return <AccountInformationMenu data={userDetail} />
     }
+
+    if (menu === 'order-tab') {
+        return <OrderListMenu />
+    }
+
+    return <AccountMenu data={data} />
 }

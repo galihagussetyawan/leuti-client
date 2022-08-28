@@ -11,7 +11,13 @@ const nextConfig = {
 
   images: {
     domains: [process.env.API_HOST]
-  }
+  },
+
+  i18n: {
+    locales: ['id'],
+    defaultLocale: 'id',
+    localeDetection: true,
+  },
 }
 
 module.exports = nextConfig

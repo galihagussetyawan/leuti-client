@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
@@ -6,8 +6,9 @@ import { useRouter } from "next/router";
 import CookiesService from "../../services/cookies.service";
 import UserService from "../../services/user.service";
 import AuthService from "../../services/auth.service";
-import UserDetailService from "../../services/user-detail.service";
 import PoinService from "../../services/point.service";
+import CartService from "../../services/cart.service";
+import OrderService from "../../services/order.service";
 
 import Header from '../../components/header.component';
 const Footer = dynamic(() => import('../../components/footer.component'));
@@ -19,18 +20,46 @@ import Capitalize from "../../lib/helpers/capitalize.help";
 export default function User({ userData, userDetail, point }) {
 
     const router = useRouter();
+    const { menu } = router.query;
 
     const [tab, setTab] = useState('account-tab');
     const [isOpen, setIsOpen] = useState(false);
 
-    const handleClickTab = event => {
+    useEffect(() => {
 
-        event.preventDefault();
-        setTab(event.currentTarget.id);
-        setIsOpen(true);
+        if (menu === 'address-tab') setTab('address-tab');
+        if (menu === 'order-tab') setTab('order-tab');
+
+    }, [menu])
+
+    const handleClickTab = (tab) => {
+
+        return () => {
+
+            if (tab === 'account-tab') {
+                router.push('/user')
+                    .then(() => {
+                        setTab(tab);
+                        setIsOpen(true);
+                    })
+                return;
+            }
+
+            router.push({
+                query: {
+                    menu: tab
+                }
+            })
+                .then(() => {
+                    setTab(tab);
+                    setIsOpen(true);
+                })
+        }
     }
 
     const handleClassName = (tab, tabId) => {
+        if (tab === null) return 'md:h-16 h-14 flex justify-between items-center md:border-y md:hover:font-bold md:cursor-pointer md:border-gray-300 md:font-semibold';
+
         return `md:h-16 h-14 flex justify-between items-center md:border-y md:hover:font-bold md:cursor-pointer md:border-gray-300 ${tab === tabId && 'md:font-semibold'}`;
     }
 
@@ -40,7 +69,8 @@ export default function User({ userData, userDetail, point }) {
     };
 
     const handleBackMenu = () => {
-        setIsOpen(false);
+        router.replace('/user')
+            .then(() => setIsOpen(false));
     }
 
     //components
@@ -122,19 +152,18 @@ export default function User({ userData, userDetail, point }) {
                     {/* menu list */}
                     <div className={`md:w-2/6 md:block mt-10 ${isOpen ? 'hidden' : 'block'}`}>
                         <ul>
-                            <li id="account-tab" className={handleClassName(tab, 'account-tab')} onClick={handleClickTab}>{menuItem('ACCOUNT')}</li>
-                            <li id="address-tab" className={handleClassName(tab, 'address-tab')} onClick={handleClickTab}>{menuItem('ACCOUNT INFORMATION')}</li>
-                            <li id="order-tab" className={handleClassName(tab, 'order-tab')} onClick={handleClickTab}>{menuItem('ORDER')}</li>
-                            <li id="sponsor-tab" className={handleClassName(tab, 'sponsor-tab')} onClick={handleClickTab}>{menuItem('SPONSOR')}</li>
-                            <li id="billing-tab" className={handleClassName(tab, 'billing-tab')} onClick={handleClickTab}>{menuItem('BILLING')}</li>
-                            <li id="cart-tab" className={handleClassName(tab, 'cart-tab')} onClick={handleClickTab}>{menuItem('CART')}</li>
+                            <li id="account-tab" className={handleClassName(tab, 'account-tab')} onClick={handleClickTab('account-tab')}>{menuItem('ACCOUNT')}</li>
+                            <li id="address-tab" className={handleClassName(tab, 'address-tab')} onClick={handleClickTab('address-tab')}>{menuItem('ACCOUNT INFORMATION')}</li>
+                            <li id="order-tab" className={handleClassName(tab, 'order-tab')} onClick={handleClickTab('order-tab')}>{menuItem('ORDER')}</li>
+                            <li id="sponsor-tab" className={handleClassName(tab, 'sponsor-tab')} onClick={handleClickTab('sponsor-tab')}>{menuItem('SPONSOR')}</li>
+                            <li id="billing-tab" className={handleClassName(tab, 'billing-tab')} onClick={handleClickTab('billing-tab')}>{menuItem('BILLING')}</li>
                             <li id="logout-tab" className={handleClassName(tab, 'logout-tab')} onClick={handleLogout}>LOGOUT</li>
                         </ul>
                     </div>
                     {/* end of menu list */}
 
                     <div className={`md:w-full w-full md:block md:static mt-7 md:m-0 ${isOpen ? 'block relative left-0' : 'hidden'}`}>
-                        <Tab state={tab} data={userData} userDetail={userDetail} />
+                        <Tab data={userData} userDetail={userDetail} />
                     </div>
                 </div>
 
@@ -151,8 +180,10 @@ export async function getServerSideProps(context) {
     let isLogin = false;
     let user = {};
     let userData;
-    let userDetail;
     let point;
+    let carts = [];
+    let userDetail = null;
+    let orderList = [];
 
     try {
 
@@ -167,8 +198,10 @@ export async function getServerSideProps(context) {
                 isLogin = true;
 
                 userData = await UserService.getUserById(user.userId);
-                userDetail = await UserDetailService.getUserDetailByUser(cookiesParsed.userId, req, res);
                 point = await PoinService.getPointByUser(cookiesParsed.userId, req, res);
+                carts = await (await CartService.getCartByUser(req, res))?.data?.data;
+                userDetail = userData?.data?.data?.detail;
+                orderList = await (await OrderService.getOrdersByUser(req, res))?.data?.data;
             }
         }
 
@@ -184,8 +217,10 @@ export async function getServerSideProps(context) {
             isLogin,
             user,
             userData: userData.data.data,
-            userDetail: !userDetail?.data?.data[0] ? null : userDetail?.data?.data[0],
+            userDetail,
             point: point?.data?.data?.point,
+            carts,
+            orderList,
         }
     }
 }

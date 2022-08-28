@@ -9,10 +9,13 @@ import AuthContext from "../../lib/context/auth.context";
 import AuthService from "../../services/auth.service";
 import CookiesService from "../../services/cookies.service";
 import ProductService from "../../services/product.service";
+import UserService from "../../services/user.service";
+import PointService from "../../services/point.service";
+import OrderService from "../../services/order.service";
 
 import TabDashboardComponent from "../../components/dashboard/tab-dashboard.component";
 
-export default function Dashboard({ productList }) {
+export default function Dashboard() {
 
     const router = useRouter();
 
@@ -67,7 +70,9 @@ export default function Dashboard({ productList }) {
                         <li className="md:space-y-3">
                             <span>AGENTS</span>
                             <ul className="md:ml-10 md:space-y-3 md:text-gray-500">
-                                <li>AGENT LIST</li>
+                                <li>
+                                    <Link href={{ query: { tab: 'agent-list' } }}>AGENT LIST</Link>
+                                </li>
                                 <li>AGENT RANKING</li>
                             </ul>
                         </li>
@@ -83,9 +88,7 @@ export default function Dashboard({ productList }) {
                 {/* end of left column/menu */}
 
                 <div className="md:w-full md:py-20 md:px-5 md:bg-slate-100">
-                    <TabDashboardComponent
-                        productList={productList}
-                    />
+                    <TabDashboardComponent />
                 </div>
 
             </main>
@@ -95,15 +98,21 @@ export default function Dashboard({ productList }) {
 
 export async function getServerSideProps(context) {
 
-    const { req, res } = context;
+    const { req, res, query } = context;
+    const { orderstatus } = query;
 
     let isAdmin = false;
     let user = {};
     let productList;
+    let userList = [];
+    let pointList = [];
+    let ordersAllList = [];
+
 
     try {
 
         const cookies = await CookiesService.getCookies('user', req, res);
+
         isAdmin = await AuthService.isAdmin(JSON.parse(cookies).accessToken);
         productList = await ProductService.getProducts();
 
@@ -122,6 +131,9 @@ export async function getServerSideProps(context) {
 
             if (cookiesParsed) {
                 user = cookiesParsed;
+                userList = await (await UserService.getUsers(req, res))?.data?.data;
+                pointList = await (await PointService.getPoints(req, res))?.data?.data;
+                ordersAllList = await (await OrderService.getAllOrders(orderstatus, req, res))?.data?.data;
             }
         }
 
@@ -139,6 +151,9 @@ export async function getServerSideProps(context) {
         props: {
             user,
             productList: productList?.data?.data,
+            userList,
+            pointList,
+            ordersAllList,
         }
     }
 }

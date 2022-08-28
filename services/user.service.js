@@ -1,5 +1,6 @@
 import axios from "axios";
 import ApiClient from "./api-client";
+import ApiServer from "./api-server";
 
 class UserService {
 
@@ -15,6 +16,20 @@ class UserService {
         return await axios.get(`${process.env.API_HOST}/api/user`, {
             params: { id },
         });
+    }
+
+    async getUsers(req, res) {
+
+        return await ApiServer(req, res)
+            .get('users');
+    }
+
+    async searchUserByIdOrUsername(search) {
+
+        return await ApiClient()
+            .get('/api/users/search', {
+                params: { search }
+            })
     }
 }
 

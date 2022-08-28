@@ -1,15 +1,24 @@
-import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useContext } from "react";
 import AuthContext from "../../lib/context/auth.context";
+import CartContext from "../../lib/context/cart.context";
+import { useRouter } from "next/router";
 
 export default function MobileMenu({ closeAction, isOpen }) {
 
+  const router = useRouter();
+
   const { isLogin, user } = useContext(AuthContext);
+  const { carts } = useContext(CartContext);
 
   const handleToggleClose = () => {
     return closeAction();
   };
+
+  const handleNavigate = (url) => {
+
+    return () => router.push(url);
+  }
 
   return (
     <>
@@ -65,10 +74,11 @@ export default function MobileMenu({ closeAction, isOpen }) {
                   <div className="flex justify-end gap-5">
                     {
                       isLogin &&
-                      <button>
+                      <button className="relative" onClick={handleNavigate('/cart')}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>
+                        {carts?.length > 0 && <span className="w-3 h-3 absolute -top-1 outline outline-1 outline-white rounded-full bg-red-500"></span>}
                       </button>
                     }
                     <button className="flex items-center">
@@ -79,12 +89,12 @@ export default function MobileMenu({ closeAction, isOpen }) {
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                               <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
-                            <Link href={{ pathname: '/user' }}>{user?.username}</Link>
+                            <a onClick={handleNavigate('/user')}>{user?.username}</a>
                           </div>
                           :
-                          <Link href={{ pathname: '/login' }}>
+                          <a onClick={handleNavigate('/login')}>
                             <span className=" font-semibold">LOGIN</span>
-                          </Link>
+                          </a>
                       }
                     </button>
                   </div>
@@ -98,7 +108,7 @@ export default function MobileMenu({ closeAction, isOpen }) {
                 {/* menu */}
                 <ul className="flex flex-col px-5 justify-between gap-5">
                   <li>
-                    <Link href={{ pathname: '/shop' }}>SHOP</Link>
+                    <a onClick={handleNavigate('/shop')}>SHOP</a>
                   </li>
                   <li>
                     <span id="reward-menu">REWARD</span>

@@ -75,7 +75,9 @@ export default function Footer() {
                                 <span>Coming Soon</span>
                             </Collapse>
                             <Collapse title="Follow Us">
-                                <span>Instagram</span>
+                                <Link href={'https://www.instagram.com/leuti_official/'}>
+                                    <a target={'_blank'}>Instagram</a>
+                                </Link>
                                 <span>Tiktok</span>
                                 <span>Youtube</span>
                             </Collapse>

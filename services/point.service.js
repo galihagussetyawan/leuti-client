@@ -8,6 +8,12 @@ class PointService {
             params: { userid }
         })
     }
+
+    async getPoints(req, res) {
+
+        return await ApiServer(req, res)
+            .get('points')
+    }
 }
 
 export default new PointService();
