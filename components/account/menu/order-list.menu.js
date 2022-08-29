@@ -14,12 +14,22 @@ export default function OrderListMenu() {
 
     const { orderList } = useContext(UserContext);
 
+    const statusTextColor = (status) => {
+
+        if (status === 'created') {
+            return 'text-green-500';
+        }
+
+        if (status === 'unpaid') {
+            return 'text-orange-500';
+        }
+    }
+
     const convertDate = (date) => {
         const newDate = new Date(parseInt(date));
 
         return newDate?.toLocaleString(router.locale, {
             dateStyle: 'medium',
-            timeStyle: 'long',
         })
     }
 
@@ -58,8 +68,8 @@ export default function OrderListMenu() {
                                         })}>
                                         <td className="py-10 px-3">{data?.id}</td>
                                         <td className="py-10 px-3">{convertDate(data?.createdAt)}</td>
-                                        <td className="py-10 px-3">{data.carts.map(data => data.quantity).reduce((prev, next) => prev + next)} items</td>
-                                        <td className="py-10 px-3 uppercase font-bold text-green-500">{data?.status}</td>
+                                        <td className="py-10 px-3">{data?.carts?.map(data => data?.quantity).reduce((prev, next) => prev + next)} items</td>
+                                        <td className={`py-10 px-3 uppercase font-extrabold ${statusTextColor(data?.status)}`}>{data?.status}</td>
                                         <td className="py-10 px-3">
                                             <ul>
                                                 {

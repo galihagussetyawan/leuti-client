@@ -99,7 +99,7 @@ export default function Dashboard() {
 export async function getServerSideProps(context) {
 
     const { req, res, query } = context;
-    const { orderstatus } = query;
+    const { tab } = query;
 
     let isAdmin = false;
     let user = {};
@@ -108,6 +108,14 @@ export async function getServerSideProps(context) {
     let pointList = [];
     let ordersAllList = [];
 
+    const tabQuery = () => {
+
+        if (tab === 'new-order-tab') {
+            return 'created'
+        }
+
+        return null;
+    }
 
     try {
 
@@ -133,7 +141,7 @@ export async function getServerSideProps(context) {
                 user = cookiesParsed;
                 userList = await (await UserService.getUsers(req, res))?.data?.data;
                 pointList = await (await PointService.getPoints(req, res))?.data?.data;
-                ordersAllList = await (await OrderService.getAllOrders(orderstatus, req, res))?.data?.data;
+                ordersAllList = await (await OrderService.getAllOrders(tabQuery(), req, res))?.data?.data;
             }
         }
 

@@ -28,7 +28,7 @@ class OrderService {
         return await ApiServer(req, res)
             .get('orders/all', {
                 params: {
-                    status
+                    status,
                 }
             })
     }
@@ -40,6 +40,14 @@ class OrderService {
                 params: {
                     id
                 }
+            })
+    }
+
+    async approveOrder(id) {
+
+        return await ApiClient()
+            .put('/api/order/approve', {}, {
+                params: { id }
             })
     }
 }

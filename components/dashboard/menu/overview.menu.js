@@ -1,10 +1,30 @@
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { useContext } from "react";
+
+import LocalCurrency from "../../../lib/helpers/local-currency.help";
 import DashboardContext from "../../../lib/context/dashboard.context";
+import OrderService from "../../../services/order.service";
 
 export default function OverviewMenu() {
 
+    const router = useRouter();
     const { pointList, userList, ordersAllList } = useContext(DashboardContext);
+
+    //function service order
+    const handleApproveOrder = (id) => {
+
+        return () => {
+
+            OrderService.approveOrder(id)
+                .then(res => {
+
+                    router.replace(router.asPath)
+                        .then(() => router.replace(router.asPath));
+                })
+                .catch(err => console.log(err.response.data))
+        }
+    }
 
     const convertDate = (date) => {
         const newDate = new Date(parseInt(date));
@@ -24,6 +44,29 @@ export default function OverviewMenu() {
         if (index === 2) return 'md:bg-orange-900 md:text-white'
 
         return 'md:text-gray-400'
+    }
+
+    const orderStatusTextColor = (status) => {
+
+        if (status === 'created') {
+            return 'text-green-500';
+        }
+
+        if (status === 'unpaid') {
+            return 'text-orange-500';
+        }
+    }
+
+    const actionOrder = (status, id) => {
+
+        if (status === 'unpaid') {
+            return (
+                <div className=" grid grid-cols-1 gap-2">
+                    <button className=" uppercase bg-green-500 p-3 text-white" onClick={handleApproveOrder(id)}>Approve</button>
+                    <button className=" uppercase bg-red-500 p-3 text-white">Cancel</button>
+                </div>
+            )
+        }
     }
 
     return (
@@ -91,14 +134,15 @@ export default function OverviewMenu() {
                                                 <td className="py-8 px-6">{data?.id}</td>
                                                 <td className="py-8 px-6">{data?.user?.username}</td>
                                                 <td className="py-8 px-6">{data?.carts.map(data => data?.quantity).reduce((prev, next) => prev + next)} Items</td>
-                                                <td className="py-8 px-6 uppercase font-semibold text-green-500">{data?.status}</td>
-                                                <td className="py-8 px-6">Rp {data?.amount}</td>
+                                                <td className={`py-8 px-6 uppercase font-semibold ${orderStatusTextColor(data?.status)}`}>{data?.status}</td>
+                                                <td className="py-8 px-6">{LocalCurrency(data?.amount)}</td>
                                                 <td className="py-8 px-6">
-                                                    <button>
+                                                    {/* <button>
                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                                                             <path fillRule="evenodd" d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" clipRule="evenodd" />
                                                         </svg>
-                                                    </button>
+                                                    </button> */}
+                                                    {actionOrder(data?.status, data?.id)}
                                                 </td>
                                             </tr>
                                         );
