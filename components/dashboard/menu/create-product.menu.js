@@ -5,8 +5,12 @@ import Toast from '../../../components/commons/toast.component';
 
 import ImageService from "../../../services/image.service";
 import ProductService from "../../../services/product.service";
+import { useRouter } from "next/router";
 
 export default function CreateProductMenu() {
+
+    const router = useRouter();
+    const { tab, id } = router.query;
 
     const [notification, setNotification] = useState({
         isOpen: false,
@@ -14,6 +18,7 @@ export default function CreateProductMenu() {
         'message': 'error'
     })
 
+    const [productId, setProductId] = useState();
     const [imagesArray, setImagesArray] = useState([]);
     const [images, setImages] = useState(null);
     const [name, setName] = useState('');
@@ -27,19 +32,28 @@ export default function CreateProductMenu() {
 
     useEffect(() => {
 
-        if (notification.isOpen) {
+        if (tab === 'edit-product' && id) {
 
-            setTimeout(() => {
-                setNotification({
-                    isOpen: false,
-                    status: 'error',
-                    'message': 'error'
+            ProductService.getProductByIdClient(id)
+                .then(res => {
+
+                    setProductId(res?.data?.data?.id);
+                    setName(res?.data?.data?.name);
+                    setCategory(res?.data?.data?.category);
+                    setDescription(res?.data?.data?.description);
+                    setAdvantage(res?.data?.data?.advantage);
+                    setApplication(res?.data?.data?.application);
+                    setIngredient(res?.data?.data?.ingredient);
+                    setPrice(res?.data?.data?.price);
+                    setStock(res?.data?.data?.stock)
+
                 })
-            }, 6000);
-
+                .catch(err => {
+                    return router.push({ pathname: '/dashboard' })
+                })
         }
 
-    }, [notification.isOpen])
+    }, [tab, id])
 
     const handleChangeMultipleImage = event => {
 
@@ -120,7 +134,7 @@ export default function CreateProductMenu() {
                         setNotification({
                             isOpen: true,
                             status: 'error',
-                            message: err.response.data.message,
+                            message: err?.response?.data?.message,
                         })
                     })
             })
@@ -129,7 +143,7 @@ export default function CreateProductMenu() {
                 setNotification({
                     isOpen: true,
                     status: 'error',
-                    message: err.response.data.message,
+                    message: err?.response?.data?.message,
                 })
 
             })
@@ -140,6 +154,29 @@ export default function CreateProductMenu() {
                     status: 'success',
                     message: 'produk berhasil ditambahkan',
                 })
+            })
+    }
+
+    const handleUpdateProduct = () => {
+
+        ProductService.updateProductById(productId, name, category, description, advantage, application, ingredient, price, stock)
+            .then(res => {
+
+                setNotification({
+                    isOpen: true,
+                    status: 'success',
+                    message: res?.data?.message,
+                })
+
+            })
+            .catch(err => {
+
+                setNotification({
+                    isOpen: true,
+                    status: 'error',
+                    message: err?.response?.data?.message,
+                })
+
             })
     }
 
@@ -224,7 +261,7 @@ export default function CreateProductMenu() {
                         <div className="md:w-full border md:border-gray-300 md:focus-within:border-gray-400">
                             <div className="flex flex-col px-4 py-2">
                                 <span className="text-sm text-gray-700">Product Name</span>
-                                <input className="outline-none text-lg font-semibold" onChange={handleChangeName} />
+                                <input className="outline-none text-lg font-semibold" onChange={handleChangeName} value={name} />
                             </div>
                         </div>
                     </div>
@@ -236,7 +273,7 @@ export default function CreateProductMenu() {
                         <div className="md:w-full border md:border-gray-300 md:focus-within:border-gray-400">
                             <div className="flex flex-col px-4 py-2">
                                 <span className="text-sm text-gray-700">Category</span>
-                                <input className="outline-none text-lg font-semibold" onChange={handleChangeCategory} />
+                                <input className="outline-none text-lg font-semibold" value={category} onChange={handleChangeCategory} />
                             </div>
                         </div>
                     </div>
@@ -251,7 +288,7 @@ export default function CreateProductMenu() {
                             <span>Deskripsi</span>
                         </div>
                         <div className="md:w-2/5 md:h-40">
-                            <textarea className="md:w-full md:h-full md:resize-none md:outline-none md:p-3 md:border md:border-gray-300 md:focus-within:border-gray-400 text-lg font-semibold" onChange={handleChangeDescription} ></textarea>
+                            <textarea className="md:w-full md:h-full md:resize-none md:outline-none md:p-3 md:border md:border-gray-300 md:focus-within:border-gray-400 text-lg font-semibold" value={description} onChange={handleChangeDescription} ></textarea>
                         </div>
                     </div>
 
@@ -260,7 +297,7 @@ export default function CreateProductMenu() {
                             <span>Kenunggulan</span>
                         </div>
                         <div className="md:w-2/5 md:h-40">
-                            <textarea className="md:w-full md:h-full md:resize-none md:outline-none md:p-3 md:border md:border-gray-300 md:focus-within:border-gray-400 text-lg font-semibold" onChange={handleChangeAdvantage}></textarea>
+                            <textarea className="md:w-full md:h-full md:resize-none md:outline-none md:p-3 md:border md:border-gray-300 md:focus-within:border-gray-400 text-lg font-semibold" value={advantage} onChange={handleChangeAdvantage}></textarea>
                         </div>
                     </div>
 
@@ -269,7 +306,7 @@ export default function CreateProductMenu() {
                             <span>Pengaplikasian</span>
                         </div>
                         <div className="md:w-2/5 md:h-40">
-                            <textarea className="md:w-full md:h-full md:resize-none md:outline-none md:p-3 md:border md:border-gray-300 md:focus-within:border-gray-400 text-lg font-semibold" onChange={handleChangeApplication}></textarea>
+                            <textarea className="md:w-full md:h-full md:resize-none md:outline-none md:p-3 md:border md:border-gray-300 md:focus-within:border-gray-400 text-lg font-semibold" value={application} onChange={handleChangeApplication}></textarea>
                         </div>
                     </div>
 
@@ -278,7 +315,7 @@ export default function CreateProductMenu() {
                             <span>Komposisi</span>
                         </div>
                         <div className="md:w-2/5 md:h-40">
-                            <textarea className="md:w-full md:h-full md:resize-none md:outline-none md:p-3 md:border md:border-gray-300 md:focus-within:border-gray-400 text-lg font-semibold" onChange={handleChangeIngredient}></textarea>
+                            <textarea className="md:w-full md:h-full md:resize-none md:outline-none md:p-3 md:border md:border-gray-300 md:focus-within:border-gray-400 text-lg font-semibold" value={ingredient} onChange={handleChangeIngredient}></textarea>
                         </div>
                     </div>
 
@@ -294,7 +331,7 @@ export default function CreateProductMenu() {
                         <div className="md:w-full border md:border-gray-300 md:focus-within:border-gray-400">
                             <div className="flex flex-col px-4 py-2">
                                 <span className="text-sm text-gray-700">Harga</span>
-                                <input className="outline-none text-lg font-semibold" type={'number'} onChange={handleChangePrice} />
+                                <input className="outline-none text-lg font-semibold" value={price} type={'number'} onChange={handleChangePrice} />
                             </div>
                         </div>
                     </div>
@@ -306,7 +343,7 @@ export default function CreateProductMenu() {
                         <div className="md:w-full border md:border-gray-300 md:focus-within:border-gray-400">
                             <div className="flex flex-col px-4 py-2">
                                 <span className="text-sm text-gray-700">Stok</span>
-                                <input className="outline-none text-lg font-semibold" type={'number'} onChange={handleChangeStock} />
+                                <input className="outline-none text-lg font-semibold" value={stock} type={'number'} onChange={handleChangeStock} />
                             </div>
                         </div>
                     </div>
@@ -316,13 +353,18 @@ export default function CreateProductMenu() {
                 <div className="md:flex md:flex-col md:space-y-10 md:py-20 md:border md:border-gray-200 md:bg-white">
                     <div className="md:px-6 md:space-x-5">
                         <button className="md:w-60 md:py-5 md:rounded-full md:text-gray-700 md:border md:border-gray-300">DISCARD CHANGE</button>
-                        <button className="md:w-60 md:py-5 md:rounded-full md:text-white md:bg-black" onClick={handleCreateProduct}>CREATE PRODUCT</button>
+                        {
+                            tab === 'edit-product' ?
+                                <button className="md:w-60 md:py-5 md:rounded-full md:text-white md:bg-black" onClick={handleUpdateProduct}>UPDATE PRODUCT</button>
+                                :
+                                <button className="md:w-60 md:py-5 md:rounded-full md:text-white md:bg-black" onClick={handleCreateProduct}>CREATE PRODUCT</button>
+                        }
                     </div>
                 </div>
 
             </div>
 
-            {notification.isOpen && <Toast status={notification.status} message={notification.message} closeAction={handleToggleNotification} />}
+            {notification.isOpen && <Toast isOpen={notification?.isOpen} status={notification.status} message={notification.message} closeAction={handleToggleNotification} />}
         </>
     );
 }

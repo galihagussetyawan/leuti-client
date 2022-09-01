@@ -1,15 +1,16 @@
 import { useContext, useState } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
 import ProductService from "../../../services/product.service";
 
 import LocalCurrency from "../../../lib/helpers/local-currency.help";
-import dynamic from "next/dynamic";
 
 const Toast = dynamic(() => import('../../../components/commons/toast.component'));
 
 import DashboardContext from "../../../lib/context/dashboard.context";
+import Popover from "../../commons/popover.component";
 
 const imageLoader = ({ src }) => {
     return `${process.env.API_HOST}/api/image?img=${src}`;
@@ -55,12 +56,35 @@ export default function ProductListMenu() {
             })
     }
 
+    const handleEditProduct = (id) => {
+        return () => {
+
+            router.push({
+                query: {
+                    tab: 'edit-product',
+                    id
+                },
+            })
+        }
+    }
+
     const handleToggleNotification = () => {
 
         setNotification(prevState => ({
             ...prevState,
             isOpen: false,
         }))
+
+    }
+
+    const actionProduct = (id) => {
+
+        return (
+            <ul className="md:grid md:grid-cols-1 md:gap-2 md:divide-y">
+                <li className="py-1 md:hover:text-gray-400" onClick={handleEditProduct(id)}>Edit</li>
+                <li className="py-1 md:hover:text-gray-400">Remove</li>
+            </ul>
+        );
     }
 
     return (
@@ -103,8 +127,11 @@ export default function ProductListMenu() {
                                             <td scope="col" className="py-3 px-6">{LocalCurrency(data?.price)}</td>
                                             <td scope="col" className="py-3 px-6">{data?.stock}</td>
                                             <td scope="col" className="py-3 px-6">ACTIVE</td>
-                                            <td scope="col" className="py-3 px-6">
-                                                <button className="md:px-3 md:py-1 md:bg-gray-200" onClick={() => handleRemoveProduct(data.id)}>REMOVE</button>
+                                            <td scope="col" className="py-3 px-6 md:relative">
+                                                {/* <button className="md:px-3 md:py-1 md:bg-gray-200" onClick={() => handleRemoveProduct(data.id)}>REMOVE</button> */}
+                                                <Popover>
+                                                    {actionProduct(data?.id)}
+                                                </Popover>
                                             </td>
                                         </tr>
                                     )

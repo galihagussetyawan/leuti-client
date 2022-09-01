@@ -35,7 +35,7 @@ export default function Dropdown({ children, stateMenu, actionClose }) {
                             exit={{ height: 0 }}
                             transition={{
                                 ease: 'linear',
-                                duration: 0.4,
+                                duration: 0.3,
                             }}
                         >
                             <motion.div className="md:min-h-[200px] md:py-5"
@@ -44,7 +44,7 @@ export default function Dropdown({ children, stateMenu, actionClose }) {
                                 exit={{ opacity: 0 }}
                                 transition={{
                                     ease: 'linear',
-                                    duration: 0.4,
+                                    duration: 0.3,
                                 }}
                             >
                                 {children}

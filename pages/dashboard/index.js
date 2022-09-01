@@ -22,6 +22,11 @@ export default function Dashboard() {
     const { user } = useContext(AuthContext);
     const { tab } = router.query;
 
+    const styleActiveMenu = (id) => {
+
+        if (id === tab) return 'font-semibold underline';
+    }
+
     return (
         <>
             <Head>
@@ -51,18 +56,18 @@ export default function Dashboard() {
             <main className="md:flex">
 
                 {/* left column / menu */}
-                <div className="md:w-1/5 md:border-r md:py-20 md:px-10 ">
-                    <ul className=" md:space-y-10">
+                <div className="md:w-1/5 md:border-r md:py-20 md:px-10">
+                    <ul className="md:space-y-10 sticky top-40">
                         <li>
                             <Link href={{ pathname: '/dashboard' }}>OVERVIEW</Link>
                         </li>
                         <li className="md:space-y-3">
                             <span>PRODUCTS</span>
                             <ul className="md:ml-10 md:space-y-3 md:text-gray-500">
-                                <li>
+                                <li className={`${styleActiveMenu('product-list')}`}>
                                     <Link href={{ query: { tab: 'product-list' } }}>PRODUCT LIST</Link>
                                 </li>
-                                <li>
+                                <li className={`${styleActiveMenu('create-product')}`}>
                                     <Link href={{ query: { tab: 'create-product' } }}>CREATE PRODUCT</Link>
                                 </li>
                             </ul>
@@ -70,7 +75,7 @@ export default function Dashboard() {
                         <li className="md:space-y-3">
                             <span>AGENTS</span>
                             <ul className="md:ml-10 md:space-y-3 md:text-gray-500">
-                                <li>
+                                <li className={`${styleActiveMenu('agent-list')}`}>
                                     <Link href={{ query: { tab: 'agent-list' } }}>AGENT LIST</Link>
                                 </li>
                                 <li>AGENT RANKING</li>
@@ -79,8 +84,15 @@ export default function Dashboard() {
                         <li className="md:space-y-3">
                             <span>ORDERS</span>
                             <ul className="md:ml-10 md:space-y-3 md:text-gray-500">
-                                <li>NEW ORDER</li>
-                                <li>ORDER HISTORY</li>
+                                <li className={`${styleActiveMenu('new-orders')}`}>
+                                    <Link href={{ query: { tab: 'new-orders' } }}>NEW ORDERS</Link>
+                                </li>
+                                <li className={`${styleActiveMenu('now-orders')}`}>
+                                    <Link href={{ query: { tab: 'now-orders' } }}>NOW ORDERS</Link>
+                                </li>
+                                <li className={`${styleActiveMenu('history-orders')}`}>
+                                    <Link href={{ query: { tab: 'history-orders' } }}>HiSTORY ORDERS</Link>
+                                </li>
                             </ul>
                         </li>
                     </ul>
@@ -108,15 +120,6 @@ export async function getServerSideProps(context) {
     let pointList = [];
     let ordersAllList = [];
 
-    const tabQuery = () => {
-
-        if (tab === 'new-order-tab') {
-            return 'created'
-        }
-
-        return null;
-    }
-
     try {
 
         const cookies = await CookiesService.getCookies('user', req, res);
@@ -141,7 +144,7 @@ export async function getServerSideProps(context) {
                 user = cookiesParsed;
                 userList = await (await UserService.getUsers(req, res))?.data?.data;
                 pointList = await (await PointService.getPoints(req, res))?.data?.data;
-                ordersAllList = await (await OrderService.getAllOrders(tabQuery(), req, res))?.data?.data;
+                ordersAllList = await (await OrderService.getAllOrders(tab, req, res))?.data?.data;
             }
         }
 

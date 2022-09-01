@@ -60,7 +60,7 @@ export default function User({ userData, userDetail, point }) {
     const handleClassName = (tab, tabId) => {
         if (tab === null) return 'md:h-16 h-14 flex justify-between items-center md:border-y md:hover:font-bold md:cursor-pointer md:border-gray-300 md:font-semibold';
 
-        return `md:h-16 h-14 flex justify-between items-center md:border-y md:hover:font-bold md:cursor-pointer md:border-gray-300 ${tab === tabId && 'md:font-semibold'}`;
+        return `md:h-16 h-14 flex justify-between items-center md:hover:font-bold md:cursor-pointer ${tab === tabId && 'md:font-semibold'}`;
     }
 
     const handleLogout = () => {
@@ -151,7 +151,7 @@ export default function User({ userData, userDetail, point }) {
 
                     {/* menu list */}
                     <div className={`md:w-2/6 md:block mt-10 ${isOpen ? 'hidden' : 'block'}`}>
-                        <ul>
+                        <ul className=" divide-y">
                             <li id="account-tab" className={handleClassName(tab, 'account-tab')} onClick={handleClickTab('account-tab')}>{menuItem('ACCOUNT')}</li>
                             <li id="address-tab" className={handleClassName(tab, 'address-tab')} onClick={handleClickTab('address-tab')}>{menuItem('ACCOUNT INFORMATION')}</li>
                             <li id="order-tab" className={handleClassName(tab, 'order-tab')} onClick={handleClickTab('order-tab')}>{menuItem('ORDER')}</li>
@@ -179,8 +179,8 @@ export async function getServerSideProps(context) {
     const { req, res } = context;
     let isLogin = false;
     let user = {};
-    let userData;
-    let point;
+    let userData = null;
+    let point = 0;
     let carts = [];
     let userDetail = null;
     let orderList = [];
@@ -193,19 +193,25 @@ export async function getServerSideProps(context) {
 
             const cookiesParsed = JSON.parse(cookies);
 
-            if (cookiesParsed.accessToken) {
+            if (cookiesParsed?.accessToken) {
                 user = cookiesParsed;
                 isLogin = true;
 
-                userData = await UserService.getUserById(user.userId);
-                point = await PoinService.getPointByUser(cookiesParsed.userId, req, res);
+                userData = await (await UserService.getUserById(user.userId))?.data?.data;
+                point = await (await PoinService.getPointByUser(cookiesParsed.userId, req, res))?.data?.data?.point;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
-                userDetail = userData?.data?.data?.detail;
+                userDetail = userData?.detail;
                 orderList = await (await OrderService.getOrdersByUser(req, res))?.data?.data;
             }
         }
 
     } catch (error) {
+
+        if (error?.code === 'ECONNREFUSED') {
+            return {
+                notFound: true,
+            }
+        }
 
         if (error) {
             isLogin = false;
@@ -216,9 +222,9 @@ export async function getServerSideProps(context) {
         props: {
             isLogin,
             user,
-            userData: userData.data.data,
+            userData,
             userDetail,
-            point: point?.data?.data?.point,
+            point,
             carts,
             orderList,
         }

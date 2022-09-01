@@ -152,7 +152,7 @@ export default function Cart({ carts, totalPrice }) {
                         </div>
 
                         {
-                            carts.map((data, index) => {
+                            carts?.map((data, index) => {
                                 return (
                                     <div key={index} className='py-5 border-b border-gray-300'>
                                         <div className=' w-full flex justify-between'>
@@ -169,7 +169,7 @@ export default function Cart({ carts, totalPrice }) {
                                                 <div className=' flex flex-col'>
                                                     <span className=' md:text-xl'>{data?.product?.name}</span>
                                                     {/* mobile version */}
-                                                    <span className='md:hidden flex text-xl font-semibold'>{LocalCurrency(data?.product?.price)}</span>
+                                                    <span className='md:hidden'>{LocalCurrency(data?.product?.price)}</span>
                                                     {/* end of mobile version */}
                                                 </div>
                                             </div>
@@ -225,7 +225,7 @@ export default function Cart({ carts, totalPrice }) {
                         </div>
                         <div className=' py-5 border-b border-gray-300'>
                             <div className='flex justify-between'>
-                                <span>Subtotal ({carts.length} item)</span>
+                                <span>Subtotal ({carts?.length} item)</span>
                                 <span>{LocalCurrency(totalPrice)}</span>
                             </div>
                         </div>
@@ -284,7 +284,7 @@ export async function getServerSideProps(context) {
     }
 
     // handle tota price on cart
-    if (carts.length > 0) {
+    if (carts?.length > 0) {
         totalPrice = carts?.map(data => data?.amount).reduce((prev, next) => prev + next);
     }
 

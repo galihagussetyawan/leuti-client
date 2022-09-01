@@ -49,24 +49,21 @@ export default function OverviewMenu() {
     const orderStatusTextColor = (status) => {
 
         if (status === 'created') {
+            return 'text-blue-500';
+        }
+
+        if (status === 'unpaid' || status === 'in-packaging' || status === 'in-shipping') {
+            return 'text-orange-500';
+        }
+
+        if (status === 'approve' || status === 'completed') {
             return 'text-green-500';
         }
 
-        if (status === 'unpaid') {
-            return 'text-orange-500';
+        if (status === 'canceled') {
+            return 'text-red-500';
         }
-    }
 
-    const actionOrder = (status, id) => {
-
-        if (status === 'unpaid') {
-            return (
-                <div className=" grid grid-cols-1 gap-2">
-                    <button className=" uppercase bg-green-500 p-3 text-white" onClick={handleApproveOrder(id)}>Approve</button>
-                    <button className=" uppercase bg-red-500 p-3 text-white">Cancel</button>
-                </div>
-            )
-        }
     }
 
     return (
@@ -97,7 +94,7 @@ export default function OverviewMenu() {
 
                 {/* new orders section */}
                 <div className="md:space-y-10">
-                    <p className="md:border-b md:border-gray-300">NEW ORDERS</p>
+                    <p className="md:border-b md:border-gray-300md:min-h-screen">NEW ORDERS</p>
                     <div className="md:overflow-auto">
                         <table className="w-full text-left text-gray-500">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -120,9 +117,6 @@ export default function OverviewMenu() {
                                     <th scope="col" className="py-3 px-6">
                                         TOTAL
                                     </th>
-                                    <th scope="col" className="py-3 px-6">
-                                        ACTION
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -136,14 +130,6 @@ export default function OverviewMenu() {
                                                 <td className="py-8 px-6">{data?.carts.map(data => data?.quantity).reduce((prev, next) => prev + next)} Items</td>
                                                 <td className={`py-8 px-6 uppercase font-semibold ${orderStatusTextColor(data?.status)}`}>{data?.status}</td>
                                                 <td className="py-8 px-6">{LocalCurrency(data?.amount)}</td>
-                                                <td className="py-8 px-6">
-                                                    {/* <button>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                                                            <path fillRule="evenodd" d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" clipRule="evenodd" />
-                                                        </svg>
-                                                    </button> */}
-                                                    {actionOrder(data?.status, data?.id)}
-                                                </td>
                                             </tr>
                                         );
                                     })

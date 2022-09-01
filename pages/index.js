@@ -84,6 +84,12 @@ export async function getServerSideProps(context) {
 
     } catch (error) {
 
+        if (error?.code === 'ECONNREFUSED') {
+            return {
+                notFound: true,
+            }
+        }
+
         if (error) {
             isLogin = false;
         }

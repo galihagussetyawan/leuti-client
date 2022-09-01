@@ -244,7 +244,7 @@ export default function Product({ isLogin, productData, inCart }) {
             <Footer />
 
             {/* floating section */}
-            <div className="w-full md:hidden sticky left-0 bottom-0 z-10 flex flex-col px-5 py-2 gap-1 bg-white">
+            <div className="w-full md:hidden sticky left-0 bottom-0 z-0 flex flex-col px-5 py-2 gap-1 bg-white">
                 <span className="font-semibold">Stock {stock}</span>
                 <div className="flex gap-3">
                     <div className="w-2/5 h-[54px] overflow-hidden flex justify-between border rounded-full border-black">

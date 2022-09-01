@@ -17,12 +17,21 @@ export default function OrderListMenu() {
     const statusTextColor = (status) => {
 
         if (status === 'created') {
+            return 'text-blue-500';
+        }
+
+        if (status === 'unpaid' || status === 'in-packaging' || status === 'in-shipping') {
+            return 'text-orange-500';
+        }
+
+        if (status === 'approve' || status === 'completed') {
             return 'text-green-500';
         }
 
-        if (status === 'unpaid') {
-            return 'text-orange-500';
+        if (status === 'canceled') {
+            return 'text-red-500';
         }
+
     }
 
     const convertDate = (date) => {
@@ -59,7 +68,7 @@ export default function OrderListMenu() {
                             orderList?.map((data, index) => {
                                 return (
                                     <tr key={index}
-                                        className="border-b md:hover:cursor-pointer"
+                                        className="border-b md:hover:cursor-pointer md:hover:text-gray-600"
                                         onClick={handleNavigate({
                                             pathname: '/order/[orderid]',
                                             query: {

@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import UserContext from "../../../lib/context/user.context";
 
-export default function AccountInformationMenu({ data }) {
+export default function AccountInformationMenu() {
 
-    const [country, setCountry] = useState(data?.country);
-    const [province, setProvince] = useState(data?.province);
-    const [city, setCity] = useState(data?.city);
-    const [districts, setDistricts] = useState(data?.districts);
-    const [village, setVillage] = useState(data?.village);
-    const [address, setAddress] = useState(data?.address);
-    const [postalCode, setPostalCode] = useState(data?.postalCode);
-    const [phone, setPhone] = useState(data?.phone);
+    const { userDetail } = useContext(UserContext);
+
+    const [country, setCountry] = useState(userDetail?.country);
+    const [province, setProvince] = useState(userDetail?.province);
+    const [city, setCity] = useState(userDetail?.city);
+    const [districts, setDistricts] = useState(userDetail?.districts);
+    const [village, setVillage] = useState(userDetail?.village);
+    const [address, setAddress] = useState(userDetail?.address);
+    const [postalCode, setPostalCode] = useState(userDetail?.postalCode);
+    const [phone, setPhone] = useState(userDetail?.phone);
 
     const handleChangeCountry = event => {
         setCountry(event.currentTarget.value);

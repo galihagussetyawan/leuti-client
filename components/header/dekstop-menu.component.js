@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRouter } from "next/router";
 
 import AuthService from "../../services/auth.service";
@@ -12,7 +13,6 @@ import AuthContext from "../../lib/context/auth.context";
 import CartContext from "../../lib/context/cart.context";
 
 import LocalCurrency from "../../lib/helpers/local-currency.help";
-import Image from "next/image";
 
 const imageLoader = ({ src }) => {
     return `${process.env.API_HOST}/api/image?img=${src}`;
@@ -64,6 +64,76 @@ export default function DekstopMenu({ toggleLogin, height }) {
         return () => router.push(url);
     }
 
+    // <================================================================================>
+    //menu component content
+    const newsContentMenu = () => {
+        return (
+            <div className="md:grid md:grid-cols-3 md:gap-10 md:py-10">
+
+                <Link href={'https://biz.kompas.com/read/2022/06/22/190000328/hasil-uji-sampling--98-persen-pengguna-merasa-cocok-pakai-serum-leuti'}>
+                    <a target={'_blank'} className="flex md:items-center md:space-x-3 md:px-10 md:py-5 md:hover:cursor-pointer md:hover:bg-gray-100">
+                        <div className=" md:min-w-[120px] md:min-h-[80px] md:relative bg-gray-200">
+                            <Image
+                                quality={10}
+                                layout={'fill'}
+                                src={'/news-kompas-dekstop.png'}
+                            />
+                        </div>
+                        <div className=" grid grid-cols-1 gap-1">
+                            <p>Hasil Uji Sampling: 98 Persen Pengguna Merasa Cocok Pakai Serum LEUTI</p>
+                            <p className=" md:text-sm md:text-gray-400">https://biz.kompas.com/read/2022/06/22/190000328/hasil-uji-sampling--98-persen-pengguna-merasa-cocok-pakai-serum-leuti</p>
+                        </div>
+                    </a>
+                </Link>
+
+            </div>
+        );
+    }
+
+    const faqContentMenu = () => {
+        return (
+            <div className="md:grid md:grid-cols-4">
+
+                <div className="flex flex-col space-y-5">
+                    <span className="md:text-xl">Product</span>
+                    <ul>
+                        <li>Coming Soon Product FAQ</li>
+                        <li>Coming Soon Product FAQ</li>
+                        <li>Coming Soon Product FAQ</li>
+                    </ul>
+                </div>
+
+                <div className="flex flex-col space-y-5">
+                    <span className="md:text-xl">Product</span>
+                    <ul>
+                        <li>Coming Soon Product FAQ</li>
+                        <li>Coming Soon Product FAQ</li>
+                        <li>Coming Soon Product FAQ</li>
+                    </ul>
+                </div>
+
+                <div className="flex flex-col space-y-5">
+                    <span className="md:text-xl">Product</span>
+                    <ul>
+                        <li>Coming Soon Product FAQ</li>
+                        <li>Coming Soon Product FAQ</li>
+                        <li>Coming Soon Product FAQ</li>
+                    </ul>
+                </div>
+
+                <div className="flex flex-col space-y-5">
+                    <span className="md:text-xl">Product</span>
+                    <ul>
+                        <li>Coming Soon Product FAQ</li>
+                        <li>Coming Soon Product FAQ</li>
+                        <li>Coming Soon Product FAQ</li>
+                    </ul>
+                </div>
+
+            </div>
+        )
+    }
+
     return (
         <div className="md:h-16 md:px-10 hidden md:flex md:justify-between md:items-center md:border-b md:border-gray-300">
 
@@ -95,7 +165,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
                         actionClose={handleCloseOutsideDropdown}
                         top={height}
                     >
-                        News Coming Soon
+                        {newsContentMenu()}
                     </Dropdown>
                 </li>
                 <li id="story-menu" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
@@ -110,7 +180,16 @@ export default function DekstopMenu({ toggleLogin, height }) {
                 </li>
                 <li>PROMO</li>
                 <li>RANK</li>
-                <li>FAQ</li>
+                <li id="faq-menu" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
+                    <span className={`${stateMenu['faq-menu'] && 'md:font-bold'} md:cursor-pointer md:py-7 md:hover:font-semibold`}>FAQ</span>
+                    <Dropdown
+                        stateMenu={stateMenu['faq-menu']}
+                        actionClose={handleCloseOutsideDropdown}
+                        top={height}
+                    >
+                        {faqContentMenu()}
+                    </Dropdown>
+                </li>
                 <li>PAYMENT</li>
                 <li>SALES</li>
             </ul>

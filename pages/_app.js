@@ -8,13 +8,13 @@ import OrderContext from '../lib/context/order.context';
 
 export default function MyApp({ Component, pageProps }) {
 
-  const { isLogin, user, isAdmin, carts, productList, pointList, userList, orderList, ordersAllList, order } = pageProps;
+  const { isLogin, user, isAdmin, carts, productList, pointList, userList, userDetail, orderList, ordersAllList, order } = pageProps;
 
   return (
     <AuthContext.Provider value={{ isLogin, user, isAdmin }}>
       <CartContext.Provider value={{ carts }}>
         <DashboardContext.Provider value={{ productList, pointList, userList, ordersAllList }}>
-          <UserContext.Provider value={{ orderList }}>
+          <UserContext.Provider value={{ orderList, userDetail }}>
             <OrderContext.Provider value={{ order }}>
 
               <Head>

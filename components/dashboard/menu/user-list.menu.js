@@ -45,7 +45,6 @@ export default function UserListMenu() {
 
     };
 
-
     return (
         <>
             <div className="md:w-full md:min-h-screen md:space-y-10 md:h-96 md:px-5">
@@ -99,11 +98,11 @@ export default function UserListMenu() {
                                             <td className="md:py-3 md:px-6">{data?.username}</td>
                                             <td className="md:py-3 md:px-6">{data?.email}</td>
                                             <td className="md:py-3 md:px-6">{data?.detail?.phone}</td>
-                                            <td className="md:py-3 md:px-6">{data?.detail?.country}</td>
-                                            <td className="md:py-3 md:px-6">{data?.detail?.province}</td>
-                                            <td className="md:py-3 md:px-6">{data?.detail?.city}</td>
-                                            <td className="md:py-3 md:px-6">{data?.detail?.districts}</td>
-                                            <td className="md:py-3 md:px-6">{data?.detail?.village}</td>
+                                            <td className="md:py-3 md:px-6 capitalize">{data?.detail?.country}</td>
+                                            <td className="md:py-3 md:px-6 capitalize">{data?.detail?.province}</td>
+                                            <td className="md:py-3 md:px-6 capitalize">{data?.detail?.city}</td>
+                                            <td className="md:py-3 md:px-6 capitalize">{data?.detail?.districts}</td>
+                                            <td className="md:py-3 md:px-6 capitalize">{data?.detail?.village}</td>
                                             <td className="md:py-3 md:px-6">{data?.detail?.postalCode}</td>
                                             <td className="md:py-3 md:px-6">{data?.detail?.address}</td>
                                         </tr>
