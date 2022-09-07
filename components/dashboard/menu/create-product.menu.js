@@ -218,19 +218,38 @@ export default function CreateProductMenu() {
         setAddOns();
     }
 
-    const handleSaveUpdateDiscount = () => {
-
-        DiscountService.updateDiscountById(discountId, minPurchase, bonusItem, addOns)
-            .then(res => console.log(res?.data?.data))
-            .catch(err => console.log(err?.response))
-    }
-
     const handleToggleAddDiscount = () => {
         setIsAddDiscount(!isAddDiscount);
         setMinPurchase();
-        setDiscountPrice();
         setBonusItem();
         setAddOns();
+    }
+
+    const handleSaveUpdateDiscount = () => {
+
+        DiscountService.updateDiscountById(discountId, minPurchase, bonusItem, addOns)
+            .then(res => {
+
+                router.replace(router.asPath)
+                    .then(() => {
+
+                        setNotification({
+                            isOpen: true,
+                            status: 'success',
+                            message: res?.data?.message,
+                        })
+
+                        handleDiscardUpdateDiscount();
+                    })
+            })
+            .catch(err => {
+
+                setNotification({
+                    isOpen: true,
+                    status: 'error',
+                    message: err?.response?.data?.error_message,
+                })
+            })
     }
 
     const handleAddDiscount = () => {
@@ -258,10 +277,30 @@ export default function CreateProductMenu() {
         return () => {
 
             DiscountService.deleteDiscountById(id)
-                .then(res => console.log(res?.data?.data))
-                .catch(err => console.log(err));
+                .then(res => {
 
-            router.replace(router.asPath);
+                    router.replace(router.asPath)
+                        .then(() => {
+
+                            setNotification({
+                                isOpen: true,
+                                status: 'success',
+                                message: res?.data?.message
+                            })
+
+                        })
+
+                })
+                .catch(err => {
+                    router.replace(router.asPath);
+
+                    setNotification({
+                        isOpen: true,
+                        status: 'error',
+                        message: err?.response.data?.error_message,
+                    })
+
+                });
         }
     }
 
