@@ -118,7 +118,7 @@ export default function LoginModal({ closeAction, isOpen }) {
                                 <div className=" md:flex md:w-4/5 md:flex-col space-y-4">
 
                                     {/* input form username */}
-                                    <div className="md:w-full border border-black">
+                                    <div className="md:w-full border border-gray-400 focus-within:border-gray-700">
                                         <div className="flex flex-col px-4 py-2">
                                             <span className="text-sm text-gray-700">Username</span>
                                             <input className="outline-none text-lg font-semibold" onChange={handleChangeUsername} />
@@ -127,7 +127,7 @@ export default function LoginModal({ closeAction, isOpen }) {
                                     {/* end of input form username */}
 
                                     {/* input form password */}
-                                    <div className="md:w-full border border-black">
+                                    <div className="md:w-full border border-gray-400 focus-within:border-gray-700">
                                         <div className="flex flex-col px-4 py-2">
                                             <span className="text-sm text-gray-700">Password</span>
                                             <div className="md:flex">

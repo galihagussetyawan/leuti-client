@@ -351,8 +351,8 @@ export default function OrderListMenu() {
                                 (isSearch ? searchData : ordersAllList)?.map((data, index) => {
                                     return (
                                         <tr key={index} className=" border-b">
-                                            <td className=" px-5 py-3">{convertDate(data?.createdAt)}</td>
-                                            <td className=" px-5 py-3">{data?.id}</td>
+                                            <td className=" max-w-[100px] px-5 py-3">{convertDate(data?.createdAt)}</td>
+                                            <td className=" max-w-[100px] px-5 py-3">{data?.id}</td>
                                             <td className=" px-5 py-3">{data?.user?.username}</td>
                                             <td className=" px-5 py-3">{data.carts.map(data => data.quantity).reduce((prev, next) => prev + next)} item</td>
                                             <td className=" max-w-[200px] px-5 py-3">
@@ -365,7 +365,7 @@ export default function OrderListMenu() {
                                                                     <span>{LocalCurrency(cart?.product?.price)}</span>
                                                                     <span>{cart?.quantity} items</span>
                                                                 </div>
-                                                                <span className=" w-full m-auto text-end">{LocalCurrency(cart?.amount)}</span>
+                                                                <p className=" w-full m-auto text-end">{LocalCurrency(cart?.amount)}</p>
                                                             </div>
                                                         )
                                                     })

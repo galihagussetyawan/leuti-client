@@ -41,7 +41,7 @@ export default function Collapse({ title, children }) {
                 }
 
             </div>
-            {open && <p className="flex flex-col md:mt-3 mt-3 md:gap-2 gap-3 md:cursor-pointer">{children}</p>}
+            {open && <div className="flex flex-col md:mt-3 mt-3 md:gap-2 gap-3 md:cursor-pointer">{children}</div>}
         </div>
     );
 }

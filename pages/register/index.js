@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 
 import UserService from '../../services/user.service';
 import CookiesService from "../../services/cookies.service";
 
-import Footer from "../../components/footer.component";
+const Footer = dynamic(() => import('../../components/footer.component'));
 import Header from "../../components/header.component";
 
 export default function Register() {
@@ -83,6 +84,7 @@ export default function Register() {
                 <div className="md:w-2/5 md:h-[600px] hidden md:flex md:relative bg-gray-100">
                     <Image
                         src={'/images2.jpg'}
+                        alt="Leuti Perfect Sublimate Serum"
                         layout='fill'
                         loading='lazy'
                         objectFit='cover'

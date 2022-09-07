@@ -22,28 +22,12 @@ export default function User({ userData, userDetail, point }) {
     const router = useRouter();
     const { menu } = router.query;
 
-    const [tab, setTab] = useState('account-tab');
-    const [isOpen, setIsOpen] = useState(false);
-
-    useEffect(() => {
-
-        if (menu === 'address-tab') setTab('address-tab');
-        if (menu === 'order-tab') setTab('order-tab');
-
-    }, [menu])
+    const [tab, setTab] = useState(!menu ? 'account-tab' : menu);
+    const [isOpen, setIsOpen] = useState(!menu ? false : true);
 
     const handleClickTab = (tab) => {
 
         return () => {
-
-            if (tab === 'account-tab') {
-                router.push('/user')
-                    .then(() => {
-                        setTab(tab);
-                        setIsOpen(true);
-                    })
-                return;
-            }
 
             router.push({
                 query: {
@@ -51,9 +35,10 @@ export default function User({ userData, userDetail, point }) {
                 }
             })
                 .then(() => {
-                    setTab(tab);
                     setIsOpen(true);
+                    setTab(tab);
                 })
+
         }
     }
 
@@ -93,18 +78,43 @@ export default function User({ userData, userDetail, point }) {
         })
     }
 
+    const navigationBarTitle = () => {
+
+        if (menu === 'account-tab') {
+            return 'Account';
+        }
+
+        if (menu === 'address-tab') {
+            return 'Account Information';
+        }
+    }
+
+    //headers title
+    const headerTitle = () => {
+
+        if (tab === 'account-tab') return 'Account | Leuti';
+        if (tab === 'address-tab') return 'Account Information | Leuti';
+        if (tab === 'order-tab') return 'Order List | Leuti';
+
+        return 'Account | Leuti';
+    }
+
     return (
         <>
-            <Head></Head>
+            <Head>
+                <title>{headerTitle()}</title>
+            </Head>
+
             <Header />
             <main className="md:w-4/5 md:space-y-9 space-y-0 m-auto md:py-10 px-5">
 
                 {/* back button on mobile view */}
-                <button className={`${isOpen ? 'flex' : 'hidden'} md:hidden flex space-x-1`} onClick={handleBackMenu}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <button className={`${isOpen ? 'flex' : 'hidden'} md:hidden flex items-center space-x-1`} onClick={handleBackMenu}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                     </svg>
-                    <span>Back</span>
+                    {/* <span>Back</span> */}
+                    <p>{navigationBarTitle()}</p>
                 </button>
                 {/* end back button on mobile view */}
 
@@ -198,7 +208,7 @@ export async function getServerSideProps(context) {
                 isLogin = true;
 
                 userData = await (await UserService.getUserById(user.userId))?.data?.data;
-                point = await (await PoinService.getPointByUser(cookiesParsed.userId, req, res))?.data?.data?.point;
+                point = await (await PoinService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data?.point;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
                 userDetail = userData?.detail;
                 orderList = await (await OrderService.getOrdersByUser(req, res))?.data?.data;

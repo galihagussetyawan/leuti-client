@@ -11,6 +11,10 @@ export default function Tab({ data }) {
 
     const { menu } = router.query;
 
+    if (menu === 'account-tab') {
+        return <AccountMenu data={data} />
+    }
+
     if (menu === 'address-tab') {
         return <AccountInformationMenu />
     }

@@ -56,13 +56,13 @@ export default function ProductListMenu() {
             })
     }
 
-    const handleEditProduct = (id) => {
+    const handleEditProduct = (productid) => {
         return () => {
 
             router.push({
                 query: {
                     tab: 'edit-product',
-                    id
+                    productid
                 },
             })
         }
@@ -87,16 +87,27 @@ export default function ProductListMenu() {
         );
     }
 
+    const convertDate = (date) => {
+        const newDate = new Date(parseInt(date));
+
+        return newDate.toLocaleString('id', {
+            dateStyle: 'medium',
+            timeStyle: 'long',
+        })
+    }
+
+
     return (
         <>
             <div className="md:min-h-screen md:space-y-10 md:px-5">
                 <p className="md:border-b md:border-gray-300">PRODUCT LIST</p>
                 <div className="md:bg-white md:border md:border-gray-200">
-                    <table className="md:w-full md:text-left">
+                    <table className="md:w-full table-auto md:text-left">
                         <thead className=" text-xs uppercase text-gray-700">
                             <tr>
                                 <th scope="col" className="md:w-2/5 py-3 px-6">product info</th>
-                                <th scope="col" className="py-3 px-6">created at</th>
+                                <th scope="col" className="py-3 px-6">createdat</th>
+                                <th scope="col" className="py-3 px-6">updatedat</th>
                                 <th scope="col" className="py-3 px-6">price</th>
                                 <th scope="col" className="py-3 px-6">stock</th>
                                 <th scope="col" className="py-3 px-6">status</th>
@@ -123,12 +134,12 @@ export default function ProductListMenu() {
                                                     <p className=" md:text-gray-500">{data?.description}</p>
                                                 </div>
                                             </td>
-                                            <td scope="col" className="py-3 px-6">12 Jun 2022</td>
+                                            <td scope="col" className="py-3 px-6">{convertDate(data?.createdAt)}</td>
+                                            <td scope="col" className="py-3 px-6">{convertDate(data?.updatedAt)}</td>
                                             <td scope="col" className="py-3 px-6">{LocalCurrency(data?.price)}</td>
                                             <td scope="col" className="py-3 px-6">{data?.stock}</td>
-                                            <td scope="col" className="py-3 px-6">ACTIVE</td>
+                                            <td scope="col" className="py-3 px-6">{data?.status ? 'ACTIVE' : 'HIDDEN'}</td>
                                             <td scope="col" className="py-3 px-6 md:relative">
-                                                {/* <button className="md:px-3 md:py-1 md:bg-gray-200" onClick={() => handleRemoveProduct(data.id)}>REMOVE</button> */}
                                                 <Popover>
                                                     {actionProduct(data?.id)}
                                                 </Popover>

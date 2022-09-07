@@ -37,7 +37,7 @@ export default function OrderListMenu() {
     const convertDate = (date) => {
         const newDate = new Date(parseInt(date));
 
-        return newDate?.toLocaleString(router.locale, {
+        return newDate?.toLocaleString('id', {
             dateStyle: 'medium',
         })
     }

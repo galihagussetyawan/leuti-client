@@ -10,17 +10,20 @@ import Caroussell from '../components/carousell.component';
 import authService from '../services/auth.service';
 import ProductService from '../services/product.service';
 import CartService from '../services/cart.service';
+import PointService from '../services/point.service';
 
 const ProductDiscover = dynamic(() => import('../components/home/product-discover.component'));
 const ProductHorizontalDiscover = dynamic(() => import('../components/home/product-horizontal-discover.component'));
 const Footer = dynamic(() => import('../components/footer.component'));
 
 export default function Home({ productList }) {
+
     return (
         <>
             <Head>
-                <title>LEUTI.ID | Leuti Perfect Sublimate Serum</title>
-                <meta name="description" content="Leuti" />
+                <title>Leuti Perfect Sublimate Serum</title>
+                <meta name="description" content="Mencari produk skincare yang cocok dengan kondisi kulit ibarat mencari tambatan hati. Pasalnya, produk skincare yang bagus sekalipun belum tentu cocok" />
+                <meta name="keyword" content="produk, serum, kulit, produk perawatan kulit, leuti, skincare, skincare lokal, leuti skincare" />
             </Head>
 
             <Header />
@@ -45,7 +48,6 @@ export default function Home({ productList }) {
                         />
                     })
                 }
-                {/* <ProductDisplay /> */}
                 <ProductHorizontalDiscover />
 
             </main>
@@ -58,25 +60,28 @@ export default function Home({ productList }) {
 export async function getServerSideProps(context) {
 
     const { req, res } = context;
+
     let isLogin = false;
     let user = {};
     let isAdmin = false;
-    let productList;
+    let productList = null;
     let carts = [];
+    let point = 0;
 
     try {
 
-        productList = await ProductService.getProducts();
+        productList = await (await ProductService.getProducts())?.data?.data;
         const cookies = await CookiesService.getCookies('user', req, res);
-        isAdmin = await authService.isAdmin(JSON.parse(cookies).accessToken);
+        isAdmin = await authService.isAdmin(JSON.parse(cookies)?.accessToken);
 
         if (cookies) {
 
             const cookiesParsed = JSON.parse(cookies);
 
-            if (cookiesParsed.accessToken) {
+            if (cookiesParsed?.accessToken) {
                 user = cookiesParsed;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
+                point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data?.point;
                 isLogin = true;
             }
 
@@ -100,8 +105,9 @@ export async function getServerSideProps(context) {
             isLogin,
             user,
             isAdmin,
-            productList: !productList?.data?.data ? null : productList?.data?.data,
+            productList,
             carts,
+            point,
         }
     }
 }

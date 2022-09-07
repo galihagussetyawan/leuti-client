@@ -14,6 +14,8 @@ import CartContext from "../../lib/context/cart.context";
 
 import LocalCurrency from "../../lib/helpers/local-currency.help";
 
+const NewsContentDekstopMenu = dynamic(() => import('./dekstop-menu-content/news.content.dekstop.menu'));
+
 const imageLoader = ({ src }) => {
     return `${process.env.API_HOST}/api/image?img=${src}`;
 }
@@ -67,71 +69,14 @@ export default function DekstopMenu({ toggleLogin, height }) {
     // <================================================================================>
     //menu component content
     const newsContentMenu = () => {
-        return (
-            <div className="md:grid md:grid-cols-3 md:gap-10 md:py-10">
-
-                <Link href={'https://biz.kompas.com/read/2022/06/22/190000328/hasil-uji-sampling--98-persen-pengguna-merasa-cocok-pakai-serum-leuti'}>
-                    <a target={'_blank'} className="flex md:items-center md:space-x-3 md:px-10 md:py-5 md:hover:cursor-pointer md:hover:bg-gray-100">
-                        <div className=" md:min-w-[120px] md:min-h-[80px] md:relative bg-gray-200">
-                            <Image
-                                quality={10}
-                                layout={'fill'}
-                                src={'/news-kompas-dekstop.png'}
-                            />
-                        </div>
-                        <div className=" grid grid-cols-1 gap-1">
-                            <p>Hasil Uji Sampling: 98 Persen Pengguna Merasa Cocok Pakai Serum LEUTI</p>
-                            <p className=" md:text-sm md:text-gray-400">https://biz.kompas.com/read/2022/06/22/190000328/hasil-uji-sampling--98-persen-pengguna-merasa-cocok-pakai-serum-leuti</p>
-                        </div>
-                    </a>
-                </Link>
-
-            </div>
-        );
+        return <NewsContentDekstopMenu />
     }
 
-    const faqContentMenu = () => {
+    const productsContentMenu = () => {
+
         return (
-            <div className="md:grid md:grid-cols-4">
-
-                <div className="flex flex-col space-y-5">
-                    <span className="md:text-xl">Product</span>
-                    <ul>
-                        <li>Coming Soon Product FAQ</li>
-                        <li>Coming Soon Product FAQ</li>
-                        <li>Coming Soon Product FAQ</li>
-                    </ul>
-                </div>
-
-                <div className="flex flex-col space-y-5">
-                    <span className="md:text-xl">Product</span>
-                    <ul>
-                        <li>Coming Soon Product FAQ</li>
-                        <li>Coming Soon Product FAQ</li>
-                        <li>Coming Soon Product FAQ</li>
-                    </ul>
-                </div>
-
-                <div className="flex flex-col space-y-5">
-                    <span className="md:text-xl">Product</span>
-                    <ul>
-                        <li>Coming Soon Product FAQ</li>
-                        <li>Coming Soon Product FAQ</li>
-                        <li>Coming Soon Product FAQ</li>
-                    </ul>
-                </div>
-
-                <div className="flex flex-col space-y-5">
-                    <span className="md:text-xl">Product</span>
-                    <ul>
-                        <li>Coming Soon Product FAQ</li>
-                        <li>Coming Soon Product FAQ</li>
-                        <li>Coming Soon Product FAQ</li>
-                    </ul>
-                </div>
-
-            </div>
-        )
+            <div></div>
+        );
     }
 
     return (
@@ -142,7 +87,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
             {/* menu */}
             <ul className="md:flex md:justify-between md:space-x-5">
                 <li className="md:hover:font-semibold">
-                    <a className="md:hover:cursor-pointer" onClick={handleNavigate('/shop')}>SHOP</a>
+                    <Link href={{ pathname: '/shop' }} shallow={false} className="md:hover:cursor-pointer">PRODUCTS</Link>
                 </li>
 
                 {/* reward menu */}
@@ -175,22 +120,11 @@ export default function DekstopMenu({ toggleLogin, height }) {
                         actionClose={handleCloseOutsideDropdown}
                         top={height}
                     >
-                        <a className="md:hover:cursor-pointer" onClick={handleNavigate('/story')}>Stories Leuti Perfect Sublimate Serum</a>
+                        <Link href={{ pathname: '/story' }} shallow={false} className="md:hover:cursor-pointer">Stories Leuti Perfect Sublimate Serum</Link>
                     </Dropdown>
                 </li>
                 <li>PROMO</li>
                 <li>RANK</li>
-                <li id="faq-menu" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
-                    <span className={`${stateMenu['faq-menu'] && 'md:font-bold'} md:cursor-pointer md:py-7 md:hover:font-semibold`}>FAQ</span>
-                    <Dropdown
-                        stateMenu={stateMenu['faq-menu']}
-                        actionClose={handleCloseOutsideDropdown}
-                        top={height}
-                    >
-                        {faqContentMenu()}
-                    </Dropdown>
-                </li>
-                <li>PAYMENT</li>
                 <li>SALES</li>
             </ul>
             {/* end menu */}
@@ -204,7 +138,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
-                                <Link href={{ pathname: '/user' }}>{user?.username}</Link>
+                                <Link href={{ pathname: '/user' }} shallow={false}>{user?.username}</Link>
                             </div>
                             {
                                 stateMenu['user-menu'] &&
@@ -216,7 +150,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
                         :
                         <div className="md:flex md:items-center">
                             <div className="md:space-x-2">
-                                <span>ARE YOU A AGENT</span>
+                                <span>ARE YOU AN AGENT</span>
                                 <button className="font-bold md:hover:underline" onClick={handleToggleModalLogin}>REGISTER / LOGIN</button>
                             </div>
                         </div>
@@ -281,7 +215,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
                 {
                     isAdmin &&
                     <div className="md:h-full md:flex md:items-center">
-                        <Link href={{ pathname: '/dashboard' }}>
+                        <Link href={{ pathname: '/dashboard' }} shallow={false}>
                             <a className=" md:space-x-1">
                                 <span>GO TO</span>
                                 <span className="md:font-semibold md:hover:underline">DASHBOARD</span>

@@ -1,10 +1,11 @@
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router"
 
 import OverviewMenu from "./menu/overview.menu";
-import ProductListMenu from "./menu/product-list.menu";
-import CreteProductMenu from "./menu/create-product.menu";
-import UserListMenu from "./menu/user-list.menu";
-import OrderListMenu from "./menu/order-list.dashboard.menu";
+const ProductListMenu = dynamic(() => import('./menu/product-list.menu'));
+const CreteProductMenu = dynamic(() => import('./menu/create-product.menu'));
+const UserListMenu = dynamic(() => import('./menu/user-list.menu'));
+const OrderListMenu = dynamic(() => import('./menu/order-list.dashboard.menu'));
 
 export default function TabDashboardComponent() {
 

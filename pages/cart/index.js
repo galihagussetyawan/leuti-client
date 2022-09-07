@@ -11,6 +11,7 @@ const Toast = dynamic(() => import('../../components/commons/toast.component'));
 import CookiesService from '../../services/cookies.service';
 import CartService from '../../services/cart.service';
 import OrderService from '../../services/order.service';
+import PointService from '../../services/point.service';
 
 import LocalCurrency from '../../lib/helpers/local-currency.help';
 
@@ -135,7 +136,7 @@ export default function Cart({ carts, totalPrice }) {
     return (
         <>
             <Head>
-                <title>Cart</title>
+                <title>Cart | Leuti</title>
             </Head>
             <Header />
             <main className='md:w-4/5 flex flex-col m-auto md:mt-20'>
@@ -219,21 +220,55 @@ export default function Cart({ carts, totalPrice }) {
                     {/* end of left section/cart list */}
 
                     {/* section right/price total */}
-                    <div className='md:w-1/4 w-full space-y-5 border border-gray-300 p-5'>
-                        <div className='py-5 border-b border-gray-300'>
-                            <span className=' md:text-lg'>Carts Total</span>
+                    <div className='md:w-1/4 w-full border border-gray-300 p-5 divide-y mt-10 md:m-0'>
+                        <div className='py-5 border-gray-300'>
+                            <span className='md:text-lg font-semibold uppercase'>Carts Total</span>
                         </div>
-                        <div className=' py-5 border-b border-gray-300'>
+                        <div className=' py-5 border-gray-300'>
                             <div className='flex justify-between'>
-                                <span>Subtotal ({carts?.length} item)</span>
+                                <span className=' font-semibold'>Subtotal ({carts?.length} item)</span>
                                 <span>{LocalCurrency(totalPrice)}</span>
                             </div>
                         </div>
-                        <div className='flex justify-between'>
-                            <span className='md:font-semibold'>Total</span>
-                            <span className='md:font-semibold md:text-2xl'>{LocalCurrency(totalPrice)}</span>
+
+                        {/* discount section */}
+                        {
+                            (carts?.length > 0 && carts?.filter(data => data?.discount)?.length > 0) &&
+                            <div className='grid grid-cols-1 gap-1 py-5 border-gray-300'>
+                                <span className='font-semibold'>Discount</span>
+                                <div className=' space-y-5'>
+                                    {
+                                        carts?.map((cart, index) => {
+                                            return (
+                                                cart?.discount &&
+                                                <div key={index} className='grid grid-cols-1'>
+                                                    <div className='grid grid-cols-2'>
+                                                        <span>{cart?.product?.name}</span>
+                                                    </div>
+                                                    <div className='ml-5'>
+                                                        <div className='text-gray-500 space-x-3'>
+                                                            <span>Item Bonus:</span>
+                                                            <span>+{cart?.discount?.item} item</span>
+                                                        </div>
+                                                        <div className='w-full flex text-gray-500 space-x-3'>
+                                                            <span>Add Ons:</span>
+                                                            <span>{cart?.discount?.addOns ? cart?.discount?.addOns : '-'}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        }
+                        {/* end of discount section */}
+
+                        <div className='flex justify-between py-5'>
+                            <span className='font-semibold'>Total</span>
+                            <span className='font-semibold text-2xl'>{LocalCurrency(totalPrice)}</span>
                         </div>
-                        <div>
+                        <div className='py-10'>
                             {
                                 carts?.length === 0 ?
                                     <button className='w-full py-5 rounded-full text-white bg-black' onClick={handleNavigate('/shop')}>SHOPING</button>
@@ -260,6 +295,7 @@ export async function getServerSideProps(context) {
     let user = {};
     let carts = [];
     let totalPrice = 0;
+    let point = 0;
 
     try {
 
@@ -272,6 +308,7 @@ export async function getServerSideProps(context) {
             if (cookiesParsed.accessToken) {
                 user = cookiesParsed;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
+                point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data?.point;
                 isLogin = true;
             }
         }
@@ -294,6 +331,7 @@ export async function getServerSideProps(context) {
             user,
             carts,
             totalPrice,
+            point,
         }
     }
 

@@ -25,11 +25,11 @@ class ProductService {
             })
     }
 
-    async updateProductById(id, name, category, description, advantage, application, ingredient, price, stock) {
+    async updateProductById(id, name, category, description, advantage, application, ingredient, price, stock, status) {
 
         return await ApiClient()
             .put('/api/product', {
-                name, category, description, advantage, application, ingredient, price, stock
+                name, category, description, advantage, application, ingredient, price, stock, status,
             }, {
                 params: { id }
             })

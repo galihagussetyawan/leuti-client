@@ -1,12 +1,14 @@
 import Head from "next/head";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useContext } from "react";
 
 import CookiesService from "../../services/cookies.service";
 import CartService from "../../services/cart.service";
 import ProductService from "../../services/product.service";
+import PointService from "../../services/point.service";
 
-import Footer from "../../components/footer.component";
+const Footer = dynamic(() => import('../../components/footer.component'));
 import Header from "../../components/header.component"
 
 import AuthContext from "../../lib/context/auth.context";
@@ -29,13 +31,17 @@ export default function Shop({ productList }) {
 
     return (
         <div>
-            <Head></Head>
+            <Head>
+                <title>Leuti Collections 2022</title>
+                <meta name="description" content="LEUTI.ASIA – Setiap Wanita pasti mendambakan kulit wajah yang sehat, cerah dan terawat, bukan? Apalagi di saat seperti ini sangat sudah untuk anda menemukan produk perawatan kulit wajah terbaik, salah satunya dengan menggunakan Skin Care. Sekarang ini sudah hadir brand lokal indonesia maupun impor yang menawarkan skincare dengan kualitas terbaik. Apalagi kalau bukan Leuti Perfect Sublimate Serum. Produk yang sangat cocok bagi orang-orang yang menuntut kesempurnaan dan kualitas tinggi" />
+                <meta name="keyword" content="produk, skincare, serum, skincare 2022, skincare lokal, skincare terbaik, skincare indonesia" />
+            </Head>
 
             <Header />
             <main className="md:w-4/5 flex flex-col space-y-20 m-auto">
 
-                <div className="text-center mt-14 space-y-5">
-                    <span className="font-semibold text-5xl">LEUTI SHOP</span>
+                <div className="mt-14 space-y-5">
+                    <h1 className="md:font-semibold md:text-7xl text-3xl mx-5 md:m-0 md:text-center text-left">Perfect Sublimate Serum</h1>
                     <p className="md:w-1/2 md:m-auto mx-5 leading-relaxed text-left md:text-center">LEUTI Perfect Sublimate Serum diciptakan bagi orang-orang yang menuntut kesempurnaan dan kualitas tinggi. Sebelum menyentuh pasar, serum ini telah melewati uji sampling keefektifitasan dimana 98% dari 100 orang dengan kulit normal sebagai sampling menunjukkan hasil yang memuaskan dalam jangka waktu maksimal 2 minggu. 80% dari mereka mengatakan bahwa hasil yang bagus dirasakan sejak pertama kali pemakaian serum LEUTI Perfect Sublimate Serum. Efek pada kulit dimana kulit menjadi lebih putih, flawless, halus, lembab, kenyal seperti sedang menyentuh agar-agar dirasakan secara bersamaan. </p>
                 </div>
 
@@ -52,6 +58,7 @@ export default function Shop({ productList }) {
                                                 <div key={index} className={`md:w-full md:h-[700px] w-full h-[450px] ${index !== 0 && 'hidden md:block'} relative overflow-hidden bg-gray-100`}>
                                                     <Image
                                                         className="scale-105"
+                                                        alt={data?.name}
                                                         loader={imageLoader}
                                                         src={image?.name}
                                                         quality={50}
@@ -76,14 +83,14 @@ export default function Shop({ productList }) {
                                     <a onClick={
                                         handleNavigate(
                                             {
-                                                pathname: `/product/${data?.name?.toLowerCase().replaceAll(' ', '-')}`,
+                                                pathname: `/product/${data?.name?.toLowerCase().split(' ').join('-')}`,
                                                 query: {
                                                     id: data?.id
                                                 }
                                             }
                                         )
                                     }>
-                                        <button className=" md:w-64 w-40 py-5 rounded-full border border-black">PRODUCT DETAIL</button>
+                                        <button className="md:w-64 w-52 py-5 rounded-full border border-black">PRODUCT DETAIL</button>
                                     </a>
                                 </div>
                             </div>
@@ -106,6 +113,7 @@ export async function getServerSideProps(context) {
     let user = {};
     let productList = null;
     let carts = [];
+    let point = 0;
 
     try {
 
@@ -119,6 +127,7 @@ export async function getServerSideProps(context) {
             if (cookiesParsed.accessToken) {
                 user = cookiesParsed;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
+                point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data?.point;
                 isLogin = true;
             }
         }
@@ -136,6 +145,7 @@ export async function getServerSideProps(context) {
             user,
             productList,
             carts,
+            point,
         }
     }
 }

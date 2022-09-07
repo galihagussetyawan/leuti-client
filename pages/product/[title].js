@@ -7,6 +7,7 @@ import Image from "next/image";
 import CookiesService from "../../services/cookies.service";
 import ProductService from "../../services/product.service";
 import CartService from "../../services/cart.service";
+import PointService from "../../services/point.service";
 
 //import components
 import Header from '../../components/header.component';
@@ -130,7 +131,10 @@ export default function Product({ isLogin, productData, inCart }) {
         <>
             <Head>
                 <title>{productData?.name}</title>
+                <meta name="description" content={productData?.description} />
+                <meta name="keyword" content="produk, skincare lokal, skincare terbaik, skincare indonesia, leuti 2022, serum, kecantikan, skincare bagus" />
             </Head>
+
             <Header />
             <main className="md:w-4/5 m-auto flex md:flex-row flex-col gap-5 md:py-10">
 
@@ -141,8 +145,9 @@ export default function Product({ isLogin, productData, inCart }) {
                         {
                             productData?.images?.map((data, index) => {
                                 return (
-                                    <div key={index} id={index} className="md:w-full md:h-28 w-10 h-10 relative" onMouseOver={handleMouseOverImage} onMouseLeave={handleMouseLeaveImage}>
+                                    <div key={index} id={index} className="md:w-full md:h-28 w-16 h-16 relative" onMouseOver={handleMouseOverImage} onMouseLeave={handleMouseLeaveImage}>
                                         <Image
+                                            alt={productData?.description}
                                             loader={imageLoader}
                                             src={data?.name}
                                             loading='lazy'
@@ -161,6 +166,7 @@ export default function Product({ isLogin, productData, inCart }) {
                     <div className="w-full h-full">
                         <div className="md:w-full md:h-[700px] w-full h-96 relative bg-gray-100">
                             <Image
+                                alt={productData?.description}
                                 priority
                                 quality={50}
                                 loader={imageLoader}
@@ -278,17 +284,19 @@ export default function Product({ isLogin, productData, inCart }) {
 export async function getServerSideProps(context) {
 
     const { req, res, query } = context;
+
     let isLogin = false;
     let user = {};
-    let productData;
+    let productData = null;
     let carts = [];
+    let point = 0;
 
     try {
 
-        productData = await ProductService.getProductById(query.id);
+        productData = await (await ProductService.getProductById(query.id))?.data?.data;
         const cookies = await CookiesService.getCookies('user', req, res);
 
-        if (productData?.data?.data?.name?.toLowerCase() !== query.title.toLowerCase().replaceAll('-', ' ')) {
+        if (productData?.name?.toLowerCase() !== query?.title?.toLowerCase()?.split('-')?.join(' ')) {
 
             return {
                 notFound: true,
@@ -302,6 +310,7 @@ export async function getServerSideProps(context) {
             if (cookiesParsed.accessToken) {
                 user = cookiesParsed;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
+                point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data?.point;
                 isLogin = true;
             }
         }
@@ -321,15 +330,16 @@ export async function getServerSideProps(context) {
         }
     }
 
-    const inCart = carts.some(data => data?.product?.id === productData?.data?.data?.id);
+    const inCart = carts.some(data => data?.product?.id === productData?.id);
 
     return {
         props: {
             isLogin,
             user,
-            productData: productData?.data?.data,
+            productData,
             carts,
             inCart,
+            point,
         }
     }
 }

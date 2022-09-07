@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext } from "react";
 
@@ -34,8 +35,7 @@ export default function ProductDiscover({ id, name, category, images, price }) {
                                     loader={imageLoader}
                                     alt={name}
                                     title={name}
-                                    src={data.name}
-                                    quality={10}
+                                    src={data?.name}
                                     objectPosition={'center'}
                                     objectFit='cover'
                                     layout='fill'
@@ -54,14 +54,15 @@ export default function ProductDiscover({ id, name, category, images, price }) {
             </div>
 
             <div className="text-center md:text-left">
-                <a onClick={
-                    handleNavigate({
-                        pathname: `/product/${name?.toLowerCase().replaceAll(' ', '-')}`,
+                <button
+                    onClick={handleNavigate({
+                        pathname: `/product/${name?.toLowerCase()?.split(' ')?.join('-')}`,
                         query: { id }
-                    })
-                }>
-                    <button className=" md:w-64 w-40 py-5 rounded-full border border-black">SEE PRODUCT</button>
-                </a>
+                    })}
+                    className="md:w-64 w-1/2 py-5 rounded-full border border-black"
+                >
+                    <span>SEE PRODUCT</span>
+                </button>
             </div>
         </div>
     );

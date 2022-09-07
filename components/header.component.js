@@ -45,17 +45,15 @@ export default function Header() {
 
             {/* logo */}
             <div className="text-center md:py-5 py-5 mx-5 md:m-0 flex justify-between items-center border-b border-gray-300">
-                {/* <Link href={{ pathname: '/' }}> */}
-                <a className="md:w-36 md:m-auto w-24 h-11 flex items-center relative md:cursor-pointer" onClick={handleNavigate('/')}>
+                <div className="md:w-36 md:m-auto w-24 h-11 flex items-center relative md:cursor-pointer" onClick={handleNavigate({ pathname: '/' })}>
                     <Image
                         priority
-                        quality={100}
+                        quality={50}
                         src={'/wordmark-logo.png'}
                         layout='fill'
                         objectFit='cover'
                     />
-                </a>
-                {/* </Link> */}
+                </div>
 
                 {/* burger icon menu */}
                 <button className="flex md:hidden" onClick={handleToggleBurgerMenu}>

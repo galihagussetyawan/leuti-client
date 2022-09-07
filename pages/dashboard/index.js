@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
@@ -13,7 +14,7 @@ import UserService from "../../services/user.service";
 import PointService from "../../services/point.service";
 import OrderService from "../../services/order.service";
 
-import TabDashboardComponent from "../../components/dashboard/tab-dashboard.component";
+const TabDashboardComponent = dynamic(() => import('../../components/dashboard/tab-dashboard.component'));
 
 export default function Dashboard() {
 
@@ -30,7 +31,7 @@ export default function Dashboard() {
     return (
         <>
             <Head>
-                <title>{!tab ? 'Dashboard' : 'Dashboard | ' + tab}</title>
+                <title>Dashboard | Leuti</title>
             </Head>
 
             <header className="md:px-10 md:py-2 md:sticky md:top-0 md:flex md:z-10 md:justify-between md:border-b md:bg-white">
@@ -111,11 +112,12 @@ export default function Dashboard() {
 export async function getServerSideProps(context) {
 
     const { req, res, query } = context;
-    const { tab } = query;
+    const { tab, productid } = query;
 
     let isAdmin = false;
     let user = {};
-    let productList;
+    let productList = null;
+    let product = null;
     let userList = [];
     let pointList = [];
     let ordersAllList = [];
@@ -125,7 +127,11 @@ export async function getServerSideProps(context) {
         const cookies = await CookiesService.getCookies('user', req, res);
 
         isAdmin = await AuthService.isAdmin(JSON.parse(cookies).accessToken);
-        productList = await ProductService.getProducts();
+        productList = await (await ProductService.getProducts())?.data?.data;
+
+        if (productid) {
+            product = await (await ProductService.getProductById(productid))?.data?.data;
+        }
 
         if (!isAdmin) {
             return {
@@ -161,7 +167,8 @@ export async function getServerSideProps(context) {
     return {
         props: {
             user,
-            productList: productList?.data?.data,
+            productList,
+            product,
             userList,
             pointList,
             ordersAllList,

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -6,7 +7,7 @@ import { useRouter } from 'next/router';
 import AuthService from '../../services/auth.service';
 
 //import components
-import Footer from '../../components/footer.component';
+const Footer = dynamic(() => import('../../components/footer.component'))
 import Header from '../../components/header.component';
 
 export default function Login() {
@@ -38,18 +39,14 @@ export default function Login() {
                     setIsLoading(false);
                 }
 
-                router.replace(router.asPath)
-                    .then(() => {
-
-                        router.replace(router.asPath);
-
-                    });
+                router.reload(router.asPath);
 
             })
             .catch(error => {
                 setIsLoading(false);
                 setError(error.response.data.error_message);
-            });
+            })
+            .finally(() => router.replace(router.asPath));
     }
 
     const handleToggleShowPassword = () => {
@@ -64,6 +61,7 @@ export default function Login() {
 
                 <div className="md:w-2/5 md:h-[600px] hidden md:block md:relative bg-gray-200">
                     <Image
+                        alt='Leuti Perfect Sublimate Serum'
                         src={'/images2.jpg'}
                         layout='fill'
                         loading='lazy'

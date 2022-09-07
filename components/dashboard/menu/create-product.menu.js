@@ -1,16 +1,22 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 
 import Toast from '../../../components/commons/toast.component';
 
 import ImageService from "../../../services/image.service";
 import ProductService from "../../../services/product.service";
-import { useRouter } from "next/router";
+import DashboardContext from "../../../lib/context/dashboard.context";
+import LocalCurrency from "../../../lib/helpers/local-currency.help";
+import DiscountService from "../../../services/discount.service";
+import { data } from "autoprefixer";
 
 export default function CreateProductMenu() {
 
     const router = useRouter();
-    const { tab, id } = router.query;
+    const { tab, productid } = router?.query;
+
+    const { product } = useContext(DashboardContext);
 
     const [notification, setNotification] = useState({
         isOpen: false,
@@ -18,42 +24,26 @@ export default function CreateProductMenu() {
         'message': 'error'
     })
 
-    const [productId, setProductId] = useState();
+    const [productId, setProductId] = useState(product?.id);
     const [imagesArray, setImagesArray] = useState([]);
     const [images, setImages] = useState(null);
-    const [name, setName] = useState('');
-    const [category, setCategory] = useState('');
-    const [description, setDescription] = useState('');
-    const [advantage, setAdvantage] = useState('');
-    const [application, setApplication] = useState('');
-    const [ingredient, setIngredient] = useState('');
-    const [price, setPrice] = useState('');
-    const [stock, setStock] = useState('');
+    const [name, setName] = useState(product?.name);
+    const [category, setCategory] = useState(product?.category);
+    const [description, setDescription] = useState(product?.description);
+    const [advantage, setAdvantage] = useState(product?.advantage);
+    const [application, setApplication] = useState(product?.application);
+    const [ingredient, setIngredient] = useState(product?.ingredient);
+    const [price, setPrice] = useState(product?.price);
+    const [stock, setStock] = useState(product?.stock);
+    const [status, setStatus] = useState(product?.status);
 
-    useEffect(() => {
-
-        if (tab === 'edit-product' && id) {
-
-            ProductService.getProductByIdClient(id)
-                .then(res => {
-
-                    setProductId(res?.data?.data?.id);
-                    setName(res?.data?.data?.name);
-                    setCategory(res?.data?.data?.category);
-                    setDescription(res?.data?.data?.description);
-                    setAdvantage(res?.data?.data?.advantage);
-                    setApplication(res?.data?.data?.application);
-                    setIngredient(res?.data?.data?.ingredient);
-                    setPrice(res?.data?.data?.price);
-                    setStock(res?.data?.data?.stock)
-
-                })
-                .catch(err => {
-                    return router.push({ pathname: '/dashboard' })
-                })
-        }
-
-    }, [tab, id])
+    //discount state
+    const [isAddDiscount, setIsAddDiscount] = useState(false);
+    const [isEditDiscount, setIsEditDiscount] = useState(false);
+    const [discountId, setDiscountId] = useState();
+    const [minPurchase, setMinPurchase] = useState();
+    const [bonusItem, setBonusItem] = useState();
+    const [addOns, setAddOns] = useState();
 
     const handleChangeMultipleImage = event => {
 
@@ -111,6 +101,22 @@ export default function CreateProductMenu() {
         setStock(event.target.value);
     }
 
+    const handleChangeStatus = event => {
+        setStatus(event.target.checked);
+    }
+
+    const handleChangeMinimumPurchase = event => {
+        setMinPurchase(event.target.value);
+    }
+
+    const handleChangeBonusItem = event => {
+        setBonusItem(event.target.value);
+    }
+
+    const handleChangeAddOns = event => {
+        setAddOns(event.target.value);
+    }
+
     const handleCreateProduct = event => {
         event.preventDefault();
 
@@ -159,14 +165,19 @@ export default function CreateProductMenu() {
 
     const handleUpdateProduct = () => {
 
-        ProductService.updateProductById(productId, name, category, description, advantage, application, ingredient, price, stock)
+        ProductService.updateProductById(productId, name, category, description, advantage, application, ingredient, price, stock, status)
             .then(res => {
 
-                setNotification({
-                    isOpen: true,
-                    status: 'success',
-                    message: res?.data?.message,
-                })
+                router.replace(router?.asPath)
+                    .then(() => {
+
+                        setNotification({
+                            isOpen: true,
+                            status: 'success',
+                            message: res?.data?.message,
+                        })
+
+                    })
 
             })
             .catch(err => {
@@ -186,6 +197,72 @@ export default function CreateProductMenu() {
             ...prevState,
             isOpen: false,
         }))
+    }
+
+    const handleToggleEditDiscount = (id, quantity, item, addOns) => {
+
+        return () => {
+            setDiscountId(id);
+            setMinPurchase(quantity);
+            setBonusItem(item);
+            setAddOns(addOns);
+            setIsEditDiscount(true);
+        }
+    }
+
+    const handleDiscardUpdateDiscount = () => {
+        setIsEditDiscount(!isEditDiscount);
+        setDiscountId();
+        setMinPurchase();
+        setBonusItem();
+        setAddOns();
+    }
+
+    const handleSaveUpdateDiscount = () => {
+
+        DiscountService.updateDiscountById(discountId, minPurchase, bonusItem, addOns)
+            .then(res => console.log(res?.data?.data))
+            .catch(err => console.log(err?.response))
+    }
+
+    const handleToggleAddDiscount = () => {
+        setIsAddDiscount(!isAddDiscount);
+        setMinPurchase();
+        setDiscountPrice();
+        setBonusItem();
+        setAddOns();
+    }
+
+    const handleAddDiscount = () => {
+
+        DiscountService.addDiscountToProduct(productId, minPurchase, bonusItem, addOns)
+            .then(res => {
+                handleToggleAddDiscount();
+                router.replace(router.asPath)
+                    .then(() => {
+
+                        setNotification({
+                            isOpen: true,
+                            status: 'success',
+                            message: res?.data?.message,
+                        })
+
+                    })
+            })
+            .catch(err => console.log(err.response))
+
+    }
+
+    const handleDeleteDiscount = (id) => {
+
+        return () => {
+
+            DiscountService.deleteDiscountById(id)
+                .then(res => console.log(res?.data?.data))
+                .catch(err => console.log(err));
+
+            router.replace(router.asPath);
+        }
     }
 
     return (
@@ -324,6 +401,20 @@ export default function CreateProductMenu() {
 
                 {/* price section */}
                 <div className="md:flex md:flex-col md:space-y-10 md:py-20 md:border md:border-gray-200 md:bg-white">
+
+                    <div className="md:w-full md:flex md:px-6 md:space-x-20">
+                        <div className="md:w-1/5">
+                            <span>Status Produk</span>
+                        </div>
+                        <div className="md:w-full">
+                            <label className="inline-flex relative items-center mb-4 cursor-pointer">
+                                <input type="checkbox" value="" id="checked-toggle" className="sr-only peer" disabled={!productid ? true : false} defaultChecked={status} onChange={handleChangeStatus} />
+                                <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{status ? 'Active' : 'Non-Active'}</span>
+                            </label>
+                        </div>
+                    </div>
+
                     <div className="md:w-full md:flex md:px-6 md:space-x-20">
                         <div className="md:w-1/5">
                             <span>Harga</span>
@@ -349,6 +440,172 @@ export default function CreateProductMenu() {
                     </div>
                 </div>
                 {/* end of price section */}
+
+                {/* discount setcion */}
+                {
+                    tab === 'edit-product' &&
+                    <div className="md:flex md:flex-col md:space-y-40 md:py-20 md:border md:border-gray-200 md:bg-white">
+
+                        <div className="md:w-full md:flex md:px-6">
+                            <div className="md:w-1/5">
+                                <span>Add Discount</span>
+                            </div>
+
+                            {
+                                isAddDiscount ?
+                                    <div className="md:w-2/5 space-y-5">
+
+                                        <div className="md:w-full md:flex md:space-x-20">
+                                            <div className="md:w-1/5">
+                                                <span>Min Pembelian</span>
+                                            </div>
+                                            <div className="md:w-full border md:border-gray-300 md:focus-within:border-gray-400">
+                                                <div className="flex flex-col px-4 py-2">
+                                                    <span className="text-sm text-gray-700">Quantity</span>
+                                                    <input className="outline-none text-lg font-semibold" type={'number'} onChange={handleChangeMinimumPurchase} />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* <div className="md:w-full md:flex md:space-x-20">
+                                            <div className="md:w-1/5">
+                                                <span>Harga Diskon</span>
+                                            </div>
+                                            <div className="md:w-full border md:border-gray-300 md:focus-within:border-gray-400">
+                                                <div className="flex flex-col px-4 py-2">
+                                                    <span className="text-sm text-gray-700">Harga Diskon</span>
+                                                    <input className="outline-none text-lg font-semibold" type={'number'} onChange={handleChangeDiscountPrice} />
+                                                </div>
+                                            </div>
+                                        </div> */}
+
+                                        <div className="md:w-full md:flex md:space-x-20">
+                                            <div className="md:w-1/5">
+                                                <span>Bonus Item</span>
+                                            </div>
+                                            <div className="md:w-full border md:border-gray-300 md:focus-within:border-gray-400">
+                                                <div className="flex flex-col px-4 py-2">
+                                                    <span className="text-sm text-gray-700">Quantity</span>
+                                                    <input className="outline-none text-lg font-semibold" type={'number'} onChange={handleChangeBonusItem} />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="md:w-full md:flex md:space-x-20">
+                                            <div className="md:w-1/5">
+                                                <span>Bonus Item</span>
+                                            </div>
+                                            <div className="md:w-full border md:border-gray-300 md:focus-within:border-gray-400">
+                                                <div className="flex flex-col px-4 py-2">
+                                                    <span className="text-sm text-gray-700">Add Ons</span>
+                                                    <input className="outline-none text-lg font-semibold" type={'text'} onChange={handleChangeAddOns} />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="w-full flex space-x-5">
+                                            <button className="w-1/2 py-5 uppercase rounded-full border border-gray-300 text-gray-500" onClick={handleToggleAddDiscount}>Discard</button>
+                                            <button className="w-1/2 py-5 uppercase rounded-full text-white bg-black" onClick={handleAddDiscount}>Add Discount</button>
+                                        </div>
+
+                                    </div>
+                                    :
+                                    <button className=" w-60 py-5 uppercase rounded-full border border-gray-300 text-gray-500" onClick={handleToggleAddDiscount}>Add Discount</button>
+
+                            }
+
+                        </div>
+
+                        <div className="md:w-full md:flex md:px-6">
+                            <div className="md:w-1/5">
+                                <span>Discount List</span>
+                            </div>
+                            <div className="md:w-2/5">
+                                <div className=" space-y-5 divide-y">
+                                    {
+                                        product?.discounts?.map((data, index) => {
+                                            return (
+                                                <div key={index} id={data?.id}>
+                                                    <span>Discount {index + 1}</span>
+
+                                                    <div className="py-5 space-y-5">
+
+                                                        <div className="md:w-full md:flex md:space-x-20">
+                                                            <div className="md:w-1/5 text-gray-500">
+                                                                <span>Min Pembelian</span>
+                                                            </div>
+                                                            <div className="md:w-full border md:border-gray-300 md:focus-within:border-gray-400">
+                                                                <div className="flex flex-col px-4 py-2">
+                                                                    <span className="text-sm text-gray-700">Quantity</span>
+                                                                    <input className="outline-none text-lg font-semibold" disabled={isEditDiscount && discountId === data.id ? false : true} defaultValue={data?.quantity} type={'number'} onChange={handleChangeMinimumPurchase} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* <div className="md:w-full md:flex md:space-x-20">
+                                                            <div className="md:w-1/5 text-gray-500">
+                                                                <span>Harga Diskon</span>
+                                                            </div>
+                                                            <div className="md:w-full border md:border-gray-300 md:focus-within:border-gray-400">
+                                                                <div className="flex flex-col px-4 py-2">
+                                                                    <span className="text-sm text-gray-700">Harga Diskon</span>
+                                                                    <input className="outline-none text-lg font-semibold" disabled={isEditDiscount && discountId === data.id ? false : true} defaultValue={data?.price} type={'number'} onChange={handleChangeDiscountPrice} />
+                                                                </div>
+                                                            </div>
+                                                        </div> */}
+
+                                                        <div className="md:w-full md:flex md:space-x-20">
+                                                            <div className="md:w-1/5 text-gray-500">
+                                                                <span>Bonus Item</span>
+                                                            </div>
+                                                            <div className="md:w-full border md:border-gray-300 md:focus-within:border-gray-400">
+                                                                <div className="flex flex-col px-4 py-2">
+                                                                    <span className="text-sm text-gray-700">Quantity</span>
+                                                                    <input className="outline-none text-lg font-semibold" disabled={isEditDiscount && discountId === data.id ? false : true} defaultValue={data?.item} type={'number'} onChange={handleChangeBonusItem} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div className="md:w-full md:flex md:space-x-20">
+                                                            <div className="md:w-1/5 text-gray-500">
+                                                                <span>AddOns</span>
+                                                            </div>
+                                                            <div className="md:w-full border md:border-gray-300 md:focus-within:border-gray-400">
+                                                                <div className="flex flex-col px-4 py-2">
+                                                                    <span className="text-sm text-gray-700">AddOns</span>
+                                                                    <input className="outline-none text-lg font-semibold" disabled={isEditDiscount && discountId === data.id ? false : true} defaultValue={data?.addOns} type={'text'} onChange={handleChangeAddOns} />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div className=" w-full flex justify-end">
+                                                        {
+                                                            (isEditDiscount && discountId === data.id) ?
+                                                                <div className=" w-1/2 flex space-x-5">
+                                                                    <button className="w-1/2 py-5 uppercase border border-gray-300 text-gray-500 rounded-full" onClick={handleDiscardUpdateDiscount}>discard</button>
+                                                                    <button className=" w-1/2 py-5 uppercase rounded-full text-white bg-black" onClick={handleSaveUpdateDiscount}>save discount</button>
+                                                                </div>
+                                                                :
+                                                                <div className="w-1/2 flex space-x-5">
+                                                                    <button className=" w-1/2 py-5 uppercase rounded-full border border-gray-300 text-gray-500 md:hover:text-red-500 " onClick={handleDeleteDiscount(data?.id)}>Delete</button>
+                                                                    <button className=" w-1/2 py-5 uppercase rounded-full border border-gray-300 text-gray-500 md:hover:text-gray-700" onClick={handleToggleEditDiscount(data?.id, data?.quantity, data?.item, data?.addOns)}>update</button>
+                                                                </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            );
+                                        })
+                                    }
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+                {/* end of discount section */}
 
                 <div className="md:flex md:flex-col md:space-y-10 md:py-20 md:border md:border-gray-200 md:bg-white">
                     <div className="md:px-6 md:space-x-5">

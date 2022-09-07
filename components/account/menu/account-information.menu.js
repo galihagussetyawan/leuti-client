@@ -1,14 +1,28 @@
+import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
 import { useContext, useState } from "react";
 import UserContext from "../../../lib/context/user.context";
 
+import UserDetailService from "../../../services/user-detail.service";
+
+const Toast = dynamic(() => import('../../../components/commons/toast.component'));
+
 export default function AccountInformationMenu() {
 
+    const router = useRouter();
     const { userDetail } = useContext(UserContext);
 
+    const [notification, setNotification] = useState({
+        isOpen: false,
+        status: 'error',
+        message: 'error',
+    })
+
+    const [isEdit, setIsEdit] = useState(false);
     const [country, setCountry] = useState(userDetail?.country);
     const [province, setProvince] = useState(userDetail?.province);
     const [city, setCity] = useState(userDetail?.city);
-    const [districts, setDistricts] = useState(userDetail?.districts);
+    const [district, setDistrict] = useState(userDetail?.district);
     const [village, setVillage] = useState(userDetail?.village);
     const [address, setAddress] = useState(userDetail?.address);
     const [postalCode, setPostalCode] = useState(userDetail?.postalCode);
@@ -26,8 +40,8 @@ export default function AccountInformationMenu() {
         setCity(event.currentTarget.value);
     }
 
-    const handleChangeDistricts = event => {
-        setDistricts(event.currentTarget.value);
+    const handleChangeDistrict = event => {
+        setDistrict(event.currentTarget.value);
     }
 
     const handleChangeVillage = event => {
@@ -46,76 +60,134 @@ export default function AccountInformationMenu() {
         setPhone(event.currentTarget.value);
     }
 
+    const handleSaveUserDetail = () => {
+
+        UserDetailService.addUserDetail(address, country, province, city, district, village, postalCode, phone)
+            .then(res => {
+
+                router.replace(router.asPath)
+                    .then(() => {
+
+                        setNotification({
+                            isOpen: true,
+                            status: 'success',
+                            message: res?.data?.message,
+                        })
+                    })
+            })
+            .catch(err => {
+
+                setNotification({
+                    isOpen: true,
+                    status: 'error',
+                    message: err?.response?.data?.error_message,
+                })
+
+            })
+    }
+
+    const handleToggleNotification = () => {
+
+        setNotification(prevState => ({
+            ...prevState,
+            isOpen: false,
+        }))
+    }
+
+
     return (
-        <div className="md:w-full md:space-y-20 space-y-7">
+        <>
+            <div className="md:w-full md:space-y-20 space-y-10">
+                <span className="hidden md:flex md:text-2xl">Account Information</span>
 
-            <span className="md:text-2xl">Account Information</span>
-
-            <div className="flex md:flex-row md:space-x-5 gap-5 flex-col-reverse">
-
-                {/* tab contact information */}
-                <div className="md:w-1/2 space-y-5">
-
-                    <div className="border border-black">
-                        <div className="flex flex-col px-4 py-1">
-                            <span className=" text-gray-700">Email</span>
-                            <input className="outline-none text-lg font-semibold" />
-                        </div>
+                {
+                    !userDetail &&
+                    <div className=" w-full p-5 border border-yellow-300 bg-yellow-100">
+                        <span>Complete your account information</span>
                     </div>
+                }
 
-                    <div className="border border-black">
-                        <div className="flex flex-col px-4 py-1">
-                            <span className=" text-gray-700">Phone Number</span>
-                            <input className="outline-none text-lg font-semibold" onChange={handleChangePhone} value={phone} />
+                <div className="flex md:flex-row md:space-x-5 gap-5 flex-col-reverse">
+
+                    {/* tab contact information */}
+                    <div className="md:w-1/2 space-y-5">
+
+                        <div className="border border-gray-300 focus-within:border-gray-400">
+                            <div className="flex flex-col px-4 py-1">
+                                <span className=" text-gray-700">Address</span>
+                                <input className="outline-none text-lg font-semibold" onChange={handleChangeAddress} value={address} />
+                            </div>
                         </div>
-                    </div>
 
+                        <div className="border border-gray-300 focus-within:border-gray-400">
+                            <div className="flex flex-col px-4 py-1">
+                                <span className=" text-gray-700">Postal Code</span>
+                                <input className="outline-none text-lg font-semibold" onChange={handleChangePostalCode} value={postalCode} />
+                            </div>
+                        </div>
+
+                        <div className="border border-gray-300 focus-within:border-gray-400">
+                            <div className="flex flex-col px-4 py-1">
+                                <span className=" text-gray-700">Phone Number</span>
+                                <input className="outline-none text-lg font-semibold" onChange={handleChangePhone} value={phone} />
+                            </div>
+                        </div>
+
+                    </div>
+                    {/* end of tab contact information */}
+
+                    <div className="md:w-1/2 space-y-5">
+                        <div className="border border-gray-300 focus-within:border-gray-400">
+                            <div className="flex flex-col px-4 py-1">
+                                <span className=" text-gray-700">Country</span>
+                                <input className="outline-none text-lg font-semibold" onChange={handleChangeCountry} value={country} />
+                            </div>
+                        </div>
+
+                        <div className="border border-gray-300 focus-within:border-gray-400">
+                            <div className="flex flex-col px-4 py-1">
+                                <span className=" text-gray-700">Province</span>
+                                <input className="outline-none text-lg font-semibold" onChange={handleChangeProvince} value={province} />
+                            </div>
+                        </div>
+
+                        <div className="border border-gray-300 focus-within:border-gray-400">
+                            <div className="flex flex-col px-4 py-1">
+                                <span className=" text-gray-700">City</span>
+                                <input className="outline-none text-lg font-semibold" onChange={handleChangeCity} value={city} />
+                            </div>
+                        </div>
+
+                        <div className="border border-gray-300 focus-within:border-gray-400">
+                            <div className="flex flex-col px-4 py-1">
+                                <span className=" text-gray-700">District</span>
+                                <input className="outline-none text-lg font-semibold" onChange={handleChangeDistrict} value={district} />
+                            </div>
+                        </div>
+
+                        <div className="border border-gray-300 focus-within:border-gray-400">
+                            <div className="flex flex-col px-4 py-1">
+                                <span className=" text-gray-700">Village</span>
+                                <input className="outline-none text-lg font-semibold" onChange={handleChangeVillage} value={village} />
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-                {/* end of tab contact information */}
 
-                <div className="md:w-1/2 space-y-5">
-                    <div className="border border-black">
-                        <div className="flex flex-col px-4 py-1">
-                            <span className=" text-gray-700">Country</span>
-                            <input className="outline-none text-lg font-semibold" onChange={handleChangeCountry} value={country} />
-                        </div>
-                    </div>
-
-                    <div className="border border-black">
-                        <div className="flex flex-col px-4 py-1">
-                            <span className=" text-gray-700">Province</span>
-                            <input className="outline-none text-lg font-semibold" onChange={handleChangeProvince} value={province} />
-                        </div>
-                    </div>
-
-                    <div className="border border-black">
-                        <div className="flex flex-col px-4 py-1">
-                            <span className=" text-gray-700">City</span>
-                            <input className="outline-none text-lg font-semibold" onChange={handleChangeCity} value={city} />
-                        </div>
-                    </div>
-
-                    <div className="border border-black">
-                        <div className="flex flex-col px-4 py-1">
-                            <span className=" text-gray-700">Address</span>
-                            <input className="outline-none text-lg font-semibold" onChange={handleChangeAddress} value={address} />
-                        </div>
-                    </div>
-
-                    <div className="border border-black md">
-                        <div className="flex flex-col px-4 py-1">
-                            <span className=" text-gray-700">Postal Code</span>
-                            <input className="outline-none text-lg font-semibold" onChange={handleChangePostalCode} value={postalCode} />
-                        </div>
-                    </div>
+                <div className="flex space-x-5">
+                    {/* <button className="md:w-64 w-full py-5 uppercase rounded-full border border-gray-300 text-gray-500">Discard</button> */}
+                    {
+                        !userDetail ?
+                            <button className="md:w-64 w-full py-5 uppercase rounded-full text-white bg-black" onClick={handleSaveUserDetail}>Save</button>
+                            :
+                            <button className="md:w-64 w-full py-5 uppercase rounded-full border border-gray-300 text-gray-500 md:hover:border-gray-400 md:hover:text-gray-600">Edit Account</button>
+                    }
                 </div>
+
             </div>
 
-            <div className="space-x-5 flex">
-                <button className="md:w-64 w-full md:py-7 py-3 rounded-full text-white bg-black">Edit Account</button>
-                <button className="md:w-64 w-full md:py-7 py-3 rounded-full border border-gray-500 text-gray-500">Discard Changes</button>
-            </div>
-
-        </div>
+            {notification?.isOpen && <Toast isOpen={notification?.isOpen} status={notification?.status} message={notification?.message} closeAction={handleToggleNotification} />}
+        </>
     );
 }

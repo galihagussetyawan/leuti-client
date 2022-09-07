@@ -11,7 +11,6 @@ export default function Footer() {
                 <div className="border-b border-gray-300 md:border-0 py-5">
                     <div className="flex md:flex-row md:gap-28 gap-10 px-5">
                         <div>
-                            <h6 className="font-semibold">BRAND</h6>
                             <div className="w-28 h-20 relative bg-gray-100">
                                 <Image
                                     src={'/full-logo.jpeg'}
@@ -24,7 +23,6 @@ export default function Footer() {
                         </div>
 
                         <div>
-                            <h6 className=" font-semibold">BPOM</h6>
                             <div className="w-28 h-20 relative bg-gray-100">
                                 <Image
                                     src={'/BPOM-Logo.jpg'}
@@ -75,11 +73,63 @@ export default function Footer() {
                                 <span>Coming Soon</span>
                             </Collapse>
                             <Collapse title="Follow Us">
-                                <Link href={'https://www.instagram.com/leuti_official/'}>
-                                    <a target={'_blank'}>Instagram</a>
-                                </Link>
-                                <span>Tiktok</span>
-                                <span>Youtube</span>
+                                <div className="flex space-x-5">
+                                    {/* <Link href={'https://www.instagram.com/leuti_official/'}>
+                                        <a target={'_blank'}>Instagram</a>
+                                    </Link>
+                                    <span>Tiktok</span>
+                                    <span>Youtube</span> */}
+                                    <Link href={'https://www.instagram.com/leuti_official/'}>
+                                        <a target={'_blank'}>
+                                            <Image
+                                                src={'/instagram.svg'}
+                                                width={50}
+                                                height={50}
+                                            />
+                                        </a>
+                                    </Link>
+
+                                    <Link href={'https://www.instagram.com/leuti_official/'}>
+                                        <a target={'_blank'}>
+                                            <Image
+                                                src={'/facebook.svg'}
+                                                width={50}
+                                                height={50}
+                                            />
+                                        </a>
+                                    </Link>
+
+                                    <Link href={'https://www.instagram.com/leuti_official/'}>
+                                        <a target={'_blank'}>
+                                            <Image
+                                                src={'/tik_tok.svg'}
+                                                width={50}
+                                                height={50}
+                                            />
+                                        </a>
+                                    </Link>
+
+                                    <Link href={'https://www.instagram.com/leuti_official/'}>
+                                        <a target={'_blank'}>
+                                            <Image
+                                                src={'/twitter.svg'}
+                                                width={50}
+                                                height={50}
+                                            />
+                                        </a>
+                                    </Link>
+
+                                    <Link href={'https://www.instagram.com/leuti_official/'}>
+                                        <a target={'_blank'}>
+                                            <Image
+                                                src={'/youtube.svg'}
+                                                width={50}
+                                                height={50}
+                                            />
+                                        </a>
+                                    </Link>
+
+                                </div>
                             </Collapse>
                             <span>Careers</span>
                             <Collapse title="News">

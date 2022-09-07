@@ -1,12 +1,23 @@
-import ApiServer from "./api-server";
+import ApiClient from "./api-client";
 
 class UserDetailService {
 
-    async getUserDetailByUser(userid, req, res) {
+    async addUserDetail(address, country, province, city, district, village, postalCode, phone) {
 
-        return await ApiServer(req, res).get('user/detail', {
-            params: { userid }
-        })
+        return await ApiClient()
+            .post('/api/user/detail', {
+                address, country, province, city, district, village, postalCode, phone,
+            })
+    }
+
+    async updateUserDetail(id, address, country, province, city, district, village, postalCode, phone,) {
+
+        return await ApiClient()
+            .put('/api/user/detail', {
+                address, country, province, city, district, village, postalCode, phone,
+            }, {
+                params: { id },
+            })
     }
 }
 
