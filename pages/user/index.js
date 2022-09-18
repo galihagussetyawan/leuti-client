@@ -9,6 +9,8 @@ import AuthService from "../../services/auth.service";
 import PoinService from "../../services/point.service";
 import CartService from "../../services/cart.service";
 import OrderService from "../../services/order.service";
+import RewardService from "../../services/reward.service";
+import RoyaltyService from "../../services/royalty.service";
 
 import Header from '../../components/header.component';
 const Footer = dynamic(() => import('../../components/footer.component'));
@@ -80,13 +82,9 @@ export default function User({ userData, userDetail, point }) {
 
     const navigationBarTitle = () => {
 
-        if (menu === 'account-tab') {
-            return 'Account';
-        }
-
-        if (menu === 'address-tab') {
-            return 'Account Information';
-        }
+        if (menu === 'account-tab') return 'Account';
+        if (menu === 'address-tab') return 'Account Information';
+        if (menu === 'reward-tab') return 'Reward';
     }
 
     //headers title
@@ -95,6 +93,7 @@ export default function User({ userData, userDetail, point }) {
         if (tab === 'account-tab') return 'Account | Leuti';
         if (tab === 'address-tab') return 'Account Information | Leuti';
         if (tab === 'order-tab') return 'Order List | Leuti';
+        if (tab === 'reward-tab') return 'Reward | Leuti';
 
         return 'Account | Leuti';
     }
@@ -122,8 +121,8 @@ export default function User({ userData, userDetail, point }) {
                 <div className={`${!isOpen ? 'visible' : 'hidden'} md:flex md:justify-between space-y-10 md:items-center`}>
 
                     {/* dekstop version */}
-                    <span className="md:text-4xl md:block hidden">Welcome {Capitalize(userData?.firstname)} {Capitalize(userData?.lastname)}</span>
-                    <span className="md:text-xl md:block hidden">POINT {point}</span>
+                    {/* <span className="md:text-4xl md:block hidden">Welcome {Capitalize(userData?.firstname)} {Capitalize(userData?.lastname)}</span> */}
+                    {/* <span className="md:text-xl md:block hidden">POINT {point?.point}</span> */}
                     {/* end of dekstop version */}
 
                     {/* mobile version */}
@@ -140,7 +139,7 @@ export default function User({ userData, userDetail, point }) {
                         <div className="flex border-b border-gray-300 py-5">
                             <div className="w-full flex flex-col text-center">
                                 <span className="text-sm font-semibold">POINT</span>
-                                <span>{point}</span>
+                                <span>{point?.point}</span>
                             </div>
                             <div className="w-full flex flex-col text-center">
                                 <span className="text-sm font-semibold">RANK</span>
@@ -161,12 +160,24 @@ export default function User({ userData, userDetail, point }) {
 
                     {/* menu list */}
                     <div className={`md:w-2/6 md:block mt-10 ${isOpen ? 'hidden' : 'block'}`}>
+
+                        <div className="hidden md:flex md:justify-between mb-10 text-lg font-semibold">
+                            <div>Welcome, {userData?.username}</div>
+                            <div className="flex items-center space-x-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <span>{point?.point}</span>
+                            </div>
+                        </div>
+
                         <ul className=" divide-y">
                             <li id="account-tab" className={handleClassName(tab, 'account-tab')} onClick={handleClickTab('account-tab')}>{menuItem('ACCOUNT')}</li>
                             <li id="address-tab" className={handleClassName(tab, 'address-tab')} onClick={handleClickTab('address-tab')}>{menuItem('ACCOUNT INFORMATION')}</li>
                             <li id="order-tab" className={handleClassName(tab, 'order-tab')} onClick={handleClickTab('order-tab')}>{menuItem('ORDER')}</li>
                             <li id="sponsor-tab" className={handleClassName(tab, 'sponsor-tab')} onClick={handleClickTab('sponsor-tab')}>{menuItem('SPONSOR')}</li>
                             <li id="billing-tab" className={handleClassName(tab, 'billing-tab')} onClick={handleClickTab('billing-tab')}>{menuItem('BILLING')}</li>
+                            <li id="billing-tab" className={handleClassName(tab, 'reward-tab')} onClick={handleClickTab('reward-tab')}>{menuItem('REWARD')}</li>
                             <li id="logout-tab" className={handleClassName(tab, 'logout-tab')} onClick={handleLogout}>LOGOUT</li>
                         </ul>
                     </div>
@@ -190,10 +201,12 @@ export async function getServerSideProps(context) {
     let isLogin = false;
     let user = {};
     let userData = null;
-    let point = 0;
+    let point = null;
     let carts = [];
     let userDetail = null;
     let orderList = [];
+    let rewardList = [];
+    let royalties = null;
 
     try {
 
@@ -208,10 +221,12 @@ export async function getServerSideProps(context) {
                 isLogin = true;
 
                 userData = await (await UserService.getUserById(user.userId))?.data?.data;
-                point = await (await PoinService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data?.point;
+                point = await (await PoinService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
                 userDetail = userData?.detail;
                 orderList = await (await OrderService.getOrdersByUser(req, res))?.data?.data;
+                rewardList = await (await RewardService.getAllRewards())?.data?.data;
+                royalties = await (await RoyaltyService.getRoyaltiesByUser(req, res))?.data?.data;
             }
         }
 
@@ -237,6 +252,8 @@ export async function getServerSideProps(context) {
             point,
             carts,
             orderList,
+            rewardList,
+            royalties,
         }
     }
 }

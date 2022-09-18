@@ -69,16 +69,6 @@ export default function AccountMenu({ data }) {
 
             </div>
 
-            <div className="space-x-5 flex">
-                {
-                    isEdit ?
-                        <button className="md:w-64 w-full py-5 rounded-full text-white bg-black" onClick={handleSaveButton}>Save Changes</button>
-                        :
-                        <button className="md:w-64 w-full py-5 rounded-full text-white bg-black" onClick={handleEditButton}>Edit Account</button>
-                }
-                <button className="md:w-64 w-full py-5 rounded-full border border-gray-500 text-gray-500">Discard Changes</button>
-            </div>
-
         </div>
     );
 }

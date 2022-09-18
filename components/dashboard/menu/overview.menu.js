@@ -1,30 +1,12 @@
-import { useRouter } from "next/router";
 import Link from "next/link";
 import { useContext } from "react";
 
 import LocalCurrency from "../../../lib/helpers/local-currency.help";
 import DashboardContext from "../../../lib/context/dashboard.context";
-import OrderService from "../../../services/order.service";
 
 export default function OverviewMenu() {
 
-    const router = useRouter();
     const { pointList, userList, ordersAllList } = useContext(DashboardContext);
-
-    //function service order
-    const handleApproveOrder = (id) => {
-
-        return () => {
-
-            OrderService.approveOrder(id)
-                .then(res => {
-
-                    router.replace(router.asPath)
-                        .then(() => router.replace(router.asPath));
-                })
-                .catch(err => console.log(err.response.data))
-        }
-    }
 
     const convertDate = (date) => {
         const newDate = new Date(parseInt(date));
@@ -173,6 +155,7 @@ export default function OverviewMenu() {
                                             <div className="md:flex md:flex-col">
                                                 <span className="md:text-lg">{data?.username}</span>
                                                 <span className="md:text-gray-500">JOIN: {convertDate(data?.join)}</span>
+                                                <span className="md:text-gray-500">Reward Time: {data?.day} days</span>
                                             </div>
                                         </div>
                                         <div className="md:flex md:space-x-5">

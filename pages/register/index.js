@@ -9,6 +9,7 @@ import CookiesService from "../../services/cookies.service";
 
 const Footer = dynamic(() => import('../../components/footer.component'));
 import Header from "../../components/header.component";
+import Head from "next/head";
 
 export default function Register() {
 
@@ -77,16 +78,19 @@ export default function Register() {
 
     return (
         <>
+            <Head>
+                <title>Register | Leuti Asia</title>
+            </Head>
             <Header />
 
             <main className="flex flex-col md:flex-row md:px-10 md:py-14">
 
                 <div className="md:w-2/5 md:h-[600px] hidden md:flex md:relative bg-gray-100">
                     <Image
+                        priority
                         src={'/images2.jpg'}
                         alt="Leuti Perfect Sublimate Serum"
                         layout='fill'
-                        loading='lazy'
                         objectFit='cover'
                     />
                 </div>

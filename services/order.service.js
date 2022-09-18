@@ -93,6 +93,30 @@ class OrderService {
                 }
             })
     }
+
+    async getCountNewOrders(req, res) {
+
+        return await ApiServer(req, res)
+            .get('orders/new/count')
+    }
+
+    async getCountNowOrders(req, res) {
+
+        return await ApiServer(req, res)
+            .get('orders/now/count')
+    }
+
+    async getCountNewOrdersClient() {
+
+        return await ApiClient()
+            .get('/api/orders/new/count')
+    }
+
+    async getCountNowOrdersClient() {
+
+        return await ApiClient()
+            .get('/api/orders/now/count')
+    }
 }
 
 export default new OrderService();

@@ -179,13 +179,13 @@ export default function OrderListMenu() {
         if (status === 'unpaid') {
             return (
                 <div className=" grid grid-cols-1 gap-2">
-                    <button className=" uppercase bg-green-500 py-5 text-white" onClick={handleActionButtonStatus('approve', id)}>Approve</button>
-                    <button className=" uppercase bg-red-500 py-5 text-white" onClick={handleActionButtonStatus('cancel', id)}>Cancel</button>
+                    <button className=" uppercase bg-green-500 py-3 text-white" onClick={handleActionButtonStatus('approved', id)}>Approve</button>
+                    <button className=" uppercase bg-red-500 py-3 text-white" onClick={handleActionButtonStatus('cancel', id)}>Cancel</button>
                 </div>
             )
         }
 
-        if (status === 'approve') {
+        if (status === 'approved') {
             return (
                 <div className=" grid grid-cols-1 gap-2">
                     <button className=" uppercase bg-green-500 py-5 text-white" onClick={handleActionButtonStatus('in-packaging', id)}>in-packaging</button>
@@ -221,7 +221,7 @@ export default function OrderListMenu() {
             return 'text-orange-500';
         }
 
-        if (status === 'approve' || status === 'completed') {
+        if (status === 'approved' || status === 'completed') {
             return 'text-green-500';
         }
 
@@ -233,7 +233,7 @@ export default function OrderListMenu() {
 
     const modalActionByStatus = () => {
 
-        if (modal?.action === 'approve') {
+        if (modal?.action === 'approved') {
             return (
                 <div className=" space-y-10 text-center">
                     <p className=" md:text-2xl md:font-semibold">Action Required!</p>
@@ -389,7 +389,7 @@ export default function OrderListMenu() {
 
                                                             <div className="grid grid-cols-2">
                                                                 <span className=" font-light capitalize">country</span>
-                                                                <span>{data?.shipping?.country}</span>
+                                                                <span className=" capitalize">{data?.shipping?.country}</span>
                                                             </div>
 
                                                             <div className="grid grid-cols-2">

@@ -9,17 +9,15 @@ export default function Footer() {
 
                 {/* column one */}
                 <div className="border-b border-gray-300 md:border-0 py-5">
-                    <div className="flex md:flex-row md:gap-28 gap-10 px-5">
-                        <div>
-                            <div className="w-28 h-20 relative bg-gray-100">
-                                <Image
-                                    src={'/full-logo.jpeg'}
-                                    quality={30}
-                                    layout='fill'
-                                    loading='lazy'
-                                    objectFit='cover'
-                                />
-                            </div>
+                    <div className="flex md:flex-row md:gap-28 justify-center md:justify-start gap-10 px-5">
+                        <div className="w-28 h-20 relative bg-gray-100">
+                            <Image
+                                src={'/full-logo.jpeg'}
+                                quality={30}
+                                layout='fill'
+                                loading='lazy'
+                                objectFit='cover'
+                            />
                         </div>
 
                         <div>

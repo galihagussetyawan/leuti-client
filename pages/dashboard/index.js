@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Head from "next/head";
@@ -16,12 +16,31 @@ import OrderService from "../../services/order.service";
 
 const TabDashboardComponent = dynamic(() => import('../../components/dashboard/tab-dashboard.component'));
 
-export default function Dashboard() {
+export default function Dashboard({ countNewOrders, countNowOrders }) {
 
     const router = useRouter();
 
     const { user } = useContext(AuthContext);
     const { tab } = router.query;
+
+    const [newOrdersTotal, setNewOrdersTotal] = useState(countNewOrders);
+    const [nowOrdersTotal, setNowOrdersTotal] = useState(countNowOrders);
+
+    useEffect(() => {
+
+        const interval = setInterval(() => {
+
+            OrderService.getCountNewOrdersClient()
+                .then(res => setNewOrdersTotal(res?.data?.data));
+
+            OrderService.getCountNowOrdersClient()
+                .then(res => setNowOrdersTotal(res?.data?.data))
+
+        }, 1000 * 60)
+
+        return () => clearInterval(interval);
+
+    }, [newOrdersTotal, nowOrdersTotal])
 
     const styleActiveMenu = (id) => {
 
@@ -54,10 +73,10 @@ export default function Dashboard() {
 
             </header>
 
-            <main className="md:flex">
+            <main className="md:w-full max-w-screen md:flex">
 
                 {/* left column / menu */}
-                <div className="md:w-1/5 md:border-r md:py-20 md:px-10">
+                <div className="md:min-w-[15%] md:max-w-[15%] md:border-r md:py-20 md:px-10">
                     <ul className="md:space-y-10 sticky top-40">
                         <li>
                             <Link href={{ pathname: '/dashboard' }}>OVERVIEW</Link>
@@ -65,10 +84,10 @@ export default function Dashboard() {
                         <li className="md:space-y-3">
                             <span>PRODUCTS</span>
                             <ul className="md:ml-10 md:space-y-3 md:text-gray-500">
-                                <li className={`${styleActiveMenu('product-list')}`}>
+                                <li className={`${styleActiveMenu('product-list')} md:hover:underline`}>
                                     <Link href={{ query: { tab: 'product-list' } }}>PRODUCT LIST</Link>
                                 </li>
-                                <li className={`${styleActiveMenu('create-product')}`}>
+                                <li className={`${styleActiveMenu('create-product')} md:hover:underline`}>
                                     <Link href={{ query: { tab: 'create-product' } }}>CREATE PRODUCT</Link>
                                 </li>
                             </ul>
@@ -76,7 +95,7 @@ export default function Dashboard() {
                         <li className="md:space-y-3">
                             <span>AGENTS</span>
                             <ul className="md:ml-10 md:space-y-3 md:text-gray-500">
-                                <li className={`${styleActiveMenu('agent-list')}`}>
+                                <li className={`${styleActiveMenu('agent-list')} md:hover:underline`}>
                                     <Link href={{ query: { tab: 'agent-list' } }}>AGENT LIST</Link>
                                 </li>
                                 <li>AGENT RANKING</li>
@@ -85,13 +104,15 @@ export default function Dashboard() {
                         <li className="md:space-y-3">
                             <span>ORDERS</span>
                             <ul className="md:ml-10 md:space-y-3 md:text-gray-500">
-                                <li className={`${styleActiveMenu('new-orders')}`}>
+                                <li className={`${styleActiveMenu('new-orders')} md:flex md:justify-between md:hover:underline`}>
                                     <Link href={{ query: { tab: 'new-orders' } }}>NEW ORDERS</Link>
+                                    <span className="min-w-[23px] min-h-[23px] md:px-2 md:flex justify-center md:items-center md:text-white md:bg-red-600">{newOrdersTotal}</span>
                                 </li>
-                                <li className={`${styleActiveMenu('now-orders')}`}>
+                                <li className={`${styleActiveMenu('now-orders')} md:flex md:justify-between md:hover:underline`}>
                                     <Link href={{ query: { tab: 'now-orders' } }}>NOW ORDERS</Link>
+                                    <span className=" min-w-[23px] min-h-[23px] md:px-2 md:flex justify-center md:items-center md:text-white md:bg-red-600">{nowOrdersTotal}</span>
                                 </li>
-                                <li className={`${styleActiveMenu('history-orders')}`}>
+                                <li className={`${styleActiveMenu('history-orders')} md:hover:underline`}>
                                     <Link href={{ query: { tab: 'history-orders' } }}>HiSTORY ORDERS</Link>
                                 </li>
                             </ul>
@@ -121,6 +142,8 @@ export async function getServerSideProps(context) {
     let userList = [];
     let pointList = [];
     let ordersAllList = [];
+    let countNewOrders = 0
+    let countNowOrders = 0;
 
     try {
 
@@ -150,7 +173,10 @@ export async function getServerSideProps(context) {
                 user = cookiesParsed;
                 userList = await (await UserService.getUsers(req, res))?.data?.data;
                 pointList = await (await PointService.getPoints(req, res))?.data?.data;
+
                 ordersAllList = await (await OrderService.getAllOrders(tab, req, res))?.data?.data;
+                countNewOrders = await (await OrderService.getCountNewOrders(req, res))?.data?.data;
+                countNowOrders = await (await OrderService.getCountNowOrders(req, res))?.data?.data;
             }
         }
 
@@ -172,6 +198,8 @@ export async function getServerSideProps(context) {
             userList,
             pointList,
             ordersAllList,
+            countNewOrders,
+            countNowOrders,
         }
     }
 }

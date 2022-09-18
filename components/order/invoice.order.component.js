@@ -72,25 +72,23 @@ export default function InvoiceOrder() {
                             <span className=" text-center">Total</span>
                         </div>
 
-                        <div className=" grid grid-cols-2 divide-x px-5">
-                            <div className="py-10">
+                        <div className="divide-y">
 
-                                {
-                                    order?.carts.map((cart, index) => {
-                                        return (
-                                            <div key={index} className=" flex justify-between">
-                                                <div className=" grid grid-cols-1">
-                                                    <span>{cart?.product?.name}</span>
-                                                    <span className="font-semibold">{cart?.quantity} items</span>
-                                                </div>
-                                                <span className="px-5">{LocalCurrency(cart?.product?.price)}</span>
+                            {
+                                order?.carts?.map((cart, index) => {
+                                    return (
+                                        <div key={index} className="grid grid-cols-2 divide-x">
+                                            <div className="flex flex-col p-5">
+                                                <div>{cart?.product?.name}</div>
+                                                <span>{cart?.quantity} item</span>
+                                                <span>{LocalCurrency(cart?.product?.price)}</span>
                                             </div>
-                                        )
-                                    })
-                                }
+                                            <div className="flex justify-center items-center">{LocalCurrency(cart?.amount)}</div>
+                                        </div>
+                                    )
+                                })
+                            }
 
-                            </div>
-                            <div className="py-10 text-center flex items-center justify-center">{LocalCurrency(order?.amount)}</div>
                         </div>
 
                         <div className=" grid grid-cols-2 divide-x border-t md:text-lg font-semibold">

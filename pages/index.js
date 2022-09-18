@@ -11,6 +11,7 @@ import authService from '../services/auth.service';
 import ProductService from '../services/product.service';
 import CartService from '../services/cart.service';
 import PointService from '../services/point.service';
+import RoyaltyService from '../services/royalty.service';
 
 const ProductDiscover = dynamic(() => import('../components/home/product-discover.component'));
 const ProductHorizontalDiscover = dynamic(() => import('../components/home/product-horizontal-discover.component'));
@@ -23,7 +24,7 @@ export default function Home({ productList }) {
             <Head>
                 <title>Leuti Perfect Sublimate Serum</title>
                 <meta name="description" content="Mencari produk skincare yang cocok dengan kondisi kulit ibarat mencari tambatan hati. Pasalnya, produk skincare yang bagus sekalipun belum tentu cocok" />
-                <meta name="keyword" content="produk, serum, kulit, produk perawatan kulit, leuti, skincare, skincare lokal, leuti skincare" />
+                <meta name="keywords" content="produk, serum, kulit, produk perawatan kulit, leuti, skincare, skincare lokal, leuti skincare" />
             </Head>
 
             <Header />
@@ -66,7 +67,8 @@ export async function getServerSideProps(context) {
     let isAdmin = false;
     let productList = null;
     let carts = [];
-    let point = 0;
+    let point = null;
+    let royalties = null;
 
     try {
 
@@ -81,7 +83,8 @@ export async function getServerSideProps(context) {
             if (cookiesParsed?.accessToken) {
                 user = cookiesParsed;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
-                point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data?.point;
+                point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data;
+                royalties = await (await RoyaltyService.getRoyaltiesByUser(req, res))?.data?.data;
                 isLogin = true;
             }
 
@@ -108,6 +111,7 @@ export async function getServerSideProps(context) {
             productList,
             carts,
             point,
+            royalties,
         }
     }
 }

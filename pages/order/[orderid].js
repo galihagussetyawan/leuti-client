@@ -1,3 +1,4 @@
+import Head from "next/head"
 import dynamic from "next/dynamic"
 
 import CookiesService from "../../services/cookies.service"
@@ -5,21 +6,24 @@ import OrderService from "../../services/order.service"
 
 import Header from "../../components/header.component"
 const Footer = dynamic(() => import('../../components/footer.component'))
-import ShippingAddressPaymentOrder from "../../components/order/shpping-payment.order.component"
-import InvoiceOrder from "../../components/order/invoice.order.component";
+const ShippingAddressPaymentOrder = dynamic(() => import('../../components/order/shpping-payment.order.component'));
+const InvoiceOrder = dynamic(() => import('../../components/order/invoice.order.component'));
 
 export default function Order({ order }) {
 
     const tab = () => {
 
         if (order?.status === 'created') return <ShippingAddressPaymentOrder />
-        if (order?.status === 'unpaid' || 'approve') return <InvoiceOrder />
+        if (order?.status === 'unpaid' || 'approved') return <InvoiceOrder />
 
         return <div>Kosong</div>;
     }
 
     return (
         <>
+            <Head>
+                <title>Order | Leuti Asia</title>
+            </Head>
             <Header />
             <main>
                 {tab()}

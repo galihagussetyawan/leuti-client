@@ -113,7 +113,7 @@ export async function getServerSideProps(context) {
     let user = {};
     let productList = null;
     let carts = [];
-    let point = 0;
+    let point = null;
 
     try {
 
@@ -127,7 +127,7 @@ export async function getServerSideProps(context) {
             if (cookiesParsed.accessToken) {
                 user = cookiesParsed;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
-                point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data?.point;
+                point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data;
                 isLogin = true;
             }
         }

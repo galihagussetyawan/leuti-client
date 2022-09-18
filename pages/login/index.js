@@ -9,6 +9,7 @@ import AuthService from '../../services/auth.service';
 //import components
 const Footer = dynamic(() => import('../../components/footer.component'))
 import Header from '../../components/header.component';
+import Head from 'next/head';
 
 export default function Login() {
 
@@ -55,16 +56,19 @@ export default function Login() {
 
     return (
         <>
+            <Head>
+                <title>Login | Leuti Asia</title>
+            </Head>
             <Header />
 
             <main className="flex md:px-10 md:py-14">
 
                 <div className="md:w-2/5 md:h-[600px] hidden md:block md:relative bg-gray-200">
                     <Image
+                        priority
                         alt='Leuti Perfect Sublimate Serum'
                         src={'/images2.jpg'}
                         layout='fill'
-                        loading='lazy'
                         objectFit='cover'
                     />
                 </div>

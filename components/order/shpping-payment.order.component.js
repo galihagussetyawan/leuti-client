@@ -80,7 +80,7 @@ export default function ShippingAddressPaymentOrder() {
         setIsLoading(true);
 
         if (!name || !address || !country || !province || !city || !district || !village || !postalCode || !email || !phone) {
-
+            sendEmailOrderCreated
             setNotification({
                 isOpen: true,
                 status: 'error',
@@ -269,7 +269,7 @@ export default function ShippingAddressPaymentOrder() {
                     <div className=" space-y-10">
                         <p>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy
                         </p>
-                        <button className="w-full py-5 text-white rounded-full bg-black" onClick={handlePlaceOrder}>
+                        <button className="w-full py-5 text-white rounded-full bg-black" disabled={isLoading} onClick={handlePlaceOrder}>
                             {
                                 isLoading ?
                                     <span>
