@@ -67,7 +67,7 @@ export default function OverviewMenu() {
                             <span className="md:text-4xl">{userList?.total}</span>
                         </div>
                         <div className="md:h-52 md:flex md:flex-col md:justify-center md:px-10 md:border md:bg-white">
-                            <span className="md:text-gray-500">TOTAL TRANSACTION</span>
+                            <span className="md:text-gray-500">TOTAL TRANSACTION TODAY</span>
                             <span className="md:text-4xl">Rp32.000.000</span>
                         </div>
                     </div>
