@@ -1,18 +1,22 @@
 import { useContext, useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import DashboardContext from "../../../lib/context/dashboard.context"
-import UserService from "../../../services/user.service"
+import ReactPaginate from "react-paginate"
+
 import SponsorService from "../../../services/sponsor.service"
+import UserService from "../../../services/user.service"
 
 import Popover from "../../commons/popover.component"
 import ModalDashboard from "../modal.dashboard"
 import Toast from "../../commons/toast.component"
+import TableSkeletonAnimation from "../../commons/table.skeleton.animation"
 
 export default function UserListMenu() {
 
     const router = useRouter();
     const { userList } = useContext(DashboardContext);
 
+    const [isLoading, setIsLoading] = useState(false);
     const [notification, setNotification] = useState({
         isOpen: false,
         status: 'error',
@@ -37,6 +41,18 @@ export default function UserListMenu() {
 
     }, [search, isSearch])
 
+    useEffect(() => {
+
+        router.events.on('routeChangeStart', () => setIsLoading(true));
+        router.events.on('routeChangeComplete', () => setIsLoading(false));
+
+        return () => {
+            router.events.off('routeChangeStart', () => setIsLoading(true));
+            router.events.off('routeChangeComplete', () => setIsLoading(false));
+        }
+
+    }, [isLoading])
+
     const handleChangeSearch = event => {
         setSearch(event.target.value);
     }
@@ -48,21 +64,25 @@ export default function UserListMenu() {
     const handleSearch = event => {
         event.preventDefault();
         setIsSearch(true);
+        setIsLoading(true);
 
         UserService.searchUserByIdOrUsername(search)
             .then(res => setSearchData(res?.data?.data))
             .catch(err => console.log(err.response))
+            .finally(() => setIsLoading(false));
     }
 
     const handleKeyDown = event => {
 
         if (event.key === 'Enter') {
 
+            setIsLoading(true);
             setIsSearch(true);
 
             UserService.searchUserByIdOrUsername(search)
                 .then(res => setSearchData(res?.data?.data))
                 .catch(err => console.log(err.response))
+                .finally(() => setIsLoading(false));
         }
     };
 
@@ -302,6 +322,15 @@ export default function UserListMenu() {
         }))
     }
 
+    const handlePagination = event => {
+
+        router.replace({
+            query: {
+                ...router.query,
+                page: event?.selected + 1,
+            }
+        })
+    }
 
     return (
         <>
@@ -326,7 +355,7 @@ export default function UserListMenu() {
                     {/* end of search field */}
 
                     <table className="md:w-[100%] md:text-left">
-                        <thead className="md:uppercase md:text-xs md:text-gray-400 md:border-t-2">
+                        <thead className="md:uppercase md:text-xs md:border-t-2 md:text-gray-400">
                             <tr>
                                 <th className="md:py-3 md:px-6">id</th>
                                 <th className="md:py-3 md:px-6">sponsor</th>
@@ -346,31 +375,54 @@ export default function UserListMenu() {
                         </thead>
                         <tbody className="md:text-gray-800">
                             {
-                                (isSearch ? searchData : userList)?.items?.map((data, index) => {
-                                    return (
-                                        <tr key={index} className="md:border-b">
-                                            <td className="md:py-3 md:px-6">{data?.id}</td>
-                                            <td className="md:py-3 md:px-6 relative">{fieldSponsor(data)}</td>
-                                            <td className="md:py-3 md:px-6">{data?.firstname}</td>
-                                            <td className="md:py-3 md:px-6">{data?.lastname}</td>
-                                            <td className="md:py-3 md:px-6">{data?.username}</td>
-                                            <td className="md:py-3 md:px-6">{data?.email}</td>
-                                            <td className="md:py-3 md:px-6">{data?.detail?.phone}</td>
-                                            <td className="md:py-3 md:px-6 capitalize">{data?.detail?.country}</td>
-                                            <td className="md:py-3 md:px-6 capitalize">{data?.detail?.province}</td>
-                                            <td className="md:py-3 md:px-6 capitalize">{data?.detail?.city}</td>
-                                            <td className="md:py-3 md:px-6 capitalize">{data?.detail?.districts}</td>
-                                            <td className="md:py-3 md:px-6 capitalize">{data?.detail?.village}</td>
-                                            <td className="md:py-3 md:px-6">{data?.detail?.postalCode}</td>
-                                            <td className="md:py-3 md:px-6">{data?.detail?.address}</td>
-                                        </tr>
-                                    )
-                                })
+                                !isLoading ?
+                                    (isSearch ? searchData : userList)?.items?.map((data, index) => {
+                                        return (
+                                            <tr key={index} className="md:border-b">
+                                                <td className="md:py-3 md:px-6">{data?.id}</td>
+                                                <td className="md:py-3 md:px-6 relative">{fieldSponsor(data)}</td>
+                                                <td className="md:py-3 md:px-6">{data?.firstname}</td>
+                                                <td className="md:py-3 md:px-6">{data?.lastname}</td>
+                                                <td className="md:py-3 md:px-6">{data?.username}</td>
+                                                <td className="md:py-3 md:px-6">{data?.email}</td>
+                                                <td className="md:py-3 md:px-6">{data?.detail?.phone}</td>
+                                                <td className="md:py-3 md:px-6 capitalize">{data?.detail?.country}</td>
+                                                <td className="md:py-3 md:px-6 capitalize">{data?.detail?.province}</td>
+                                                <td className="md:py-3 md:px-6 capitalize">{data?.detail?.city}</td>
+                                                <td className="md:py-3 md:px-6 capitalize">{data?.detail?.districts}</td>
+                                                <td className="md:py-3 md:px-6 capitalize">{data?.detail?.village}</td>
+                                                <td className="md:py-3 md:px-6">{data?.detail?.postalCode}</td>
+                                                <td className="md:py-3 md:px-6">{data?.detail?.address}</td>
+                                            </tr>
+                                        )
+                                    })
+                                    :
+                                    TableSkeletonAnimation(3, 14)
                             }
+
                         </tbody>
                     </table>
 
+                    {
+                        !isSearch &&
+                        <ReactPaginate
+                            className="flex p-10 text-gray-600 bg-white"
+                            previousLinkClassName="p-5 border md:hover:bg-gray-100"
+                            nextLinkClassName="p-5 border md:hover:bg-gray-100"
+                            pageLinkClassName=" p-5 border md:hover:bg-gray-100"
+                            activeLinkClassName="border-2 border-gray-200 bg-gray-100"
+                            pageCount={userList?.totalPages}
+                            breakLabel="..."
+                            nextLabel="Next"
+                            previousLabel="Previous"
+                            renderOnZeroPageCount={null}
+                            onPageChange={handlePagination}
+                        />
+
+                    }
+
                 </div>
+
             </div>
 
             {

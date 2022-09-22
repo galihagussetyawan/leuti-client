@@ -18,10 +18,14 @@ class UserService {
         });
     }
 
-    async getUsers(req, res) {
+    async getUsers(req, res, page = 1) {
 
         return await ApiServer(req, res)
-            .get('users');
+            .get('users', {
+                params: {
+                    page: page
+                }
+            });
     }
 
     async searchUserByIdOrUsername(search) {

@@ -333,7 +333,7 @@ export default function OrderListMenu() {
                     {/* end of search field */}
 
                     <table className="md:w-full md:text-left">
-                        <thead className="uppercase text-xs text-gray-500">
+                        <thead className="uppercase text-xs md:border-t-2 text-gray-500">
                             <tr>
                                 <th className=" px-5 py-3">create</th>
                                 <th className=" px-5 py-3">order id</th>

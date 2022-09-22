@@ -6,6 +6,7 @@ import axios from "axios";
 import CookiesService from "../../services/cookies.service";
 import CartService from "../../services/cart.service";
 import PointService from "../../services/point.service";
+import RoyaltyService from "../../services/royalty.service";
 
 // import components
 import Header from '../../components/header.component';
@@ -112,6 +113,7 @@ export async function getServerSideProps(context) {
     let user = {};
     let carts = [];
     let point = null;
+    let royalties = null;
 
     const { data, error } = await axios.get(`http://${host}/api/story/content`);
 
@@ -127,6 +129,7 @@ export async function getServerSideProps(context) {
                 user = cookiesParsed;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
                 point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data;
+                royalties = await (await RoyaltyService.getRoyaltiesByUser(req, res))?.data?.data;
                 isLogin = true;
             }
         }
@@ -145,6 +148,7 @@ export async function getServerSideProps(context) {
             user,
             carts,
             point,
+            royalties,
         }
     }
 }

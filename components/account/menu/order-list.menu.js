@@ -49,7 +49,7 @@ export default function OrderListMenu() {
 
     return (
         <div className="md:w-full md:space-y-20 space-y-7">
-            <span className="md:text-2xl">Order List</span>
+            <span className="hidden md:block md:text-2xl">Order List</span>
 
             <div className="w-full relative overflow-x-auto">
                 <table className="w-full text-left">

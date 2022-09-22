@@ -3,6 +3,9 @@ import dynamic from "next/dynamic"
 
 import CookiesService from "../../services/cookies.service"
 import OrderService from "../../services/order.service"
+import PointService from "../../services/point.service"
+import RoyaltyService from "../../services/royalty.service"
+import CartService from "../../services/cart.service"
 
 import Header from "../../components/header.component"
 const Footer = dynamic(() => import('../../components/footer.component'))
@@ -41,7 +44,10 @@ export async function getServerSideProps(context) {
 
     let isLogin = false;
     let user = {};
+    let carts = [];
     let order = null;
+    let point = null;
+    let royalties = null;
 
     try {
 
@@ -51,10 +57,13 @@ export async function getServerSideProps(context) {
 
             const cookiesParsed = JSON.parse(cookies);
 
-            if (cookiesParsed.accessToken) {
+            if (cookiesParsed?.accessToken) {
                 user = cookiesParsed;
-                isLogin = true;
                 order = (await OrderService.getOrderById(orderid, req, res))?.data?.data;
+                point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data;
+                royalties = await (await RoyaltyService.getRoyaltiesByUser(req, res))?.data?.data;
+                carts = await (await CartService.getCartByUser(req, res))?.data?.data;
+                isLogin = true;
             }
 
         }
@@ -77,7 +86,10 @@ export async function getServerSideProps(context) {
         props: {
             isLogin,
             user,
+            carts,
             order,
+            point,
+            royalties,
         }
     }
 }

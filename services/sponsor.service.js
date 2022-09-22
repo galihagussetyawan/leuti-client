@@ -1,4 +1,5 @@
 import ApiClient from "./api-client";
+import ApiServer from "./api-server";
 
 class SponsorService {
 
@@ -32,6 +33,13 @@ class SponsorService {
                 }
             })
     }
+
+    async getAllSponsorByUser(req, res) {
+
+        return await ApiServer(req, res)
+            .get('sponsors')
+    }
+
 }
 
 export default new SponsorService();

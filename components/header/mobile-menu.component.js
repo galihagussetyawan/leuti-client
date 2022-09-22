@@ -105,27 +105,34 @@ export default function MobileMenu({ closeAction, isOpen }) {
 
                                 <div className="w-full flex justify-between items-center px-5">
 
-                                    {/* point */}
+                                    {/* point/royalty */}
                                     {
                                         isLogin &&
                                         <div className="flex flex-col space-y-3">
-                                            <div className="flex gap-1 items-center">
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                                </svg>
+
+                                            <div className="flex space-x-3">
                                                 <div className="flex space-x-1">
-                                                    <span>{point?.point}</span>
-                                                    <span className="text-gray-400">point</span>
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                        </svg>
+                                                    </span>
+                                                    <span>Point</span>
                                                 </div>
+                                                <span className=" font-semibold">{point?.point}</span>
                                             </div>
+
                                             <div className="flex space-x-2">
-                                                <div className=" w-6 h-6 flex items-center justify-center rounded-full text-white text-[0.7rem] bg-yellow-500">
-                                                    <span className=" text-[0.7rem] font-semibold">Rp</span>
-                                                </div>
                                                 <div className="flex space-x-1">
-                                                    <span>{LocalCurrency(royalties?.total)}</span>
-                                                    <span className="text-gray-400">royalty</span>
+                                                    <span className="text-green-500">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-6 h-6" viewBox="0 0 16 16">
+                                                            <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1H1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                                                            <path d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2H3z" />
+                                                        </svg>
+                                                    </span>
+                                                    <span>Royalty</span>
                                                 </div>
+                                                <span className="font-semibold">{LocalCurrency(royalties?.total)}</span>
                                             </div>
                                         </div>
                                     }
@@ -145,7 +152,7 @@ export default function MobileMenu({ closeAction, isOpen }) {
 
                                             {
                                                 isLogin ?
-                                                    <div className="flex">
+                                                    <div className="flex items-center">
                                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                                                             <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                                         </svg>

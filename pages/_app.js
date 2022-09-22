@@ -9,7 +9,7 @@ import Script from 'next/script';
 
 export default function MyApp({ Component, pageProps }) {
 
-  const { isLogin, user, isAdmin, carts, productList, product, point, pointList, userList, userDetail, orderList, ordersAllList, order, rewardList, royalties } = pageProps;
+  const { isLogin, user, isAdmin, carts, productList, product, point, pointList, userList, userDetail, orderList, ordersAllList, order, rewardList, royalties, sponsors } = pageProps;
 
   return (
     <>
@@ -29,7 +29,7 @@ export default function MyApp({ Component, pageProps }) {
       <AuthContext.Provider value={{ isLogin, user, isAdmin }}>
         <CartContext.Provider value={{ carts }}>
           <DashboardContext.Provider value={{ productList, product, pointList, userList, ordersAllList }}>
-            <UserContext.Provider value={{ orderList, userDetail, point, rewardList, royalties }}>
+            <UserContext.Provider value={{ orderList, userDetail, point, rewardList, royalties, sponsors }}>
               <OrderContext.Provider value={{ order }}>
 
                 <Head>

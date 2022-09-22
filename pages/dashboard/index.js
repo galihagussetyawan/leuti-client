@@ -133,7 +133,7 @@ export default function Dashboard({ countNewOrders, countNowOrders }) {
 export async function getServerSideProps(context) {
 
     const { req, res, query } = context;
-    const { tab, productid } = query;
+    const { tab, productid, page } = query;
 
     let isAdmin = false;
     let user = {};
@@ -171,9 +171,8 @@ export async function getServerSideProps(context) {
 
             if (cookiesParsed) {
                 user = cookiesParsed;
-                userList = await (await UserService.getUsers(req, res))?.data?.data;
+                userList = await (await UserService.getUsers(req, res, page))?.data?.data;
                 pointList = await (await PointService.getPoints(req, res))?.data?.data;
-
                 ordersAllList = await (await OrderService.getAllOrders(tab, req, res))?.data?.data;
                 countNewOrders = await (await OrderService.getCountNewOrders(req, res))?.data?.data;
                 countNowOrders = await (await OrderService.getCountNowOrders(req, res))?.data?.data;

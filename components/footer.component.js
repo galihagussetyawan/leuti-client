@@ -1,8 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+
 import Collapse from "./collapse.component";
 
+const faqData = [
+    'Apakah LEUTI itu?',
+    'Produk apa saja yang sudah dikeluarkan LEUTI saat ini?',
+    'LEUTI Perfect Sublimate Serum paling cocok untuk jenis kulit yang bagaimana?',
+    'Apa efekti tas LEUTI Perfect Sublimate Serum?',
+    'Bagaimana cara order produk-produk LEUTI?',
+    'Bagaimana jika tidak cocok menggunakan produk LEUTI?'
+]
+
 export default function Footer() {
+
+    const router = useRouter();
+
+    const handleNavigate = (url) => {
+        return () => router.push(url);
+    }
+
     return (
         <footer className=" md:w-full md:py-24 mt-20 md:border-y py-5 border-y border-gray-300">
             <div className="md:px-10 md:grid md:grid-cols-4 grid-cols-1 gap-5">
@@ -43,14 +61,40 @@ export default function Footer() {
                         <div className="flex flex-col md:gap-5 gap-4">
 
                             <Collapse title="Contact">
-                                <Link href={{ pathname: '/consultation' }}>
-                                    <span>Konsultasi</span>
-                                </Link>
+                                <div className="flex flex-col">
+
+                                    <Link href={'https://api.whatsapp.com/send?phone=6281352888807'}>
+                                        <a target={'_blank'} className="flex items-center space-x-3">
+                                            <i>
+                                                <Image
+                                                    src={'/whatsapp.svg'}
+                                                    width={25}
+                                                    height={25}
+                                                />
+                                            </i>
+                                            <span className=" md:hover:underline">081352888807</span>
+                                        </a>
+                                    </Link>
+
+                                </div>
                             </Collapse>
 
                             <Collapse title={'FAQ'}>
-                                <span>Coming Soon</span>
-                                <span>Coming Soon</span>
+                                {
+                                    faqData?.map((data, index) => {
+                                        return (
+                                            <span key={index} className=" md:hover:underline"
+                                                onClick={handleNavigate({
+                                                    pathname: '/faq',
+                                                    query: {
+                                                        index: index,
+                                                    }
+                                                })}>
+                                                {data}
+                                            </span>
+                                        )
+                                    })
+                                }
                             </Collapse>
                         </div>
                     </div>
@@ -72,11 +116,6 @@ export default function Footer() {
                             </Collapse>
                             <Collapse title="Follow Us">
                                 <div className="flex space-x-5">
-                                    {/* <Link href={'https://www.instagram.com/leuti_official/'}>
-                                        <a target={'_blank'}>Instagram</a>
-                                    </Link>
-                                    <span>Tiktok</span>
-                                    <span>Youtube</span> */}
                                     <Link href={'https://www.instagram.com/leuti_official/'}>
                                         <a target={'_blank'}>
                                             <Image

@@ -8,6 +8,7 @@ import CookiesService from "../../services/cookies.service";
 import ProductService from "../../services/product.service";
 import CartService from "../../services/cart.service";
 import PointService from "../../services/point.service";
+import RoyaltyService from "../../services/royalty.service";
 
 //import components
 import Header from '../../components/header.component';
@@ -35,6 +36,10 @@ export default function Product({ isLogin, productData, inCart }) {
     const [imagePreview, setImagePreview] = useState(productData?.images[0]?.name);
     const [quantity, setQuantity] = useState(1);
     const [stock, setStock] = useState(productData?.stock);
+
+    const headerTitle = () => {
+        return productData?.name + ' | Leuti Asia';
+    }
 
     const handleMouseOverImage = event => {
         event.preventDefault();
@@ -130,7 +135,7 @@ export default function Product({ isLogin, productData, inCart }) {
     return (
         <>
             <Head>
-                <title>{productData?.name}</title>
+                <title>{headerTitle()}</title>
                 <meta name="description" content={productData?.description} />
                 <meta name="keyword" content="produk, skincare lokal, skincare terbaik, skincare indonesia, leuti 2022, serum, kecantikan, skincare bagus" />
             </Head>
@@ -289,7 +294,8 @@ export async function getServerSideProps(context) {
     let user = {};
     let productData = null;
     let carts = [];
-    let point = 0;
+    let point = null;
+    let royalties = null;
 
     try {
 
@@ -310,7 +316,8 @@ export async function getServerSideProps(context) {
             if (cookiesParsed.accessToken) {
                 user = cookiesParsed;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
-                point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data?.point;
+                point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data;
+                royalties = await (await RoyaltyService.getRoyaltiesByUser(req, res))?.data?.data;
                 isLogin = true;
             }
         }
@@ -340,6 +347,7 @@ export async function getServerSideProps(context) {
             carts,
             inCart,
             point,
+            royalties,
         }
     }
 }

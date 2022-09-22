@@ -7,6 +7,7 @@ import CookiesService from "../../services/cookies.service";
 import CartService from "../../services/cart.service";
 import ProductService from "../../services/product.service";
 import PointService from "../../services/point.service";
+import RoyaltyService from "../../services/royalty.service";
 
 const Footer = dynamic(() => import('../../components/footer.component'));
 import Header from "../../components/header.component"
@@ -32,7 +33,7 @@ export default function Shop({ productList }) {
     return (
         <div>
             <Head>
-                <title>Leuti Collections 2022</title>
+                <title>Leuti Collections 2022 | Leuti Asia</title>
                 <meta name="description" content="LEUTI.ASIA – Setiap Wanita pasti mendambakan kulit wajah yang sehat, cerah dan terawat, bukan? Apalagi di saat seperti ini sangat sudah untuk anda menemukan produk perawatan kulit wajah terbaik, salah satunya dengan menggunakan Skin Care. Sekarang ini sudah hadir brand lokal indonesia maupun impor yang menawarkan skincare dengan kualitas terbaik. Apalagi kalau bukan Leuti Perfect Sublimate Serum. Produk yang sangat cocok bagi orang-orang yang menuntut kesempurnaan dan kualitas tinggi" />
                 <meta name="keyword" content="produk, skincare, serum, skincare 2022, skincare lokal, skincare terbaik, skincare indonesia" />
             </Head>
@@ -114,6 +115,7 @@ export async function getServerSideProps(context) {
     let productList = null;
     let carts = [];
     let point = null;
+    let royalties = null;
 
     try {
 
@@ -128,6 +130,7 @@ export async function getServerSideProps(context) {
                 user = cookiesParsed;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
                 point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data;
+                royalties = await (await RoyaltyService.getRoyaltiesByUser(req, res))?.data?.data;
                 isLogin = true;
             }
         }
@@ -146,6 +149,7 @@ export async function getServerSideProps(context) {
             productList,
             carts,
             point,
+            royalties,
         }
     }
 }

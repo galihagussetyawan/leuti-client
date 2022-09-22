@@ -11,6 +11,7 @@ const DropdownLite = dynamic(() => import('../dropdown-lite.component'));
 
 import AuthContext from "../../lib/context/auth.context";
 import CartContext from "../../lib/context/cart.context";
+import UserContext from "../../lib/context/user.context";
 
 import LocalCurrency from "../../lib/helpers/local-currency.help";
 
@@ -26,6 +27,7 @@ export default function DekstopMenu({ toggleLogin, height }) {
 
     const { isLogin, user, isAdmin } = useContext(AuthContext);
     const { carts } = useContext(CartContext);
+    const { point, royalties } = useContext(UserContext);
 
     const [stateMenu, setStateMenu] = useState({});
 
@@ -143,7 +145,60 @@ export default function DekstopMenu({ toggleLogin, height }) {
                             {
                                 stateMenu['user-menu'] &&
                                 <DropdownLite>
-                                    <button onClick={handleLogout}>Logout</button>
+                                    <div>
+
+                                        <div className="md:flex md:justify-between md:items-center md:px-5 md:py-2 md:border md:border-gray-50 md:shadow-md md:hover:cursor-pointer" onClick={handleNavigate({ pathname: '/user' })}>
+                                            <div className="md:flex md:flex-col">
+                                                <span className="text-xl font-semibold">{user?.username}</span>
+                                                <span className=" text-gray-400">{user?.roles[0]}</span>
+                                            </div>
+                                            <span className=" text-gray-400">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                                </svg>
+                                            </span>
+                                        </div>
+
+                                        <div className=" md:mt-10 md:divide-y md:border-y">
+
+                                            <div className="md:flex md:justify-between md:py-3">
+                                                <div className="md:flex md:items-center md:space-x-2">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                                        </svg>
+                                                    </span>
+                                                    <span>Point</span>
+                                                </div>
+                                                <span className=" md:font-semibold">{point?.point}</span>
+                                            </div>
+
+                                            <div className="md:flex md:justify-between md:items-center md:py-3">
+                                                <div className="md:flex md:items-center md:space-x-2">
+                                                    <span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-6 h-6 text-green-500" viewBox="0 0 16 16">
+                                                            <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1H1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                                                            <path d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2H3z" />
+                                                        </svg>
+                                                    </span>
+                                                    <span>Royalty</span>
+                                                </div>
+                                                <div className=" md:font-semibold">{LocalCurrency(royalties?.total)}</div>
+                                            </div>
+
+                                            <div className="md:flex md:items-center md:space-x-2 md:py-3 md:hover:cursor-pointer md:hover:text-gray-500" onClick={handleLogout}>
+                                                <span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-6 h-6" viewBox="0 0 16 16">
+                                                        <path d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z" />
+                                                        <path d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z" />
+                                                    </svg>
+                                                </span>
+                                                <span>Logout</span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
                                 </DropdownLite>
                             }
                         </div>
@@ -205,7 +260,16 @@ export default function DekstopMenu({ toggleLogin, height }) {
                                         </ul>
                                     </div>
                                     :
-                                    <div>kosong</div>
+                                    <div className="md:flex md:flex-col md:justify-center md:items-center md:space-y-5">
+                                        <span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="md:w-24 md:h-24" fill="currentColor" viewBox="0 0 16 16">
+                                                <path d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793 7.354 5.646z" />
+                                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                                            </svg>
+                                        </span>
+                                        <p>Your Cart Is Currently Empty!</p>
+                                        <button className="md:w-full md:uppercase md:py-5 md:rounded-full md:text-white md:bg-black" onClick={handleNavigate('/shop')}>shopping</button>
+                                    </div>
                             }
                         </DropdownLite>
                     }

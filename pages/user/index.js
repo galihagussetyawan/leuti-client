@@ -11,6 +11,7 @@ import CartService from "../../services/cart.service";
 import OrderService from "../../services/order.service";
 import RewardService from "../../services/reward.service";
 import RoyaltyService from "../../services/royalty.service";
+import SponsorService from "../../services/sponsor.service";
 
 import Header from '../../components/header.component';
 const Footer = dynamic(() => import('../../components/footer.component'));
@@ -85,15 +86,18 @@ export default function User({ userData, userDetail, point }) {
         if (menu === 'account-tab') return 'Account';
         if (menu === 'address-tab') return 'Account Information';
         if (menu === 'reward-tab') return 'Reward';
+        if (menu === 'order-tab') return 'Order List';
+        if (menu === 'sponsor-tab') return 'Sponsor';
     }
 
     //headers title
     const headerTitle = () => {
 
-        if (tab === 'account-tab') return 'Account | Leuti';
-        if (tab === 'address-tab') return 'Account Information | Leuti';
-        if (tab === 'order-tab') return 'Order List | Leuti';
-        if (tab === 'reward-tab') return 'Reward | Leuti';
+        if (tab === 'account-tab') return 'Account | Leuti Asia';
+        if (tab === 'address-tab') return 'Account Information | Leuti Asia';
+        if (tab === 'order-tab') return 'Order List | Leuti Asia';
+        if (tab === 'reward-tab') return 'Reward | Leuti Asia';
+        if (tab === 'sponsor-tab') return 'Sponsor | Leuti Asia';
 
         return 'Account | Leuti';
     }
@@ -112,23 +116,19 @@ export default function User({ userData, userDetail, point }) {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                     </svg>
-                    {/* <span>Back</span> */}
-                    <p>{navigationBarTitle()}</p>
+                    <p className="font-semibold">{navigationBarTitle()}</p>
                 </button>
                 {/* end back button on mobile view */}
 
                 {/* welcome user section */}
                 <div className={`${!isOpen ? 'visible' : 'hidden'} md:flex md:justify-between space-y-10 md:items-center`}>
 
-                    {/* dekstop version */}
-                    {/* <span className="md:text-4xl md:block hidden">Welcome {Capitalize(userData?.firstname)} {Capitalize(userData?.lastname)}</span> */}
-                    {/* <span className="md:text-xl md:block hidden">POINT {point?.point}</span> */}
-                    {/* end of dekstop version */}
-
                     {/* mobile version */}
                     <div className="w-full md:hidden flex flex-col space-y-3">
                         <div className="flex justify-center">
-                            <div className=" w-36 h-36 bg-gray-300"></div>
+                            <div className=" w-36 h-36 flex justify-center items-center bg-gray-200">
+                                <p className="capitalize text-xl text-gray-400">{userData?.roles[0]}</p>
+                            </div>
                         </div>
 
                         <div className="flex flex-col items-center">
@@ -197,7 +197,9 @@ export default function User({ userData, userDetail, point }) {
 
 export async function getServerSideProps(context) {
 
-    const { req, res } = context;
+    const { req, res, query } = context;
+    const { menu } = query;
+
     let isLogin = false;
     let user = {};
     let userData = null;
@@ -207,6 +209,7 @@ export async function getServerSideProps(context) {
     let orderList = [];
     let rewardList = [];
     let royalties = null;
+    let sponsors = null;
 
     try {
 
@@ -220,13 +223,14 @@ export async function getServerSideProps(context) {
                 user = cookiesParsed;
                 isLogin = true;
 
-                userData = await (await UserService.getUserById(user.userId))?.data?.data;
+                userData = await (await UserService.getUserById(user?.userId))?.data?.data;
                 point = await (await PoinService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
                 userDetail = userData?.detail;
-                orderList = await (await OrderService.getOrdersByUser(req, res))?.data?.data;
-                rewardList = await (await RewardService.getAllRewards())?.data?.data;
                 royalties = await (await RoyaltyService.getRoyaltiesByUser(req, res))?.data?.data;
+                rewardList = await (await RewardService.getAllRewards())?.data?.data;
+                if (menu === 'order-tab') orderList = await (await OrderService.getOrdersByUser(req, res))?.data?.data;
+                if (menu === 'sponsor-tab') sponsors = await (await SponsorService.getAllSponsorByUser(req, res))?.data?.data;
             }
         }
 
@@ -254,6 +258,7 @@ export async function getServerSideProps(context) {
             orderList,
             rewardList,
             royalties,
+            sponsors,
         }
     }
 }

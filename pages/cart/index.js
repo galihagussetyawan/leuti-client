@@ -12,6 +12,7 @@ import CookiesService from '../../services/cookies.service';
 import CartService from '../../services/cart.service';
 import OrderService from '../../services/order.service';
 import PointService from '../../services/point.service';
+import RoyaltyService from '../../services/royalty.service';
 
 import LocalCurrency from '../../lib/helpers/local-currency.help';
 
@@ -136,7 +137,7 @@ export default function Cart({ carts, totalPrice }) {
     return (
         <>
             <Head>
-                <title>Cart | Leuti</title>
+                <title>Cart | Leuti Asia</title>
             </Head>
             <Header />
             <main className='md:w-4/5 flex flex-col m-auto md:mt-20'>
@@ -296,6 +297,7 @@ export async function getServerSideProps(context) {
     let carts = [];
     let totalPrice = 0;
     let point = null;
+    let royalties = null;
 
     try {
 
@@ -309,6 +311,7 @@ export async function getServerSideProps(context) {
                 user = cookiesParsed;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
                 point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data;
+                royalties = await (await RoyaltyService.getRoyaltiesByUser(req, res))?.data?.data;
                 isLogin = true;
             }
         }
@@ -332,6 +335,7 @@ export async function getServerSideProps(context) {
             carts,
             totalPrice,
             point,
+            royalties,
         }
     }
 
