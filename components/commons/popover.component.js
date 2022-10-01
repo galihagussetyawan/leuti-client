@@ -66,7 +66,7 @@ export default function Popover({ title, children, position }) {
                 {title && <h5>{title}</h5>}
                 {iconsByPosition(position)}
             </button>
-            {open && <div className={`min-w-[300px] max-w-[300px] flex md:z-10 flex-col md:absolute ${positionPopover(position)} md:p-5 md:cursor-pointer md:border md:shadow-2xl md:bg-white`}>{children}</div>}
+            {open && <div className={`min-w-[300px] max-w-[500px] flex md:z-10 flex-col md:absolute ${positionPopover(position)} md:p-5 md:cursor-pointer md:border md:shadow-2xl md:bg-white`}>{children}</div>}
         </div>
     );
 }

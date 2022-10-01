@@ -11,11 +11,17 @@ class UserService {
         })
     }
 
-    async getUserById(id) {
+    // async getUserById(id) {
 
-        return await axios.get(`${process.env.API_HOST}/api/user`, {
-            params: { id },
-        });
+    //     return await axios.get(`${process.env.API_HOST}/api/user`, {
+    //         params: { id },
+    //     });
+    // }
+
+    async getUserById(req, res) {
+
+        return await ApiServer(req, res)
+            .get('user');
     }
 
     async getUsers(req, res, page = 1) {

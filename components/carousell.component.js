@@ -1,11 +1,11 @@
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from "swiper";
 
 // Import Swiper styles
 import "swiper/css"
 import "swiper/css/pagination";
 
-import { Autoplay, Pagination } from "swiper";
 
 export default function Caroussell() {
     return (
@@ -49,7 +49,7 @@ export default function Caroussell() {
                     </div>
                     <div className='h-1/2 flex flex-col gap-5 justify-center items-center md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2 text-center'>
                         <h1 className='w-11/12 md:w-full text-center text-5xl font-light md:text-4xl md:font-semibold'>Dapatkan Reward Dengan Mudah</h1>
-                        <p className='w-11/12 text-center font-light md:font-normal'>TOUR DESTINATION BALI, SINGAPORE & TURKI</p>
+                        <p className='w-11/12 text-center font-light md:font-normal'>TOUR DESTINATION BALI, THAILAND & TURKI</p>
                     </div>
                 </div>
             </SwiperSlide>

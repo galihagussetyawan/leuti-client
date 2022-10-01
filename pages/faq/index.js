@@ -45,8 +45,6 @@ export default function Faq() {
                 <title>FAQ | Leuti Asia</title>
             </Head>
 
-            <Header />
-
             <main className="md:w-4/5 md:space-y-9 space-y-10 m-auto md:py-10 px-5">
                 <h1 className="text-2xl text-center capitalize">Frequently asked questions</h1>
 

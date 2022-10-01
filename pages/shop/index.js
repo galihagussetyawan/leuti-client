@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import { useContext } from "react";
 
@@ -10,11 +11,9 @@ import PointService from "../../services/point.service";
 import RoyaltyService from "../../services/royalty.service";
 
 const Footer = dynamic(() => import('../../components/footer.component'));
-import Header from "../../components/header.component"
 
 import AuthContext from "../../lib/context/auth.context";
 import LocalCurrency from "../../lib/helpers/local-currency.help";
-import { useRouter } from "next/router";
 
 const imageLoader = ({ src }) => {
     return `${process.env.API_HOST}/api/image?img=${src}`;
@@ -38,7 +37,6 @@ export default function Shop({ productList }) {
                 <meta name="keyword" content="produk, skincare, serum, skincare 2022, skincare lokal, skincare terbaik, skincare indonesia" />
             </Head>
 
-            <Header />
             <main className="md:w-4/5 flex flex-col space-y-20 m-auto">
 
                 <div className="mt-14 space-y-5">
@@ -110,6 +108,7 @@ export default function Shop({ productList }) {
 export async function getServerSideProps(context) {
 
     const { req, res, } = context;
+
     let isLogin = false;
     let user = {};
     let productList = null;

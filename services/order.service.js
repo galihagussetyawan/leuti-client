@@ -117,6 +117,12 @@ class OrderService {
         return await ApiClient()
             .get('/api/orders/now/count')
     }
+
+    async getTotalOrders(req, res) {
+
+        return await ApiServer(req, res)
+            .get('orders/total')
+    }
 }
 
 export default new OrderService();

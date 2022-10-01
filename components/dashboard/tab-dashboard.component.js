@@ -6,6 +6,7 @@ const ProductListMenu = dynamic(() => import('./menu/product-list.menu'));
 const CreteProductMenu = dynamic(() => import('./menu/create-product.menu'));
 const UserListMenu = dynamic(() => import('./menu/user-list.menu'));
 const OrderListMenu = dynamic(() => import('./menu/order-list.dashboard.menu'));
+const RoyaltiesListMenuu = dynamic(() => import('./menu/royalties-list.menu'));
 
 export default function TabDashboardComponent() {
 
@@ -19,6 +20,7 @@ export default function TabDashboardComponent() {
     if (tab === 'new-orders') return <OrderListMenu />
     if (tab === 'now-orders') return <OrderListMenu />
     if (tab === 'history-orders') return <OrderListMenu />
+    if (tab === 'royalties-list') return <RoyaltiesListMenuu />
 
     return <OverviewMenu />
 }

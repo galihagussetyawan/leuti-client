@@ -123,7 +123,7 @@ export default function ShippingAddressPaymentOrder() {
 
                 {/* left section/shipping address */}
                 <div className="md:w-1/2 w-full space-y-10">
-                    <span className="text-xl font-semibold md:text-4xl md:font-semibold">Billing Detail</span>
+                    <span className="text-xl font-semibold md:text-4xl md:font-semibold">Shipping Detail</span>
 
                     <div>
                         <div className="w-full flex flex-col px-4 py-2 border border-gray-300">

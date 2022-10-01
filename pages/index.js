@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import dynamic from 'next/dynamic';
+import { deleteCookie } from 'cookies-next';
 
 import CookiesService from '../services/cookies.service';
 
 //import components
-import Header from '../components/header.component';
 import Caroussell from '../components/carousell.component';
 
 import authService from '../services/auth.service';
@@ -16,6 +16,7 @@ import RoyaltyService from '../services/royalty.service';
 const ProductDiscover = dynamic(() => import('../components/home/product-discover.component'));
 const ProductHorizontalDiscover = dynamic(() => import('../components/home/product-horizontal-discover.component'));
 const Footer = dynamic(() => import('../components/footer.component'));
+const TestimonialCarousell = dynamic(() => import('../components/home/testimonials.carousell.home.component'));
 
 export default function Home({ productList }) {
 
@@ -23,11 +24,16 @@ export default function Home({ productList }) {
         <>
             <Head>
                 <title>Leuti Perfect Sublimate Serum</title>
-                <meta name="description" content="Mencari produk skincare yang cocok dengan kondisi kulit ibarat mencari tambatan hati. Pasalnya, produk skincare yang bagus sekalipun belum tentu cocok" />
+                <meta property="og:title" content="Leuti Perfect Sublimate Serum" />
+                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+                <meta name="description" content="Mencari produk skincare yang cocok dengan kondisi kulit ibarat mencari tambatan hati. Pasalnya, produk skincare yang bagus sekalipun belum tentu cocok. Solusinya ada di Leuti Perfect Sublimate Serum" />
+                <meta property="og:description" content="Mencari produk skincare yang cocok dengan kondisi kulit ibarat mencari tambatan hati. Pasalnya, produk skincare yang bagus sekalipun belum tentu cocok. Solusinya ada di Leuti Perfect Sublimate Serum" />
                 <meta name="keywords" content="produk, serum, kulit, produk perawatan kulit, leuti, skincare, skincare lokal, leuti skincare" />
+                <meta property="og:url" content="https://leuti.asia" />
+                <meta property="og:type" content="website" />
+                <meta name="robots" content="all" />
+                <meta name="googlebot" content="index,follow" />
             </Head>
-
-            <Header />
 
             <main className='md:w-4/5 flex flex-col space-y-20 m-auto'>
 
@@ -50,6 +56,7 @@ export default function Home({ productList }) {
                     })
                 }
                 <ProductHorizontalDiscover />
+                <TestimonialCarousell />
 
             </main>
 
@@ -74,7 +81,10 @@ export async function getServerSideProps(context) {
 
         productList = await (await ProductService.getProducts())?.data?.data;
         const cookies = await CookiesService.getCookies('user', req, res);
-        isAdmin = await authService.isAdmin(JSON.parse(cookies)?.accessToken);
+
+        if (!await authService.isAgent(req, res)) {
+            deleteCookie('user', { req, res });
+        }
 
         if (cookies) {
 
@@ -86,6 +96,7 @@ export async function getServerSideProps(context) {
                 point = await (await PointService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data;
                 royalties = await (await RoyaltyService.getRoyaltiesByUser(req, res))?.data?.data;
                 isLogin = true;
+                isAdmin = await authService.isAdmin(req, res);
             }
 
         }

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import ApiClient from './api-client';
+import ApiServer from './api-server';
 import CookiesService from './cookies.service';
 
 class AuthService {
@@ -39,20 +40,31 @@ class AuthService {
         return false;
     }
 
-    async isAgent() {
+    async isAgent(req, res) {
 
-        return await ApiClient().get('/api/auth/agent');
-    }
-
-    async isAdmin(accessToken) {
-
-        return await axios.get(`${process.env.API_HOST}/api/auth/admin`, {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            }
-        })
+        return await ApiServer(req, res)
+            .get('auth/agent')
             .then(res => true)
             .catch(err => false);
+    }
+
+    // async isAdmin(accessToken) {
+
+    //     return await axios.get(`${process.env.API_HOST}/api/auth/admin`, {
+    //         headers: {
+    //             Authorization: `Bearer ${accessToken}`,
+    //         }
+    //     })
+    //         .then(res => true)
+    //         .catch(err => false);
+    // }
+
+    async isAdmin(req, res) {
+
+        return await ApiServer(req, res)
+            .get('auth/admin')
+            .then(res => true)
+            .catch(err => false)
     }
 }
 

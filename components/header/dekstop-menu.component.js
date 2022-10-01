@@ -126,8 +126,12 @@ export default function DekstopMenu({ toggleLogin, height }) {
                     </Dropdown>
                 </li>
                 <li>PROMO</li>
-                <li>RANK</li>
-                <li>SALES</li>
+                <li id="rank-menu">
+                    <span className={`${stateMenu['rank-menu'] && 'md:font-bold'} md:cursor-pointer md:py-7 md:hover:font-semibold`} onClick={handleNavigate({ pathname: '/rank' })}>RANK</span>
+                </li>
+                <li id="sales-menu">
+                    <span className={`${stateMenu['sales-menu'] && 'md:font-bold'} md:cursor-pointer md:py-7 md:hover:font-semibold`} onClick={handleNavigate({ pathname: '/sales' })}>SALES</span>
+                </li>
             </ul>
             {/* end menu */}
 

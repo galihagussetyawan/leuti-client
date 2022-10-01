@@ -3,7 +3,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 //import components
-import Header from "../components/header.component";
 const Footer = dynamic(() => import('../components/footer.component'));
 
 export default function Error({ statusCode }) {
@@ -40,7 +39,6 @@ export default function Error({ statusCode }) {
     return (
         <>
             <Head></Head>
-            <Header />
             <main>
                 {componentContent()}
             </main>

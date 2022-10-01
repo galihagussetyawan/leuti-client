@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
@@ -12,8 +12,8 @@ import OrderService from "../../services/order.service";
 import RewardService from "../../services/reward.service";
 import RoyaltyService from "../../services/royalty.service";
 import SponsorService from "../../services/sponsor.service";
+import WithdrawService from "../../services/withdraw.service";
 
-import Header from '../../components/header.component';
 const Footer = dynamic(() => import('../../components/footer.component'));
 import Tab from "../../components/account/tab.component";
 
@@ -88,6 +88,7 @@ export default function User({ userData, userDetail, point }) {
         if (menu === 'reward-tab') return 'Reward';
         if (menu === 'order-tab') return 'Order List';
         if (menu === 'sponsor-tab') return 'Sponsor';
+        if (menu === 'royalties-tab') return 'Royalties';
     }
 
     //headers title
@@ -98,6 +99,7 @@ export default function User({ userData, userDetail, point }) {
         if (tab === 'order-tab') return 'Order List | Leuti Asia';
         if (tab === 'reward-tab') return 'Reward | Leuti Asia';
         if (tab === 'sponsor-tab') return 'Sponsor | Leuti Asia';
+        if (tab === 'royalties-tab') return 'Royalties | Leuti Asia';
 
         return 'Account | Leuti';
     }
@@ -108,7 +110,6 @@ export default function User({ userData, userDetail, point }) {
                 <title>{headerTitle()}</title>
             </Head>
 
-            <Header />
             <main className="md:w-4/5 md:space-y-9 space-y-0 m-auto md:py-10 px-5">
 
                 {/* back button on mobile view */}
@@ -116,7 +117,7 @@ export default function User({ userData, userDetail, point }) {
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                     </svg>
-                    <p className="font-semibold">{navigationBarTitle()}</p>
+                    <p className="font-semibold text-2xl">{navigationBarTitle()}</p>
                 </button>
                 {/* end back button on mobile view */}
 
@@ -175,9 +176,9 @@ export default function User({ userData, userDetail, point }) {
                             <li id="account-tab" className={handleClassName(tab, 'account-tab')} onClick={handleClickTab('account-tab')}>{menuItem('ACCOUNT')}</li>
                             <li id="address-tab" className={handleClassName(tab, 'address-tab')} onClick={handleClickTab('address-tab')}>{menuItem('ACCOUNT INFORMATION')}</li>
                             <li id="order-tab" className={handleClassName(tab, 'order-tab')} onClick={handleClickTab('order-tab')}>{menuItem('ORDER')}</li>
+                            <li id="reward-tab" className={handleClassName(tab, 'reward-tab')} onClick={handleClickTab('reward-tab')}>{menuItem('REWARD')}</li>
                             <li id="sponsor-tab" className={handleClassName(tab, 'sponsor-tab')} onClick={handleClickTab('sponsor-tab')}>{menuItem('SPONSOR')}</li>
-                            <li id="billing-tab" className={handleClassName(tab, 'billing-tab')} onClick={handleClickTab('billing-tab')}>{menuItem('BILLING')}</li>
-                            <li id="billing-tab" className={handleClassName(tab, 'reward-tab')} onClick={handleClickTab('reward-tab')}>{menuItem('REWARD')}</li>
+                            <li id="royalties-tab" className={handleClassName(tab, 'royalties-tab')} onClick={handleClickTab('royalties-tab')}>{menuItem('ROYALTIES')}</li>
                             <li id="logout-tab" className={handleClassName(tab, 'logout-tab')} onClick={handleLogout}>LOGOUT</li>
                         </ul>
                     </div>
@@ -210,6 +211,7 @@ export async function getServerSideProps(context) {
     let rewardList = [];
     let royalties = null;
     let sponsors = null;
+    let withdraw = null;
 
     try {
 
@@ -223,14 +225,16 @@ export async function getServerSideProps(context) {
                 user = cookiesParsed;
                 isLogin = true;
 
-                userData = await (await UserService.getUserById(user?.userId))?.data?.data;
+                userData = await (await UserService.getUserById(req, res))?.data?.data;
                 point = await (await PoinService.getPointByUser(cookiesParsed?.userId, req, res))?.data?.data;
                 carts = await (await CartService.getCartByUser(req, res))?.data?.data;
                 userDetail = userData?.detail;
                 royalties = await (await RoyaltyService.getRoyaltiesByUser(req, res))?.data?.data;
-                rewardList = await (await RewardService.getAllRewards())?.data?.data;
+
+                if (menu === 'reward-tab') rewardList = await (await RewardService.getAllRewards())?.data?.data;
                 if (menu === 'order-tab') orderList = await (await OrderService.getOrdersByUser(req, res))?.data?.data;
                 if (menu === 'sponsor-tab') sponsors = await (await SponsorService.getAllSponsorByUser(req, res))?.data?.data;
+                if (menu === 'royalties-tab') withdraw = await (await WithdrawService.getWithdrawByUser(req, res))?.data?.data;
             }
         }
 
@@ -259,6 +263,7 @@ export async function getServerSideProps(context) {
             rewardList,
             royalties,
             sponsors,
+            withdraw,
         }
     }
 }

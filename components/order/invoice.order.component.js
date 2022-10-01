@@ -24,9 +24,12 @@ export default function InvoiceOrder() {
             return (
                 <div className=" flex flex-col">
                     <span>Terimakasi telah melakukan transaksi.</span>
-                    <span>Selamat point kamu sekarang bertambah.</span>
                 </div>
             )
+        }
+
+        if (order?.status === 'completed') {
+            return 'Thank you for the order';
         }
     }
 

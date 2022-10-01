@@ -60,6 +60,18 @@ export default function AccountInformationMenu() {
         setPhone(event.currentTarget.value);
     }
 
+    const handleToggleNotification = () => {
+
+        setNotification(prevState => ({
+            ...prevState,
+            isOpen: false,
+        }))
+    }
+
+    const handleToggleEditAddress = () => {
+        setIsEdit(!isEdit);
+    }
+
     const handleSaveUserDetail = () => {
 
         UserDetailService.addUserDetail(address, country, province, city, district, village, postalCode, phone)
@@ -86,14 +98,34 @@ export default function AccountInformationMenu() {
             })
     }
 
-    const handleToggleNotification = () => {
+    const handleUpdatSaveUserDetail = () => {
 
-        setNotification(prevState => ({
-            ...prevState,
-            isOpen: false,
-        }))
+        UserDetailService.updateUserDetail(userDetail?.id, address, country, province, city, district, village, postalCode, phone)
+            .then(res => {
+
+                router.replace(router.asPath)
+                    .then(() => {
+
+                        setNotification({
+                            isOpen: true,
+                            status: 'success',
+                            message: res?.data?.message,
+                        })
+
+                        handleToggleEditAddress();
+                    })
+            })
+            .catch(err => {
+
+                setNotification({
+                    isOpen: true,
+                    status: 'error',
+                    message: err?.response?.data?.error_message,
+                })
+
+            })
+
     }
-
 
     return (
         <>
@@ -115,21 +147,21 @@ export default function AccountInformationMenu() {
                         <div className="border border-gray-300 focus-within:border-gray-400">
                             <div className="flex flex-col px-4 py-1">
                                 <span className=" text-gray-700">Address</span>
-                                <input className="outline-none text-lg font-semibold" onChange={handleChangeAddress} value={address} />
+                                <input disabled={!isEdit ?? true} className="outline-none text-lg font-semibold" onChange={handleChangeAddress} value={address} />
                             </div>
                         </div>
 
                         <div className="border border-gray-300 focus-within:border-gray-400">
                             <div className="flex flex-col px-4 py-1">
                                 <span className=" text-gray-700">Postal Code</span>
-                                <input className="outline-none text-lg font-semibold" onChange={handleChangePostalCode} value={postalCode} />
+                                <input disabled={!isEdit ?? true} className="outline-none text-lg font-semibold" onChange={handleChangePostalCode} value={postalCode} />
                             </div>
                         </div>
 
                         <div className="border border-gray-300 focus-within:border-gray-400">
                             <div className="flex flex-col px-4 py-1">
                                 <span className=" text-gray-700">Phone Number</span>
-                                <input className="outline-none text-lg font-semibold" onChange={handleChangePhone} value={phone} />
+                                <input disabled={!isEdit ?? true} className="outline-none text-lg font-semibold" onChange={handleChangePhone} value={phone} />
                             </div>
                         </div>
 
@@ -140,35 +172,35 @@ export default function AccountInformationMenu() {
                         <div className="border border-gray-300 focus-within:border-gray-400">
                             <div className="flex flex-col px-4 py-1">
                                 <span className=" text-gray-700">Country</span>
-                                <input className="outline-none text-lg font-semibold" onChange={handleChangeCountry} value={country} />
+                                <input disabled={!isEdit ?? true} className="outline-none text-lg font-semibold" onChange={handleChangeCountry} value={country} />
                             </div>
                         </div>
 
                         <div className="border border-gray-300 focus-within:border-gray-400">
                             <div className="flex flex-col px-4 py-1">
                                 <span className=" text-gray-700">Province</span>
-                                <input className="outline-none text-lg font-semibold" onChange={handleChangeProvince} value={province} />
+                                <input disabled={!isEdit ?? true} className="outline-none text-lg font-semibold" onChange={handleChangeProvince} value={province} />
                             </div>
                         </div>
 
                         <div className="border border-gray-300 focus-within:border-gray-400">
                             <div className="flex flex-col px-4 py-1">
                                 <span className=" text-gray-700">City</span>
-                                <input className="outline-none text-lg font-semibold" onChange={handleChangeCity} value={city} />
+                                <input disabled={!isEdit ?? true} className="outline-none text-lg font-semibold" onChange={handleChangeCity} value={city} />
                             </div>
                         </div>
 
                         <div className="border border-gray-300 focus-within:border-gray-400">
                             <div className="flex flex-col px-4 py-1">
                                 <span className=" text-gray-700">District</span>
-                                <input className="outline-none text-lg font-semibold" onChange={handleChangeDistrict} value={district} />
+                                <input disabled={!isEdit ?? true} className="outline-none text-lg font-semibold" onChange={handleChangeDistrict} value={district} />
                             </div>
                         </div>
 
                         <div className="border border-gray-300 focus-within:border-gray-400">
                             <div className="flex flex-col px-4 py-1">
                                 <span className=" text-gray-700">Village</span>
-                                <input className="outline-none text-lg font-semibold" onChange={handleChangeVillage} value={village} />
+                                <input disabled={!isEdit ?? true} className="outline-none text-lg font-semibold" onChange={handleChangeVillage} value={village} />
                             </div>
                         </div>
 
@@ -176,12 +208,23 @@ export default function AccountInformationMenu() {
                 </div>
 
                 <div className="flex space-x-5">
-                    {/* <button className="md:w-64 w-full py-5 uppercase rounded-full border border-gray-300 text-gray-500">Discard</button> */}
                     {
                         !userDetail ?
-                            <button className="md:w-64 w-full py-5 uppercase rounded-full text-white bg-black" onClick={handleSaveUserDetail}>Save</button>
+                            isEdit ?
+                                <div className="md:w-1/2 w-full grid grid-cols-2 gap-5">
+                                    <button className="w-full py-5 uppercase rounded-full border border-gray-300 text-gray-500" onClick={handleToggleEditAddress}>Discard Changes</button>
+                                    <button className="w-full py-5 uppercase rounded-full text-white bg-black" onClick={handleSaveUserDetail}>Save</button>
+                                </div>
+                                :
+                                <button className="md:w-64 w-full py-5 uppercase rounded-full text-white bg-black" onClick={handleToggleEditAddress}>Edit Address</button>
                             :
-                            <button className="md:w-64 w-full py-5 uppercase rounded-full border border-gray-300 text-gray-500 md:hover:border-gray-400 md:hover:text-gray-600">Edit Account</button>
+                            isEdit ?
+                                <div className="md:w-1/2 w-full grid grid-cols-2 gap-5">
+                                    <button className="w-full py-5 uppercase rounded-full border border-gray-300 text-gray-500" onClick={handleToggleEditAddress}>Discard Changes</button>
+                                    <button className="w-full py-5 uppercase rounded-full text-white bg-black" onClick={handleUpdatSaveUserDetail}>Save Changes</button>
+                                </div>
+                                :
+                                <button className="md:w-64 w-full py-5 uppercase rounded-full text-white bg-black" onClick={handleToggleEditAddress}>Edit Address</button>
                     }
                 </div>
 

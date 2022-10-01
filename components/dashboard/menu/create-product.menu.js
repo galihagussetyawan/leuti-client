@@ -185,7 +185,7 @@ export default function CreateProductMenu() {
                 setNotification({
                     isOpen: true,
                     status: 'error',
-                    message: err?.response?.data?.message,
+                    message: err?.response?.data?.error_message,
                 })
 
             })
@@ -268,7 +268,15 @@ export default function CreateProductMenu() {
 
                     })
             })
-            .catch(err => console.log(err.response))
+            .catch(err => {
+
+                setNotification({
+                    isOpen: true,
+                    status: 'error',
+                    message: err?.response?.data?.error_message,
+                })
+
+            })
 
     }
 

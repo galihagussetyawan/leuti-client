@@ -13,6 +13,7 @@ import ProductService from "../../services/product.service";
 import UserService from "../../services/user.service";
 import PointService from "../../services/point.service";
 import OrderService from "../../services/order.service";
+import RoyaltyService from "../../services/royalty.service";
 
 const TabDashboardComponent = dynamic(() => import('../../components/dashboard/tab-dashboard.component'));
 
@@ -50,7 +51,7 @@ export default function Dashboard({ countNewOrders, countNowOrders }) {
     return (
         <>
             <Head>
-                <title>Dashboard | Leuti</title>
+                <title>Dashboard | Leuti Asia</title>
             </Head>
 
             <header className="md:px-10 md:py-2 md:sticky md:top-0 md:flex md:z-10 md:justify-between md:border-b md:bg-white">
@@ -92,6 +93,8 @@ export default function Dashboard({ countNewOrders, countNowOrders }) {
                                 </li>
                             </ul>
                         </li>
+
+                        {/* agent group */}
                         <li className="md:space-y-3">
                             <span>AGENTS</span>
                             <ul className="md:ml-10 md:space-y-3 md:text-gray-500">
@@ -101,6 +104,9 @@ export default function Dashboard({ countNewOrders, countNowOrders }) {
                                 <li>AGENT RANKING</li>
                             </ul>
                         </li>
+                        {/* end of agent group */}
+
+                        {/* order group */}
                         <li className="md:space-y-3">
                             <span>ORDERS</span>
                             <ul className="md:ml-10 md:space-y-3 md:text-gray-500">
@@ -117,6 +123,18 @@ export default function Dashboard({ countNewOrders, countNowOrders }) {
                                 </li>
                             </ul>
                         </li>
+                        {/* end of order group */}
+
+                        {/* royalties group */}
+                        <li className="md:space-y-3">
+                            <span>ROYALTIES</span>
+                            <ul className="md:ml-10 md:space-y-3 md:text-gray-500">
+                                <li className={`${styleActiveMenu('royalties-list')} md:flex md:justify-between md:hover:underline`}>
+                                    <Link href={{ query: { tab: 'royalties-list' } }}>ROYALTIES LIST</Link>
+                                </li>
+                            </ul>
+                        </li>
+                        {/* end of royalties group */}
                     </ul>
                 </div>
                 {/* end of left column/menu */}
@@ -135,6 +153,11 @@ export async function getServerSideProps(context) {
     const { req, res, query } = context;
     const { tab, productid, page } = query;
 
+    res.setHeader(
+        'Cache-Control',
+        'public, s-maxage=10, stale-while-revalidate'
+    );
+
     let isAdmin = false;
     let user = {};
     let productList = null;
@@ -144,12 +167,14 @@ export async function getServerSideProps(context) {
     let ordersAllList = [];
     let countNewOrders = 0
     let countNowOrders = 0;
+    let totalOrders = null;
+    let royaltiesList = null;
 
     try {
 
         const cookies = await CookiesService.getCookies('user', req, res);
 
-        isAdmin = await AuthService.isAdmin(JSON.parse(cookies).accessToken);
+        isAdmin = await AuthService.isAdmin(req, res);
         productList = await (await ProductService.getProducts())?.data?.data;
 
         if (productid) {
@@ -176,6 +201,9 @@ export async function getServerSideProps(context) {
                 ordersAllList = await (await OrderService.getAllOrders(tab, req, res))?.data?.data;
                 countNewOrders = await (await OrderService.getCountNewOrders(req, res))?.data?.data;
                 countNowOrders = await (await OrderService.getCountNowOrders(req, res))?.data?.data;
+                totalOrders = await (await OrderService.getTotalOrders(req, res))?.data?.data;
+
+                if (tab === 'royalties-list') royaltiesList = await (await RoyaltyService.getAllRoyaltiesList(req, res))?.data?.data;
             }
         }
 
@@ -199,6 +227,8 @@ export async function getServerSideProps(context) {
             ordersAllList,
             countNewOrders,
             countNowOrders,
+            totalOrders,
+            royaltiesList,
         }
     }
 }

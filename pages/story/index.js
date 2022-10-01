@@ -9,7 +9,6 @@ import PointService from "../../services/point.service";
 import RoyaltyService from "../../services/royalty.service";
 
 // import components
-import Header from '../../components/header.component';
 const Footer = dynamic(() => import('../../components/footer.component'));
 
 export default function Story({ contentList }) {
@@ -19,7 +18,7 @@ export default function Story({ contentList }) {
                 <title>LEUTI STORIES - Leuti Perfect Sublimate Serum</title>
                 <meta name="description" content="LEUTI Perfect Sublimate Serum diciptakan bagi orang-orang yang menuntut kesempurnaan dan kualitas tinggi. Sebelum menyentuh pasar, serum ini telah melewati uji sampling keefektifitasan dimana 98% dari 100 orang dengan kulit normal sebagai sampling menunjukkan hasil yang memuaskan dalam jangka waktu maksimal 2 minggu. 80% dari mereka mengatakan bahwa hasil yang bagus dirasakan sejak pertama kali pemakaian serum LEUTI Perfect Sublimate Serum. Efek pada kulit dimana kulit menjadi lebih putih, flawless, halus, lembab, kenyal seperti sedang menyentuh agar-agar dirasakan secara bersamaan" />
             </Head>
-            <Header />
+
             <main className=" md:w-4/5 m-auto flex flex-col md:gap-28 gap-14 md:px-0 px-5">
 
                 {/* banner */}
@@ -55,11 +54,10 @@ export default function Story({ contentList }) {
                 </div>
 
                 <div className="md:w-full flex justify-center">
-                    <div className="md:w-52 md:h-48 w-60 h-52 relative">
+                    <div className="md:w-96 w-60 h-52 relative">
                         <Image
-                            src={'/full-logo.jpeg'}
+                            src={'/wordmark-logo-with-slogan.png'}
                             alt={'leuti logo image'}
-                            quality={50}
                             loading='lazy'
                             layout='fill'
                             objectFit='contain'
@@ -74,7 +72,7 @@ export default function Story({ contentList }) {
                 <div className="md:grid md:grid-cols-2 md:gap-5">
 
                     {
-                        contentList.map((data, index) => {
+                        contentList?.map((data, index) => {
                             return (
                                 <div key={index} className="flex flex-col gap-5 md:mt-10 mt-20">
                                     <div className="md:w-full md:h-[700px] w-full h-96 relative bg-gray-100">

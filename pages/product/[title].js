@@ -11,7 +11,6 @@ import PointService from "../../services/point.service";
 import RoyaltyService from "../../services/royalty.service";
 
 //import components
-import Header from '../../components/header.component';
 const Footer = dynamic(() => import('../../components/footer.component'));
 const Collapse = dynamic(() => import('../../components/collapse.component'));
 const Toast = dynamic(() => import('../../components/commons/toast.component'));
@@ -62,9 +61,10 @@ export default function Product({ isLogin, productData, inCart }) {
 
     const handleInceraseQuantity = () => {
 
-        if (quantity < stock) {
-            setQuantity(++quantity)
-        }
+        // if (quantity < stock) {
+        //     setQuantity(++quantity)
+        // }
+        setQuantity(++quantity)
     }
 
     const handleDecreaseQuantity = () => {
@@ -140,7 +140,6 @@ export default function Product({ isLogin, productData, inCart }) {
                 <meta name="keyword" content="produk, skincare lokal, skincare terbaik, skincare indonesia, leuti 2022, serum, kecantikan, skincare bagus" />
             </Head>
 
-            <Header />
             <main className="md:w-4/5 m-auto flex md:flex-row flex-col gap-5 md:py-10">
 
                 <div className="md:w-full flex md:flex-row flex-col-reverse gap-5">
@@ -197,7 +196,7 @@ export default function Product({ isLogin, productData, inCart }) {
 
                     <div className="flex flex-col gap-1">
                         <span className="font-semibold">WHAT IS</span>
-                        <p>{productData?.description}</p>
+                        <p className="leading-relaxed">{productData?.description}</p>
                     </div>
 
                     <div className="flex flex-col gap-1">
@@ -207,7 +206,7 @@ export default function Product({ isLogin, productData, inCart }) {
 
                     {/* add to cart */}
                     <div className="hidden md:flex md:flex-col md:gap-2 md:border-t md:py-20 md:border-gray-300">
-                        <span className="md:font-semibold">Stock {stock}</span>
+                        {/* <span className="md:font-semibold">Stock {stock}</span> */}
                         <div className="md:w-full md:flex md:space-x-5">
                             <div className="md:w-1/4 md:flex md:border md:rounded-full md:overflow-hidden md:border-black">
                                 <button className="md:w-2/6" onClick={handleDecreaseQuantity}>-</button>
@@ -244,7 +243,7 @@ export default function Product({ isLogin, productData, inCart }) {
                         <Collapse
                             title={'INGREDIENTS'}
                         >
-                            <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In congue ultrices velit, varius sodales quam faucibus quis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
+                            <p>{productData?.ingredient}</p>
                         </Collapse>
                     </div>
 
@@ -256,7 +255,7 @@ export default function Product({ isLogin, productData, inCart }) {
 
             {/* floating section */}
             <div className="w-full md:hidden sticky left-0 bottom-0 z-0 flex flex-col px-5 py-2 gap-1 bg-white">
-                <span className="font-semibold">Stock {stock}</span>
+                {/* <span className="font-semibold">Stock {stock}</span> */}
                 <div className="flex gap-3">
                     <div className="w-2/5 h-[54px] overflow-hidden flex justify-between border rounded-full border-black">
                         <button className="w-2/6 h-full" onClick={handleDecreaseQuantity}>-</button>

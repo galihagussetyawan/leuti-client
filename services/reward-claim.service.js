@@ -1,4 +1,5 @@
 import ApiClient from "./api-client";
+import ApiServer from "./api-server";
 
 class RewardClaimsService {
 
@@ -10,6 +11,12 @@ class RewardClaimsService {
                     rewardid
                 }
             })
+    }
+
+    async getAllRewardClaim(req, res) {
+
+        return await ApiServer(req, res)
+            .get('rewards/claim/all')
     }
 }
 

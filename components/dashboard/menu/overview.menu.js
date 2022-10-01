@@ -6,7 +6,7 @@ import DashboardContext from "../../../lib/context/dashboard.context";
 
 export default function OverviewMenu() {
 
-    const { pointList, userList, ordersAllList } = useContext(DashboardContext);
+    const { pointList, userList, ordersAllList, totalOrders } = useContext(DashboardContext);
 
     const convertDate = (date) => {
         const newDate = new Date(parseInt(date));
@@ -59,8 +59,8 @@ export default function OverviewMenu() {
                     <p className="md:w-full md:border-b md:border-gray-300">OVERVIEW DASHBOARD</p>
                     <div className="md:grid md:grid-cols-3 md:gap-5">
                         <div className="md:h-52 md:flex md:flex-col md:justify-center md:px-10 md:border md:bg-white">
-                            <span className="md:text-gray-500">PRODUCT SOLD</span>
-                            <span className="md:text-4xl">53</span>
+                            <span className="md:text-gray-500">PRODUCT SOLD TODAY</span>
+                            <span className="md:text-4xl">{totalOrders?.quantity}</span>
                         </div>
                         <div className="md:h-52 md:flex md:flex-col md:justify-center md:px-10 md:border md:bg-white">
                             <span className="md:text-gray-500">TOTAL AGENTS</span>
@@ -68,7 +68,7 @@ export default function OverviewMenu() {
                         </div>
                         <div className="md:h-52 md:flex md:flex-col md:justify-center md:px-10 md:border md:bg-white">
                             <span className="md:text-gray-500">TOTAL TRANSACTION TODAY</span>
-                            <span className="md:text-4xl">Rp32.000.000</span>
+                            <span className="md:text-4xl">{LocalCurrency(totalOrders?.amount)}</span>
                         </div>
                     </div>
                 </div>

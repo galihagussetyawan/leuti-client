@@ -22,7 +22,7 @@ export default function Footer() {
     }
 
     return (
-        <footer className=" md:w-full md:py-24 mt-20 md:border-y py-5 border-y border-gray-300">
+        <footer className=" md:w-full md:py-24 mt-5 md:border-y py-5 border-y border-gray-300">
             <div className="md:px-10 md:grid md:grid-cols-4 grid-cols-1 gap-5">
 
                 {/* column one */}

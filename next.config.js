@@ -10,7 +10,8 @@ const nextConfig = {
   },
 
   images: {
-    domains: [process.env.API_HOST]
+    domains: [process.env.API_HOST],
+    minimumCacheTTL: 60,
   },
 }
 

@@ -131,7 +131,7 @@ export default function ProductListMenu() {
                                                 </div>
                                                 <div className="md:flex md:flex-col md:justify-center md:space-y-1">
                                                     <span className="md:font-semibold">{data?.name}</span>
-                                                    <p className=" md:text-gray-500">{data?.description}</p>
+                                                    {/* <p className=" md:text-gray-500">{data?.description}</p> */}
                                                 </div>
                                             </td>
                                             <td scope="col" className="py-3 px-6">{convertDate(data?.createdAt)}</td>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -8,8 +9,6 @@ import AuthService from '../../services/auth.service';
 
 //import components
 const Footer = dynamic(() => import('../../components/footer.component'))
-import Header from '../../components/header.component';
-import Head from 'next/head';
 
 export default function Login() {
 
@@ -59,7 +58,6 @@ export default function Login() {
             <Head>
                 <title>Login | Leuti Asia</title>
             </Head>
-            <Header />
 
             <main className="flex md:px-10 md:py-14">
 
@@ -74,21 +72,21 @@ export default function Login() {
                 </div>
 
                 <div className="md:w-3/5 w-full flex flex-col justify-center md:px-36 px-5 space-y-10 md:justify-center">
-                    <div className='flex flex-col text-center md:text-left'>
-                        <span className="text-4xl md:text-3xl">LOGIN</span>
+                    <div className='flex flex-col text-center md:text-left space-y-3'>
+                        <span className="text-4xl md:text-3xl font-semibold">Login</span>
                         <span>Please enter Username and your Password</span>
                     </div>
 
                     <div className="flex flex-col md:space-y-5 space-y-3">
 
-                        <div className="md:w-3/5 border border-black">
+                        <div className="md:w-3/5 border border-gray-400 focus-within:border-gray-700">
                             <div className="flex flex-col px-4 py-2">
                                 <span className="text-sm md:text-gray-700 text-black">Username or Email</span>
                                 <input className="h-7 outline-none text-lg font-semibold" onChange={handleChangeUsername} />
                             </div>
                         </div>
 
-                        <div className="md:w-3/5 border border-black">
+                        <div className="md:w-3/5 border border-gray-400 focus-within:border-gray-700">
                             <div className="flex flex-col px-4 py-2">
                                 <span className="text-sm md:text-gray-700 text-black">Password</span>
                                 <div className='flex'>

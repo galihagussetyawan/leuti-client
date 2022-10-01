@@ -15,6 +15,10 @@ export default function ProductDiscover({ id, name, category, images, price }) {
     const router = useRouter();
     const { isLogin } = useContext(AuthContext);
 
+    if (typeof window !== 'undefined') {
+        router.prefetch('/product');
+    }
+
     const handleNavigate = (url) => {
 
         return () => router.push(url);
@@ -55,6 +59,7 @@ export default function ProductDiscover({ id, name, category, images, price }) {
 
             <div className="text-center md:text-left">
                 <button
+                    type='link'
                     onClick={handleNavigate({
                         pathname: `/product/${name?.toLowerCase()?.split(' ')?.join('-')}`,
                         query: { id }

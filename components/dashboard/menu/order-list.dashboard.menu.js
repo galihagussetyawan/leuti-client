@@ -76,6 +76,7 @@ export default function OrderListMenu() {
                     isOpen: false,
                 }))
 
+                router.replace(router.asPath);
             })
     }
 
@@ -93,6 +94,7 @@ export default function OrderListMenu() {
                     isOpen: false,
                 }))
 
+                router.replace(router.asPath);
             })
     }
 
@@ -110,6 +112,7 @@ export default function OrderListMenu() {
                     isOpen: false,
                 }))
 
+                router.replace(router.asPath);
             })
     }
 
@@ -127,6 +130,7 @@ export default function OrderListMenu() {
                     isOpen: false,
                 }))
 
+                router.replace(router.asPath);
             })
     }
 
@@ -144,6 +148,7 @@ export default function OrderListMenu() {
                     isOpen: false,
                 }))
 
+                router.replace(router.asPath);
             })
     }
 
@@ -171,16 +176,16 @@ export default function OrderListMenu() {
         if (status === 'created') {
             return (
                 <div className="grid grid-cols-1">
-                    <button className=" uppercase bg-orange-500 py-5 text-white">waiting</button>
+                    <button className="capitalize py-5 text-left font-semibold">waiting</button>
                 </div>
             )
         }
 
         if (status === 'unpaid') {
             return (
-                <div className=" grid grid-cols-1 gap-2">
-                    <button className=" uppercase bg-green-500 py-3 text-white" onClick={handleActionButtonStatus('approved', id)}>Approve</button>
-                    <button className=" uppercase bg-red-500 py-3 text-white" onClick={handleActionButtonStatus('cancel', id)}>Cancel</button>
+                <div className=" grid grid-cols-1 divide-y">
+                    <button className="capitalize text-left py-3 text-black md:hover:font-semibold md:hover:text-green-600" onClick={handleActionButtonStatus('approved', id)}>Approve</button>
+                    <button className="capitalize text-left py-3 text-black md:hover:font-semibold md:hover:text-red-500" onClick={handleActionButtonStatus('cancel', id)}>Cancel</button>
                 </div>
             )
         }
@@ -188,7 +193,7 @@ export default function OrderListMenu() {
         if (status === 'approved') {
             return (
                 <div className=" grid grid-cols-1 gap-2">
-                    <button className=" uppercase bg-green-500 py-5 text-white" onClick={handleActionButtonStatus('in-packaging', id)}>in-packaging</button>
+                    <button className="capitalize py-5 text-left text-black md:hover:font-semibold md:hover:text-green-600" onClick={handleActionButtonStatus('in-packaging', id)}>in-packaging</button>
                     {/* <button className=" uppercase bg-red-500 py-5 text-white">Cancel</button> */}
                 </div>
             )
@@ -197,15 +202,15 @@ export default function OrderListMenu() {
         if (status === 'in-packaging') {
             return (
                 <div className=" grid grid-cols-1 gap-2">
-                    <button className=" uppercase bg-green-500 py-5 text-white" onClick={handleActionButtonStatus('in-shipping', id)}>in-shipping</button>
-                </div>
+                    <button className="capitalize py-5 text-left text-black md:hover:font-semibold md:hover:text-green-600" onClick={handleActionButtonStatus('in-shipping', id)}>in-shipping</button>
+                </div >
             )
         }
 
         if (status === 'in-shipping') {
             return (
                 <div className=" grid grid-cols-1 gap-2">
-                    <button className=" uppercase bg-green-500 py-5 text-white" onClick={handleActionButtonStatus('completed', id)}>completed</button>
+                    <button className="capitalize  py-5 text-left text-black md:hover:font-semibold md:hover:text-green-600" onClick={handleActionButtonStatus('completed', id)}>completed</button>
                 </div>
             )
         }
@@ -376,50 +381,50 @@ export default function OrderListMenu() {
                                                 {
                                                     data?.shipping &&
                                                     <Popover title={'View Shipping Address'} position={'bottom'}>
-                                                        <div className="grid grid-cols-1 gap-2 py-2 px-5">
+                                                        <div className="min-w-[350px] grid grid-cols-1 gap-2 md:py-2 md:px-5">
                                                             <div className="grid grid-cols-2">
-                                                                <span className="font-light capitalize">shipping name</span>
-                                                                <span className=" capitalize">{data?.shipping?.name}</span>
+                                                                <span className="capitalize">shipping name</span>
+                                                                <span className="capitalize font-semibold">{data?.shipping?.name}</span>
                                                             </div>
 
                                                             <div className="grid grid-cols-2">
-                                                                <span className="font-light capitalize">address</span>
-                                                                <span>{data?.shipping?.address}</span>
+                                                                <span className="capitalize">address</span>
+                                                                <span className="font-semibold">{data?.shipping?.address}</span>
                                                             </div>
 
                                                             <div className="grid grid-cols-2">
-                                                                <span className=" font-light capitalize">country</span>
-                                                                <span className=" capitalize">{data?.shipping?.country}</span>
+                                                                <span className="capitalize">country</span>
+                                                                <span className=" capitalize font-semibold">{data?.shipping?.country}</span>
                                                             </div>
 
                                                             <div className="grid grid-cols-2">
-                                                                <span className=" font-light capitalize">province</span>
-                                                                <span className=" capitalize">{data?.shipping?.province}</span>
+                                                                <span className="capitalize">province</span>
+                                                                <span className=" capitalize font-semibold">{data?.shipping?.province}</span>
                                                             </div>
 
                                                             <div className="grid grid-cols-2">
-                                                                <span className="font-light capitalize">city</span>
-                                                                <span className=" capitalize">{data?.shipping?.city}</span>
+                                                                <span className="capitalize">city</span>
+                                                                <span className=" capitalize font-semibold">{data?.shipping?.city}</span>
                                                             </div>
 
                                                             <div className="grid grid-cols-2">
-                                                                <span className="font-light capitalize">district</span>
-                                                                <span className=" capitalize">{data?.shipping?.district}</span>
+                                                                <span className="capitalize">district</span>
+                                                                <span className=" capitalize font-semibold">{data?.shipping?.district}</span>
                                                             </div>
 
                                                             <div className="grid grid-cols-2">
-                                                                <span className="font-light capitalize">village</span>
-                                                                <span className=" capitalize">{data?.shipping?.village}</span>
+                                                                <span className="capitalize">village</span>
+                                                                <span className=" capitalize font-semibold">{data?.shipping?.village}</span>
                                                             </div>
 
                                                             <div className="grid grid-cols-2">
-                                                                <span className="font-light capitalize">postal code</span>
-                                                                <span className=" capitalize">{data?.shipping?.postalCode}</span>
+                                                                <span className="capitalize">postal code</span>
+                                                                <span className=" capitalize font-semibold">{data?.shipping?.postalCode}</span>
                                                             </div>
 
                                                             <div className="grid grid-cols-2">
-                                                                <span className="font-light capitalize">phone</span>
-                                                                <span className=" capitalize">{data?.shipping?.phone}</span>
+                                                                <span className="capitalize">phone</span>
+                                                                <span className=" capitalize font-semibold">{data?.shipping?.phone}</span>
                                                             </div>
 
                                                         </div>
@@ -451,7 +456,7 @@ export default function OrderListMenu() {
             {
                 modal?.isOpen &&
                 <ModalDashboard>
-                    <div className=" md:max-w-[350px]">
+                    <div className="md:min-w-[500px]">
                         {modalActionByStatus()}
                     </div>
                 </ModalDashboard>

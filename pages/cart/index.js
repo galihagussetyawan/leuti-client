@@ -4,7 +4,6 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Head from 'next/head';
 
-import Header from '../../components/header.component';
 const Footer = dynamic(() => import('../../components/footer.component'));
 const Toast = dynamic(() => import('../../components/commons/toast.component'));
 
@@ -139,7 +138,7 @@ export default function Cart({ carts, totalPrice }) {
             <Head>
                 <title>Cart | Leuti Asia</title>
             </Head>
-            <Header />
+
             <main className='md:w-4/5 flex flex-col m-auto md:mt-20'>
 
                 <div className='flex md:flex-row flex-col px-5 md:p-0 md:space-x-10'>

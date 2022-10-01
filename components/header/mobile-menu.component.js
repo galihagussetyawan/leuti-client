@@ -39,7 +39,8 @@ export default function MobileMenu({ closeAction, isOpen }) {
 
     const handleNavigate = (url) => {
 
-        return () => router.push(url);
+        return () => router.push(url)
+            .finally(() => handleToggleClose());
     }
 
     const tabContent = () => {
@@ -219,7 +220,7 @@ export default function MobileMenu({ closeAction, isOpen }) {
                                                     </svg>
                                                 </span>
                                             </li>
-                                            <li className="flex justify-between py-3">
+                                            <li className="flex justify-between py-3" onClick={handleNavigate({ pathname: '/rank' })}>
                                                 <span>RANK</span>
                                                 <span>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -227,7 +228,7 @@ export default function MobileMenu({ closeAction, isOpen }) {
                                                     </svg>
                                                 </span>
                                             </li>
-                                            <li className="flex justify-between py-3">
+                                            <li className="flex justify-between py-3" onClick={handleNavigate({ pathname: '/sales' })}>
                                                 <span>SALES</span>
                                                 <span>
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

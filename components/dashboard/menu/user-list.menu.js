@@ -31,6 +31,7 @@ export default function UserListMenu() {
     const [search, setSearch] = useState('');
     const [searchData, setSearchData] = useState();
     const [userDownlineId, setUserDownlineId] = useState();
+    const [userDownlineSearchResult, setUserDownlineSearchResult] = useState();
 
     useEffect(() => {
 
@@ -213,6 +214,10 @@ export default function UserListMenu() {
         }
     }
 
+    // const handleUserDownlineSearch = () => {
+
+    // }
+
     const handleCloseModal = () => {
         setModal({
             isOpen: false,
@@ -304,7 +309,7 @@ export default function UserListMenu() {
                         </div>
                     </div>
                     {
-                        (data?.sponsor?.downline?.length < 2 || !data.sponsor) &&
+                        (data?.sponsor?.downline?.length >= 0 || !data.sponsor) &&
                         <button className="w-full py-3 rounded-full border border-gray-300 text-gray-600 md:hover:border-gray-400 md:hover:text-gray-600" onClick={handleAddDownlineAgent(data)}>+ Downline</button>
                     }
 
@@ -410,7 +415,7 @@ export default function UserListMenu() {
                             previousLinkClassName="p-5 border md:hover:bg-gray-100"
                             nextLinkClassName="p-5 border md:hover:bg-gray-100"
                             pageLinkClassName=" p-5 border md:hover:bg-gray-100"
-                            activeLinkClassName="border-2 border-gray-200 bg-gray-100"
+                            activeLinkClassName="border-2 border-gray-300 bg-gray-100"
                             pageCount={userList?.totalPages}
                             breakLabel="..."
                             nextLabel="Next"
